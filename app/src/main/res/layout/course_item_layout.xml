@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:background="@drawable/list_item_background"
+                android:id="@+id/course_in_list_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <ImageView
+            android:id="@+id/event_color"
+            android:background="@color/event_color"
+            android:layout_margin="@dimen/widget_margin_left"
+            android:layout_centerVertical="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+    <CheckBox
+            android:id="@+id/event_checkbox"
+            android:focusable="false"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginRight="@dimen/widget_margin_left"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+    <LinearLayout
+            android:layout_margin="@dimen/widget_margin_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/event_color"
+            android:layout_toLeftOf="@id/event_checkbox"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/event_name"
+                android:layout_gravity="center_vertical"
+                android:textSize="22sp"
+                android:layout_weight="6"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"/>
+
+        <TextView
+                android:id="@+id/event_type"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="type"
+                android:layout_weight="6"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"/>
+
+        <TextView
+                android:id="@+id/event_time"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="time"
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"/>
+
+        <TextView
+                android:id="@+id/event_location"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="location"
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

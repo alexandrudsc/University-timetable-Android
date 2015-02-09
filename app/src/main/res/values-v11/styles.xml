@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Values for API v >= 11
+-->
+
+<resources>
+    <style name="ActionBar.Solid.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@drawable/ab_solid_alexandru</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_alexandru</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_alexandru</item>
+        <item name="progressBarStyle">@style/ProgressBar.Alexandru</item>
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="android:displayOptions">useLogo|showHome</item>
+
+    </style>
+</resources>

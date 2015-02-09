@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:id="@+id/calendar_title"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/widget_title_height"
+            android:background="@drawable/widget_title_background">
+
+
+            <ImageButton
+                    android:id="@+id/change_day"
+                    android:src="@drawable/ic_action_next_item"
+                    android:layout_width="@dimen/widget_title_button_width"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/widget_margin_left"
+                    android:layout_marginLeft="@dimen/widget_margin_left"
+                    android:layout_marginRight="@dimen/widget_margin_left"/>
+
+                <TextView
+                        android:id="@+id/day_of_week"
+                        android:textSize="@dimen/small_text"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:layout_width="0dip"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@id/change_day"
+                        android:layout_height="@dimen/half_widget_title"
+                        android:layout_gravity="bottom|fill_vertical"
+                        android:layout_marginTop="@dimen/widget_margin_left"
+                        android:layout_marginLeft="@dimen/widget_margin_left"
+                        android:layout_marginRight="@dimen/widget_margin_left"/>
+
+                <TextView
+                        android:id="@+id/day_of_month"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_width="0dip"
+                        android:layout_height="0dip"
+                        android:layout_below="@id/day_of_week"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@id/change_day"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="top|fill_vertical"
+                        android:layout_marginTop="-10dp"
+                        android:layout_marginLeft="@dimen/widget_margin_left"
+                        android:layout_marginRight="@dimen/widget_margin_left"/>
+
+    </RelativeLayout>
+
+    <TextView
+            android:id="@+id/current_week_widget"
+            android:layout_below="@id/calendar_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/half_widget_title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/medium_text"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="@dimen/widget_margin_left"
+            android:layout_marginRight="@dimen/widget_margin_right"
+            android:layout_marginLeft="@dimen/widget_margin_left"/>
+
+
+    <ListView
+            android:id="@+id/widget_list"
+            android:layout_below="@id/current_week_widget"
+            android:dividerHeight="@dimen/widget_margin_left"
+            android:background="#AA000000"
+            android:divider="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/widget_height"
+            android:layout_marginRight="@dimen/widget_margin_right"
+            android:layout_marginLeft="@dimen/widget_margin_left"
+            />
+
+</RelativeLayout>

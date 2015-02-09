@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="days_of_week">
+        <item>DU</item>
+        <item>LU</item>
+        <item>MA</item>
+        <item>MI</item>
+        <item>JO</item>
+        <item>VI</item>
+        <item>SÂ</item>
+    </string-array>
+
+    <string-array name="days_of_week_full_name">
+        <item>Duminică</item>
+        <item>Luni</item>
+        <item>Marți</item>
+        <item>Miercuri</item>
+        <item>Joi</item>
+        <item>Vineri</item>
+        <item>Sâmbata</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>Ian</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>Mai</item>
+        <item>Iun</item>
+        <item>Iul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+
+    <string-array name="drawer_list_elements">
+        <item>Orar</item>
+        <item>Examene</item>
+        <item>Vacanțe</item>
+        <item>Ajutor</item>
+        <item>Despre</item>
+    </string-array>
+
+    <string-array name="spinner_elements">
+        <item>Săptămâna 1</item>
+        <item>Săptămâna 2</item>
+        <item>Săptămâna 3</item>
+        <item>Săptămâna 4</item>
+        <item>Săptămâna 5</item>
+        <item>Săptămâna 6</item>
+        <item>Săptămâna 7</item>
+        <item>Săptămâna 8</item>
+        <item>Săptămâna 9</item>
+        <item>Săptămâna 10</item>
+        <item>Săptămâna 11</item>
+        <item>Săptămâna 12</item>
+        <item>Săptămâna 13</item>
+        <item>Săptămâna 14</item>
+    </string-array>
+
+    <string-array name="faculties">
+        <item>F.I.E.S.C.</item>
+        <item>F.I.M.M.M.</item>
+        <item>E.F.S.</item>
+        <item>F.I.A.</item>
+        <item>F.L.S.C.</item>
+        <item>F.L.S.C.</item>
+        <item>Silvicultură</item>
+        <item>F.S.E.A.P.</item>
+        <item>F.S.Ed.</item>
+        <item>D.S.D.U.</item>
+        <item>D.P.P.D. nivel 1</item>
+        <item>D.P.P.D. nivel 2</item>
+    </string-array>
+
+    <string-array name="fiesc_groups_licence">
+        <item>C an1_1111a</item>
+        <item>C an1_1111b</item>
+        <item>C an1_1112a</item>
+        <item>C an1_1112b</item>
+        <item>C an1_1113a</item>
+        <item>C an1_1113b</item>
+        <item>C an1_1114a</item>
+        <item>C an1_1114b</item>
+    </string-array>
+
+    <string-array name="fiesc_groups_master">
+        <item>SIC an 1_grupa 1 </item>
+        <item>SIC an 1_grupa 2 </item>
+        <item>SIC an 1_grupa 3 </item>
+        <item>SIC an 2_grupa 1a </item>
+        <item>SIC an 2_grupa 2 </item>
+    </string-array>
+</resources>

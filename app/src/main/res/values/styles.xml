@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Values for API v < 11
+-->
+
+<resources>
+
+    <style name="app_theme" parent="@style/Theme.AppCompat.Light"/>
+
+    <style name="Theme.Alexandru" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarItemBackground">@drawable/selectable_background_alexandru</item>
+        <item name="popupMenuStyle">@style/PopupMenu.Alexandru</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
+        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Alexandru</item>
+        <item name="actionDropDownStyle">@style/DropDownNav.Alexandru</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Alexandru</item>
+        <item name="actionModeBackground">@drawable/cab_background_top_alexandru</item>
+        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_alexandru</item>
+        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Alexandru</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:title"></item>
+        <item name="displayOptions">useLogo|homeAsUp</item>
+    </style>
+
+    <style name="ActionBar.Solid.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="background">@drawable/ab_solid_alexandru</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_alexandru</item>
+        <item name="backgroundSplit">@drawable/ab_bottom_solid_alexandru</item>
+        <item name="progressBarStyle">@style/ProgressBar.Alexandru</item>
+
+    </style>
+
+    <style name="ActionBar.Transparent.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="background">@drawable/ab_transparent_alexandru</item>
+        <item name="progressBarStyle">@style/ProgressBar.Alexandru</item>
+    </style>
+	
+    <style name="PopupMenu.Alexandru" parent="@style/Widget.AppCompat.Light.PopupMenu">	
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_alexandru</item>	
+    </style>
+	
+    <style name="DropDownListView.Alexandru" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_alexandru</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_alexandru</item>
+    </style>
+	
+    <style name="DropDownNav.Alexandru" parent="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">@drawable/spinner_background_ab_alexandru</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_alexandru</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_alexandru</item>
+    </style>
+    
+    <style name="ProgressBar.Alexandru" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_alexandru</item>
+
+    </style>
+    
+    <style name="ActionButton.CloseMode.Alexandru" parent="@style/Widget.AppCompat.Light.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_alexandru</item>
+    </style>
+
+    <style name="ActionBarTitleText.Alexandru" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textAppearance">@style/ActionBarTitleTextStyle</item>
+    </style>
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Alexandru.Widget" parent="@style/Theme.AppCompat">
+        <item name="popupMenuStyle">@style/PopupMenu.Alexandru</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
+    </style>
+
+    <style name="NoTitleText">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">#00000000</item>
+    </style>
+
+    <style name="ActionBarTitleTextStyle">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">0sp</item>
+    </style>
+</resources>

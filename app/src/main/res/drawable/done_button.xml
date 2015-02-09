@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tab_indicator_ab_alexandru"/>
+    <item android:drawable="@drawable/abc_ic_cab_done_holo_light"/>
+</layer-list>

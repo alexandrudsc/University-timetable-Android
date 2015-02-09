@@ -1,0 +1,241 @@
+package com.developer.alexandru.aplicatie_studenti;
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import com.developer.alexandru.aplicatie_studenti.action_bar.NonCurrentWeekActivity;
+import com.developer.alexandru.aplicatie_studenti.data.Course;
+import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
+
+/**
+ * Created by Alexandru on 7/14/14.
+ * Details fragment - displays info of a selected class
+ */
+public class SearchableFragment extends  Fragment{
+    public static final String TAG = "SEARCHABLE FRAGMENT";
+    public static final boolean D = true;
+
+    private Course course;
+    private DetailsFragment detailsFragment;
+
+    //private Button courseButton;
+    private FrameLayout courseFragContainer;
+    private FragmentManager fm;
+
+    Bundle detailsFragmentArgs;
+    private boolean wasResultTable;
+
+    public SearchableFragment() {
+        super();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    public SearchableFragment(Course course, FragmentManager fm) {
+        super();
+        this.course = course;
+        this.fm = fm;
+        detailsFragmentArgs = new Bundle();
+        detailsFragmentArgs.putParcelable("course", course);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(D)
+            if(course == null)
+                Log.d(TAG, "create void view");
+            else
+                Log.d(TAG, "create view");
+
+        View fragmentView =  inflater.inflate(R.layout.fragment_searchable, container, false);
+        FragmentManager fm = getChildFragmentManager();
+
+        TextView courseTitle = (TextView) fragmentView.findViewById(R.id.course_title);
+
+        if(course == null){
+            if(savedInstanceState != null){
+                if(D) Log.d(TAG, "create with bundle");
+                wasResultTable = savedInstanceState.getBoolean("was_results_table");
+                course = savedInstanceState.getParcelable("course");
+                if(course != null) {
+                    if (D) Log.d(TAG, course.fullName + " " + course.name);
+                    if (course.fullName == null)
+                        courseTitle.setText(course.name + " " + course.type);
+                    else
+                        courseTitle.setText(course.fullName + " " + course.type);
+
+                    if (wasResultTable) {
+                        //The results table was displayed
+                        if (D) Log.d(TAG, "recreating with results table");
+                        ResultsFragment resultsFragment = new ResultsFragment(fm, course.name, course.type, course.info);
+                        FragmentTransaction tr = fm.beginTransaction();
+                        tr.replace(R.id.course_fragment_container,
+                                resultsFragment, DetailsFragment.REPLACE_DETAILS_WITH_RESULT);
+                        tr.addToBackStack(DetailsFragment.REPLACE_DETAILS_WITH_RESULT);
+                        tr.commit();
+                    } else {
+                        //The details of course were displayed
+                        courseFragContainer = (FrameLayout) fragmentView.findViewById(R.id.course_fragment_container);
+
+                        detailsFragmentArgs = new Bundle();
+                        detailsFragmentArgs.putParcelable("course", course);
+
+                        detailsFragment = new DetailsFragment(fm, true);
+                        detailsFragment.setArguments(detailsFragmentArgs);
+                        detailsFragment.onCreateView(inflater, courseFragContainer, savedInstanceState);
+                    }
+                }
+                return fragmentView;
+            }
+        }
+
+        courseFragContainer = (FrameLayout) fragmentView.findViewById(R.id.course_fragment_container);
+
+        detailsFragment = new DetailsFragment(getChildFragmentManager(), true);
+        detailsFragment.setArguments(detailsFragmentArgs);
+        detailsFragment.onCreateView(inflater, courseFragContainer, savedInstanceState);
+
+        if(course == null){
+            //Search result
+            courseTitle.setText("Niciun rezultat");
+            fragmentView.findViewById(R.id.course_button).setVisibility(View.INVISIBLE);
+        }else{
+            if(course.fullName == null)
+                courseTitle.setText(course.name + " " + course.type );
+            else
+                courseTitle.setText(course.fullName+ " " + course.type);
+        }
+
+        return fragmentView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (D) Log.d("NonCurrentWeek", "create options");
+
+        ((MainActivity)getActivity()).getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItemCompat.collapseActionView(menu.findItem(R.id.search_from_menu));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(D)  Log.d(TAG, "save state");
+        wasResultTable = getChildFragmentManager().
+                         findFragmentByTag(DetailsFragment.REPLACE_DETAILS_WITH_RESULT) != null;
+        if(D) Log.d(TAG, "was result table: " + wasResultTable);
+        outState.putBoolean("was_results_table", wasResultTable);
+        if(course != null)
+            outState.putParcelable("course", course);
+        else
+            try{
+                outState.putParcelable("course", detailsFragmentArgs.getParcelable("course"));
+            }catch (NullPointerException e){
+                //In two pane layout and no course was selected yet
+            }
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public void updateContent(Course c, FragmentManager fm){
+        View fragmentView = this.getView();
+
+        TextView courseTitle = (TextView) fragmentView.findViewById(R.id.course_title);
+        if(c.fullName == null)
+            courseTitle.setText(c.name + " " + c.type );
+        else
+            courseTitle.setText(c.fullName+ " " + c.type);
+
+        detailsFragmentArgs = new Bundle();
+        detailsFragmentArgs.putParcelable("course", c);
+        detailsFragment = new DetailsFragment(getChildFragmentManager(), false);
+        detailsFragment.setArguments(detailsFragmentArgs);
+        fm.beginTransaction().replace(R.id.course_fragment_container, detailsFragment,
+                                      TimetableFragment.DETAILS_FRAGMENT_TAG).commit();
+
+    }
+
+    /**
+     * Obtain an object with the number of skipped and attained classes of a course
+     * @param context application context
+     * @param name the name of the course
+     * @param type the type of the course
+     * @param info the info about course(e.g. "saptamanile pare")
+     * @return the AbsPres object
+     */
+    public static SearchableActivity.AbsPres getResults(Context context, String name, String type, String info){
+        if(name == null || type == null || info == null)
+            return null;
+        SearchableActivity.AbsPres result= new SearchableActivity.AbsPres();
+        result.absences = result.presences = 0;
+        int i;
+        if(info.equals(ViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
+            for(i = 2; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
+                boolean wasPresent = false;
+                if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
+                                                Context.MODE_PRIVATE).getBoolean(name + "_" + type, false)){
+                    result.presences ++;
+                    wasPresent = true;
+                }
+                else
+                    result.absences ++;
+
+
+                result.table.put(i, wasPresent);
+            }
+        }else if(info.equals(ViewPagerAdapter.COURSES_IN_ODD_WEEK)){
+            for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
+                boolean wasPresent = false;
+                if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
+                                                Context.MODE_PRIVATE).getBoolean(name + "_" + type, false)){
+                    result.presences ++;
+                    wasPresent = true;
+                }
+                else
+                    result.absences ++;
+
+                result.table.put(i, wasPresent);
+            }
+        }else{
+            for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i++){
+                boolean wasPresent = false;
+                if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
+                                                Context.MODE_PRIVATE).getBoolean(name + "_" + type, false)){
+                    result.presences ++;
+                    wasPresent= true;
+                }
+                else
+                    result.absences ++;
+                result.table.put(i, wasPresent);
+            }
+        }
+
+        return result;
+    }
+
+}

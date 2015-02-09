@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/downloader_activity_margins">
+    <TableRow
+        android:gravity="center">
+        <TextView
+                android:gravity="left"
+                android:text="@string/label_faculty"
+                android:textSize="@dimen/large_text"/>
+
+        <Spinner
+            android:id="@+id/spinner_faculty"
+            android:prompt="@string/empty_string"
+            android:textSize = "24sp" />
+    </TableRow>
+
+    <RadioGroup
+            android:gravity="center">
+
+        <RadioButton
+                android:id="@+id/licence_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_licence"
+                android:textSize="@dimen/large_text"
+                android:onClick="onRadioButtonClick"
+            android:visibility="gone"/>
+
+        <RadioButton
+                android:id="@+id/master_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_master"
+                android:textSize="@dimen/large_text"
+                android:onClick="onRadioButtonClick"
+            android:visibility="gone"/>
+    </RadioGroup>
+
+    <TableRow
+        android:gravity="center_horizontal">
+        <TextView
+                android:text="@string/label_licence"
+                android:textSize="@dimen/large_text"/>
+
+        <Spinner
+            android:id="@+id/spinner_group_undergraduate"
+            android:prompt="@string/empty_string"
+            android:textSize = "24sp" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="@string/label_master"
+            android:textSize="@dimen/large_text"/>
+
+        <Spinner
+            android:id="@+id/spinner_group_master"
+            android:prompt="@string/empty_string"
+            android:textSize = "24sp" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="@string/label_phd"
+            android:textSize="@dimen/large_text"/>
+
+        <Spinner
+            android:id="@+id/spinner_group_phd"
+            android:prompt="@string/empty_string"
+            android:textSize = "24sp" />
+    </TableRow>
+
+    <TableRow
+        android:gravity="center_horizontal">
+        <Button
+                android:id="@+id/donwload_btn"
+                android:text="@string/download_timetable"/>
+    </TableRow>
+
+    <TableRow android:visibility="gone">
+        <Button
+            android:id="@+id/donwload1"
+            android:layout_weight="1"
+            android:text="C an2"/>
+        <Button
+            android:id="@+id/donwload2"
+            android:layout_weight="1"
+            android:text="C an4"/>
+    </TableRow>
+</TableLayout>

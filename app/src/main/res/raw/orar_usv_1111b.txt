@@ -1,0 +1,186 @@
+{"zile":[
+	{
+		"luni":[
+		
+				{
+					"nume":"Fiz2",
+					"nume_complet":"Fizică 2",
+					"tip":"laborator",
+					"locatie":"D008",
+					"interval_orar":"08:00 - 10:00",
+					"cadru_didactic":"Diaconu A.",
+					"info":"saptamanile pare"
+				},
+				{
+					"nume":"ETH",
+					"nume_complet":"Electrotehnică",
+					"tip":"seminar",
+					"locatie":"D107",
+					"interval_orar":"10:00 - 12:00",
+					"cadru_didactic":"Irimia D.",
+					"info":"saptamanile pare"
+				},
+				{
+					"nume":"EdFiz2",
+					"nume_complet":"Educație Fizică 2",
+					"tip":"seminar",
+					"locatie":"Teren acoperit, corpul A",
+					"interval_orar":"10:00 - 12:00",
+					"cadru_didactic":"Rață E.",
+					"info":"saptamanile impare"
+				}	
+		]
+	},
+	
+	{
+		"marti":[
+				{
+					"nume":"PCLP2",
+					"nume_complet":"Programarea Calculatoarelor și Limbaje de programare",
+					"tip":"curs",
+					"locatie":"Amf DH",
+					"interval_orar":"08:00 - 11:00",
+					"cadru_didactic":"Pentiuc S.",
+					"info":""
+				},
+				{
+					"nume":"ETH",
+					"nume_complet":"Electrotehnică",
+					"tip":"curs",
+					"locatie":"Amf DH",
+					"interval_orar":"11:00 - 14:00",
+					"cadru_didactic":"Irimia D.",
+					"info":""
+				},
+				{
+					"nume":"Fiz2",
+					"nume_complet":"Fizică 2",
+					"tip":"seminar",
+					"locatie":"D106",
+					"interval_orar":"16:00 - 18:00",
+					"cadru_didactic":"Diaconu A.",
+					"info":"saptamanile pare"
+				},
+				{
+					"nume":"Engl",
+					"nume_complet":"Engleză",
+					"tip":"seminar",
+					"locatie":"D010",
+					"interval_orar":"16:00 - 18:00",
+					"cadru_didactic":"Cozgarea A.",
+					"info":""
+				}
+		]
+	},
+	
+	{
+		"miercuri":[
+				{
+					"nume":"Pedagogie",
+					"nume_complet":"Pedagogie",
+					"tip":"curs",
+					"locatie":"Amf. DH",
+					"interval_orar":"08:00 - 10:00",
+					"cadru_didactic":"Serdenciuc N.",
+					"info":""
+				},
+				{
+					"nume":"Pedagogie",
+					"nume_complet":"Pedagogie",
+					"tip":"seminar",
+					"locatie":"A 112",
+					"interval_orar":"10:00 - 12:00",
+					"cadru_didactic":"Serdenciuc N.",
+					"info":""
+				},
+				{
+					"nume":"ETH",
+					"nume_complet":"Electrotehnică",
+					"tip":"laborator",
+					"locatie":"D009",
+					"interval_orar":"12:00 - 14:00",
+					"cadru_didactic":"Hopulele E.",
+					"info":"saptamanile pare"
+				}
+
+		]
+	},
+	
+	{
+		"joi":[
+				{
+					"nume":"MS",
+					"nume_complet":"Matematici Speciale",
+					"tip":"curs",
+					"locatie":"Amf. DH",
+					"interval_orar":"08:00 - 10:00",
+					"cadru_didactic":"Satco B.",
+					"info":""
+				},
+				
+				{
+					"nume":"MN",
+					"nume_complet":"Metode Numerice",
+					"tip":"curs",
+					"locatie":"Amf. DH",
+					"interval_orar":"10:00 - 12:00",
+					"cadru_didactic":"Mahalu G.",
+					"info":""
+				},
+				
+				{
+					"nume":"Fiz2",
+					"nume_complet":"Fizică 2",
+					"tip":"curs",
+					"locatie":"Amf. DH",
+					"interval_orar":"12:00 - 14:00",
+					"cadru_didactic":"Diaconu A.",
+					"info":""
+				}
+			]
+	},
+	
+	{
+		"vineri":[
+				{
+					"nume":"PCLP2",
+					"nume_complet":"Programarea Calculatoarelor și Limbaje de programare",
+					"tip":"laborator",
+					"locatie":"C207",
+					"interval_orar":"08:00 - 10:00",
+					"cadru_didactic":"Schipor O.",
+					"info":""
+				},
+				{
+					"nume":"MS",
+					"nume_complet":"Matematici Speciale",
+					"tip":"seminar",
+					"locatie":"D106",
+					"interval_orar":"10:00 - 12:00",
+					"cadru_didactic":"Satco B.",
+					"info":""
+				},
+				{
+					"nume":"MN",
+					"nume_complet":"Metode Numerice",
+					"tip":"laborator",
+					"locatie":"C301",
+					"interval_orar":"12:00 - 14:00",
+					"cadru_didactic":"Geman O.",
+					"info":""
+				}
+	    ]
+	}
+	],
+
+	"organizare_semestru":{
+        "start":"1393192800000",
+        "stop":"1402174800000",
+        "vacante":[
+        		{
+        			"start":"1398027600000",
+        			"stop":"1398546000000"
+        		}
+        ]
+	}
+}
