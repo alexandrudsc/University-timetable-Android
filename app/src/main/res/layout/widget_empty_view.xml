@@ -6,6 +6,7 @@
               android:layout_height="match_parent">
     <TextView
             android:id="@+id/empty_view"
+            android:text="@string/no_course_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

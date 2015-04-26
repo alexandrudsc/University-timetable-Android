@@ -36,7 +36,7 @@ public class HolidaysFragment extends ListFragment {
 
         prefs = getActivity().getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE);
         int noHolidays = prefs.getInt(MainActivity.NUMBER_OF_HOLIDAYS, 0);
-        ArrayList<Event> list = new ArrayList<Event>();
+        ArrayList<Event> list = new ArrayList<>();
         for (int i = 0; i < noHolidays; i++) {
             Event e = Event.create(prefs.getString(MainActivity.HOLIDAY + "_" + i, "0-0"));
             if (e.name == null)
@@ -49,7 +49,7 @@ public class HolidaysFragment extends ListFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        getListView().setOnItemLongClickListener(new LongClickListener());
+        //getListView().setOnItemLongClickListener(new LongClickListener());
         super.onViewCreated(view, savedInstanceState);
     }
 

@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.developer.alexandru.aplicatie_studenti.data.Course;
-import com.developer.alexandru.aplicatie_studenti.view_pager.DayFragment;
 
 /**
  * Created by Alexandru on 7/14/14.
+ * Fragment displaying general info about a course (name, type, location)
+ * Will be contained in SearchableFragment
  */
 public class DetailsFragment extends Fragment {
 
@@ -80,10 +82,10 @@ public class DetailsFragment extends Fragment {
             public void onClick(View view) {
                 if(fm == null)
                     //Configuration changes.Interface describing activity will be certainly updated
-                    fm = DayFragment.onCourseSelected.getActivity().getFragManager();
+                    fm = getActivity().getSupportFragmentManager();
                 final FragmentTransaction ft = fm.beginTransaction();
                 ft.setCustomAnimations(R.anim.anim_fragments, 0);
-                ResultsFragment fr = new ResultsFragment(fm, course.name, course.type, course.info);
+                ResultsFragment fr = new ResultsFragment(fm, course.name, course.type, course.parity);
                 ft.replace(R.id.course_fragment_container, fr);
                 ft.addToBackStack(REPLACE_DETAILS_WITH_RESULT);
                 ft.commit();
@@ -96,7 +98,7 @@ public class DetailsFragment extends Fragment {
 
             courseProf.setText(course.prof);
             courseTime.setText(course.time);
-            courseLocation.setText(course.location);
+            courseLocation.setText(course.fullLocation);
         }
         catch (NullPointerException e ){
         }

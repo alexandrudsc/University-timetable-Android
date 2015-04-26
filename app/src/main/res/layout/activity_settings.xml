@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<RelativeLayout
-        android:orientation="vertical"
+
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/settings_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"/>
+
+    <ScrollView
+        android:layout_below="@id/settings_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/downloader_activity_margins">
+
+        <View
+            android:id="@+id/zero_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_text"/>
 
         <TextView
             android:id="@+id/faculty_label"
+            android:layout_below="@id/zero_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/label_faculty"
             android:textSize="@dimen/large_text"
+            android:textColor="@android:color/black"
             android:saveEnabled="true"/>
 
         <Spinner
@@ -31,44 +49,44 @@
             android:layout_below="@id/spinner_faculty"
             android:layout_width="match_parent"
             android:layout_height="@dimen/medium_text"/>
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_below="@id/first_separator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:gravity="center" >
-
-        <RadioButton
-            android:id="@+id/licence_btn"
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_below="@id/first_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_licence"
-            android:textSize="@dimen/large_text"
-            android:saveEnabled="true"/>
+            android:layout_centerHorizontal="true"
+            android:gravity="center" >
 
-        <RadioButton
-            android:id="@+id/master_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_master"
-            android:textSize="@dimen/large_text"
-            android:saveEnabled="true"/>
+            <RadioButton
+                android:id="@+id/licence_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_licence"
+                android:textSize="@dimen/large_text"
+                android:saveEnabled="true"/>
 
-        <RadioButton
-            android:id="@+id/phd_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_phd"
-            android:textSize="@dimen/large_text"
-            android:saveEnabled="true"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/master_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_master"
+                android:textSize="@dimen/large_text"
+                android:saveEnabled="true"/>
 
-    <View
-        android:id="@+id/second_separator"
-        android:layout_below="@id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_text"/>
+            <RadioButton
+                android:id="@+id/phd_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_phd"
+                android:textSize="@dimen/large_text"
+                android:saveEnabled="true"/>
+        </RadioGroup>
+
+        <View
+            android:id="@+id/second_separator"
+            android:layout_below="@id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_text"/>
 
         <TextView
             android:id="@+id/undergr_label"
@@ -134,15 +152,28 @@
             android:visibility="invisible"
             android:saveEnabled="true"/>
 
+        <View
+            android:id="@+id/third_separator"
+            android:layout_below="@id/spinner_group_undergraduate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_text"/>
 
         <Button
-            android:id="@+id/donwload_btn"
-            android:layout_below="@id/spinner_group_undergraduate"
+            android:id="@+id/download_btn"
+            android:layout_below="@id/third_separator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:text="@string/download_timetable"/>
+            android:text="@string/download_timetable"
+            android:textColor="@android:color/black"/>
 
- </RelativeLayout>
- </ScrollView>
+        <View
+            android:id="@+id/fourth_separator"
+            android:layout_below="@id/download_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/medium_text"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

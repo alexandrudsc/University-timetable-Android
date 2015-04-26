@@ -14,13 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.developer.alexandru.aplicatie_studenti.action_bar.NonCurrentWeekActivity;
-import com.developer.alexandru.aplicatie_studenti.view_pager.DayFragment;
 import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
 
 import java.util.HashMap;
 
 /**
  * Created by Alexandru on 7/14/14.
+ * Fragment displaying a table with the number of classes the user has attained to and the classes the user has skipped
+ * Will be contained in SearchableFragment
  */
 public class ResultsFragment extends Fragment {
 
@@ -35,6 +36,7 @@ public class ResultsFragment extends Fragment {
     private String name;
     private String type;
     private String info;
+    private String parity;
 
     public ResultsFragment() {
         super();

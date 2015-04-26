@@ -17,7 +17,7 @@ import com.developer.alexandru.aplicatie_studenti.MainActivity;
 import com.developer.alexandru.aplicatie_studenti.R;
 import com.developer.alexandru.aplicatie_studenti.data.DBAdapter;
 import com.developer.alexandru.aplicatie_studenti.data.Course;
-import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
+import com.developer.alexandru.aplicatie_studenti.view_pager.MyListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
         this.backupFileName = backupFileName;
         weekProgress = context.getSharedPreferences(this.backupFileName, Context.MODE_PRIVATE);
 
-        new DataLoaderForNonCurrentWeek(activity.getContext()).execute(week);
+        new DataLoaderForNonCurrentWeek(activity).execute(week);
     }
 
     @Override
@@ -81,26 +81,25 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        MyListViewAdapter.ViewHolder viewHolder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(isTitleAt(position)){
                 convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-                viewHolder = new ViewHolder();
+                viewHolder = new MyListViewAdapter.ViewHolder();
                 viewHolder.eventName = (TextView) convertView.findViewById(R.id.spinner_elem_tv);
                 convertView.setTag(viewHolder);
             }else{
-                convertView = inflater.inflate(R.layout.course_item_layout, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.eventName = (TextView)convertView.findViewById(R.id.event_name);
-                viewHolder.eventType = (TextView)convertView.findViewById(R.id.event_type);
-                viewHolder.eventTime = (TextView)convertView.findViewById(R.id.event_time);
-                viewHolder.eventLocation = (TextView)convertView.findViewById(R.id.event_location);
+                convertView = inflater.inflate(R.layout.course_item, parent, false);
+                viewHolder = new MyListViewAdapter.ViewHolder();
+                viewHolder.eventName = (TextView)convertView.findViewById(R.id.course_name);
+                viewHolder.eventType = (TextView)convertView.findViewById(R.id.course_description);
+
                 viewHolder.eventCheckBox = (CheckBox)convertView.findViewById(R.id.event_checkbox);
                 convertView.setTag(viewHolder);
             }
         }else
-            viewHolder = (ViewHolder)convertView.getTag();
+            viewHolder = (MyListViewAdapter.ViewHolder) convertView.getTag();
 
         if(isTitleAt(position)){
             viewHolder.eventName.setText(values.get(position).name);
@@ -110,13 +109,14 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
         else{
             final Course c = values.get(position);
             viewHolder.eventName.setText(c.name);
-            viewHolder.eventType.setText(c.type);
-            viewHolder.eventTime.setText(c.time);
-            viewHolder.eventLocation.setText(c.location);
-            viewHolder.eventCheckBox.setOnCheckedChangeListener(
-                    new CheckBoxOnChangeListener(backupFileName,
-                                                        values.get(position).name+ "_" +
-                                                        values.get(position).type ) );
+            viewHolder.eventName.setText(c.name.toUpperCase());
+            viewHolder.eventType.setText(c.type + "\n" + c.time + "\n" +
+                    c.location);
+
+            viewHolder.eventCheckBox.setTag(backupFileName + ";" +
+                    values.get(position).name+ "_" +
+                    values.get(position).type );
+            viewHolder.eventCheckBox.setOnCheckedChangeListener(new CheckBoxOnChangeListener());
 
             boolean currentCourseProgress;
             if(weekProgress == null)
@@ -129,18 +129,12 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             else
                 viewHolder.eventCheckBox.setChecked(false);
 
-            RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.course_in_list_layout);
+            RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_course);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d("CLICKED ON", c.fullName);
-                    /*Intent viewDetails = new Intent(context, SearchableActivity.class);
-                    viewDetails.setAction(SearchableActivity.actionViewDetails);
-                    Bundle args = new Bundle();
-                    args.putParcelable("course_to_view", c);
-                    viewDetails.putExtras(args);
-                    context.startActivity(viewDetails);
-                    */
+
                     activity.onCourseClicked(c);
                 }
             });
@@ -154,65 +148,9 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
         return false;
     }
 
-    private void setValues(ArrayList<Course> newValues){
-        this.values.clear();
-        this.values.addAll(newValues);
-        this.notifyDataSetChanged();
-    }
-
-    /*private void getValuesFromViewPagerAdapter(){
-        int length = 0, i;
-        for(i = 0; i < NUM_DAYS; i++){
-            length += ViewPagerAdapter.listViewAdapters[i].getValues().size();
-        }
-        values = new Course[length + NUM_DAYS];
-        if(daysName == null)
-            daysName = context.getResources().getStringArray(R.array.days_of_week_full_name);
-
-        int positionInValues = 0;
-        for(i = 0; i< NUM_DAYS; i++){
-            values[positionInValues] = new Course(daysName[i], NAME_FOR_TITLE_ELEMENT, "", "", "", "");
-            positionInValues ++;
-
-            int countCurrentAdapter = ViewPagerAdapter.listViewAdapters[i].getCount();
-            for(int j = 0; j < countCurrentAdapter; j++){
-                values[positionInValues] = (Course) ViewPagerAdapter.listViewAdapters[i].getItem(j);
-                positionInValues ++;
-            }
-        }
-    }
-
-    private void getValuesFromSpinnerElementSelected(){
-        int length = 0, i;
-        for(i = 0; i < NUM_DAYS; i++){
-            length += SpinnerElementSelectedEvent.coursesNonCurrentWeek[i].values.size();
-        }
-        values = new Course[length + NUM_DAYS];
-        if(daysName == null)
-            daysName = context.getResources().getStringArray(R.array.days_of_week_full_name);
-
-        int positionInValues = 0;
-        for(i = 0; i< NUM_DAYS; i++){
-            values[positionInValues] = new Course(daysName[i], NAME_FOR_TITLE_ELEMENT, "", "", "", "");
-            positionInValues ++;
-
-            int countCurrentAdapter = SpinnerElementSelectedEvent.coursesNonCurrentWeek[i].values.size();
-            for(int j = 0; j < countCurrentAdapter; j++){
-                values[positionInValues] = SpinnerElementSelectedEvent.coursesNonCurrentWeek[i].values.get(j);
-                positionInValues ++;
-            }
-        }
-    }
-    */
     public ArrayList<Course> getValues(){
         return this.values;
     }
-
-    private static class ViewHolder{
-        TextView eventName, eventType, eventTime, eventLocation;
-        CheckBox eventCheckBox;
-    }
-
 
     private class DataLoaderForNonCurrentWeek extends AsyncTask<Integer, Void, ArrayList<Course>>{
         private Context context;
@@ -230,8 +168,8 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             String[] daysName = context.getResources().getStringArray(R.array.days_of_week_full_name);
             for(int i = 0; i < NUM_DAYS; i++){
                 //Add name of day first
-                courses.add(new Course(daysName[i].toUpperCase(),null, NAME_FOR_TITLE_ELEMENT, "", "", "", ""));
-                courses.addAll(dbAdapter.getCourses(week, ViewPagerAdapter.days[i]));
+                courses.add(new Course(daysName[i].toUpperCase(),null, NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
+                courses.addAll(dbAdapter.getCourses(week, i));
             }
 
             return courses;

@@ -23,7 +23,7 @@
 <resources>
 
     <style name="Theme.Alexandru" parent="@style/Theme.AppCompat.Light">
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_alexandru</item>
+        <!--<item name="android:actionBarItemBackground">@drawable/selectable_background_alexandru</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Alexandru</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
         <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Alexandru</item>
@@ -33,6 +33,12 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_alexandru</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Alexandru</item>
         <item name="android:textColorHint">@color/white </item>
+        -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="ActionBar.Solid.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">

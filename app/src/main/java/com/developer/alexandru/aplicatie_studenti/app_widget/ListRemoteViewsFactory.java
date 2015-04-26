@@ -9,60 +9,77 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
+import com.developer.alexandru.aplicatie_studenti.MainActivity;
 import com.developer.alexandru.aplicatie_studenti.R;
 import com.developer.alexandru.aplicatie_studenti.data.DBAdapter;
 import com.developer.alexandru.aplicatie_studenti.data.Course;
-import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
  * Created by Alexandru on 5/30/14.
+ * A sort of an adapter for the remote list view (app widget)
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    // debug
     public static final String TAG = "RemoteViewsFactory";
+    private final boolean D = true;
 
     public static final int VIEW_DETAILS_CODE = 100;
 
     private ArrayList<Course> valuesToday;
-    private int mWidgetId;
+    //private int mWidgetId;
+    //private boolean tommorow = false;
     private Context mContext;
     private DBAdapter dbAdapter;
 
+
     public ListRemoteViewsFactory(Context context, Intent intent){
-        mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        //mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         mContext = context;
+        //tommorow = intent.getBooleanExtra("tommorrow", false);
     }
 
     @Override
     public void onCreate() {
+        if (D) Log.d(TAG, "create");
     }
 
     @Override
     public void onDataSetChanged() {
-        Log.d(TAG, "data set changed");
+        if (D) Log.d(TAG, "data set changed");
         if(dbAdapter == null)
             dbAdapter = new DBAdapter(this.mContext);
         dbAdapter.open();
 
-        this.setValues(dbAdapter.getCourses(14, ViewPagerAdapter.days [Calendar.getInstance().get(Calendar.MINUTE) % 7]));
+        int weekOfSemester = mContext.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE).
+                getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
 
+        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.MINUTE) % 7));
+        //if (!tommorow)
+
+        //else
+          //  this.setValues(dbAdapter.getCourses(11, (Calendar.getInstance().get(Calendar.MINUTE) + 1) % 7));
         dbAdapter.close();
 
     }
 
     @Override
     public void onDestroy() {
-
+        Log.d(TAG, "destroy");
     }
 
     @Override
     public int getCount() {
-        if (valuesToday == null)
+        if (D) Log.d(TAG, "getCount()");
+        if (valuesToday == null) {
+            if (D) Log.d(TAG, "array list null");
             return 0;
+        }
         return valuesToday.size();
     }
 
@@ -76,7 +93,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
             remoteViews.setTextViewText(R.id.event_name_widget, c.name + " " +
                     c.type);
-            remoteViews.setTextViewText(R.id.event_description_widget, c.time + " " +
+            remoteViews.setTextViewText(R.id.event_description_widget, c.time + "\n" +
                     c.location);
 
             remoteViews.setOnClickFillInIntent(R.id.widget_list_item, getIntentForFillIn(c));

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 /**
  * Created by Alexandru on 9/13/2014.
+ * Fragment displaying the app's abouts
+ * Used by the nav drawer
  */
 public class AboutFragment extends Fragment {
 

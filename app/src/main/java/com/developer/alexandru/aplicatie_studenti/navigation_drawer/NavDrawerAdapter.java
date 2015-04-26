@@ -12,9 +12,10 @@ import com.developer.alexandru.aplicatie_studenti.R;
 
 /**
  * Created by Alexandru on 7/1/14.
+ * The adapter for the navigation drawer (helper for backing up the list with data)
  */
 public class NavDrawerAdapter extends BaseAdapter{
-    private final int NAV_DRAWER_ELEM_COUNT = 5;
+    private final int NAV_DRAWER_ELEM_COUNT = 19;
     private String[] titles;
     private Context context;
 
@@ -55,7 +56,7 @@ public class NavDrawerAdapter extends BaseAdapter{
         TextView tv = (TextView)convertView.findViewById(R.id.nav_elem_tv);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.nav_elem_img);
 
-        switch (position){
+        /*switch (position){
             case CURRENT_WEEK:
                 imageView.setImageResource(android.R.drawable.ic_menu_week);
                 break;
@@ -70,7 +71,10 @@ public class NavDrawerAdapter extends BaseAdapter{
                 break;
             case ABOUT:
                 imageView.setImageResource(android.R.drawable.ic_menu_info_details);
-        }
+                break;
+            default:
+                break;
+        }*/
         tv.setText(titles[position]);
 
         return convertView;

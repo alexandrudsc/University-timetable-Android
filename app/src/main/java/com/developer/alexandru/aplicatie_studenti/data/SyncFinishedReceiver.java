@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Created by Alexandru on 12/26/2014.
+ * Broadcast receiver for the event announced by the Synchronizer when the data for faculties and groups was fetched from the web
  */
 public class SyncFinishedReceiver extends BroadcastReceiver {
 
@@ -38,6 +39,7 @@ public class SyncFinishedReceiver extends BroadcastReceiver {
                     activity.resetFacultiesSpinnerData();
                     Log.d(TAG, "faculties reseted");
                 }
+                //this.abortBroadcast();
             }
         }
     }

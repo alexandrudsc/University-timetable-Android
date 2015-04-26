@@ -41,6 +41,20 @@
         <item>Vacanțe</item>
         <item>Ajutor</item>
         <item>Despre</item>
+        <item>Săptămâna 1</item>
+        <item>Săptămâna 2</item>
+        <item>Săptămâna 3</item>
+        <item>Săptămâna 4</item>
+        <item>Săptămâna 5</item>
+        <item>Săptămâna 6</item>
+        <item>Săptămâna 7</item>
+        <item>Săptămâna 8</item>
+        <item>Săptămâna 9</item>
+        <item>Săptămâna 10</item>
+        <item>Săptămâna 11</item>
+        <item>Săptămâna 12</item>
+        <item>Săptămâna 13</item>
+        <item>Săptămâna 14</item>
     </string-array>
 
     <string-array name="spinner_elements">
@@ -58,39 +72,5 @@
         <item>Săptămâna 12</item>
         <item>Săptămâna 13</item>
         <item>Săptămâna 14</item>
-    </string-array>
-
-    <string-array name="faculties">
-        <item>F.I.E.S.C.</item>
-        <item>F.I.M.M.M.</item>
-        <item>E.F.S.</item>
-        <item>F.I.A.</item>
-        <item>F.L.S.C.</item>
-        <item>F.L.S.C.</item>
-        <item>Silvicultură</item>
-        <item>F.S.E.A.P.</item>
-        <item>F.S.Ed.</item>
-        <item>D.S.D.U.</item>
-        <item>D.P.P.D. nivel 1</item>
-        <item>D.P.P.D. nivel 2</item>
-    </string-array>
-
-    <string-array name="fiesc_groups_licence">
-        <item>C an1_1111a</item>
-        <item>C an1_1111b</item>
-        <item>C an1_1112a</item>
-        <item>C an1_1112b</item>
-        <item>C an1_1113a</item>
-        <item>C an1_1113b</item>
-        <item>C an1_1114a</item>
-        <item>C an1_1114b</item>
-    </string-array>
-
-    <string-array name="fiesc_groups_master">
-        <item>SIC an 1_grupa 1 </item>
-        <item>SIC an 1_grupa 2 </item>
-        <item>SIC an 1_grupa 3 </item>
-        <item>SIC an 2_grupa 1a </item>
-        <item>SIC an 2_grupa 2 </item>
     </string-array>
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_margin="@dimen/widget_margin_right"
     android:background="@android:color/white"
@@ -11,10 +10,12 @@
     <TextView
         android:id="@+id/course_title"
         android:layout_width="match_parent"
+        android:singleLine="false"
+        android:ellipsize="end"
         android:gravity="center"
         android:textSize="@dimen/large_text"
         android:layout_height="0dip"
-        android:layout_weight="1"/>
+        android:layout_weight="1.2"/>
 
     <FrameLayout
         android:id="@+id/course_fragment_container"

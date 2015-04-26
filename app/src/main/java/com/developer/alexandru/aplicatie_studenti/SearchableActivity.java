@@ -8,17 +8,19 @@ import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
-import com.developer.alexandru.aplicatie_studenti.data.DBAdapter;
+
 import com.developer.alexandru.aplicatie_studenti.data.Course;
+import com.developer.alexandru.aplicatie_studenti.data.DBAdapter;
 
 import java.util.HashMap;
 
 /**
  * Created by Alexandru on 7/4/14.
+ * NOT USED!
  */
 public class SearchableActivity extends FragmentActivity {//extends ListActivity {
 
-    public static final String actionViewDetails = "com.alexandru.developer.VIEW_DETAILS";
+
     private Course course = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,6 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
                 name = typeAndName[1];
             }catch (ArrayIndexOutOfBoundsException e){
             }
-            /*DBAdapter dbAdapter = new DBAdapter(this);
-            dbAdapter.open();
-            String[] queryResult = dbAdapter.getInfoAboutCourse(nameType[0], nameType[1]);
-            name = queryResult[0];
-            type = queryResult[1];
-            info = queryResult[2];*/
         }
         else
             if(intent.getAction().equals(Intent.ACTION_VIEW) && bundle != null){
@@ -50,12 +46,10 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
                 type = typeAndName[0];
 
             }else
-                if(intent.getAction().equals(actionViewDetails)){
-                    course = intent.getExtras().getParcelable("course_to_view");
+                if(intent.getAction().equals(SearchableFragment.actionViewDetails)){
+                    course = intent.getExtras().getParcelable(SearchableFragment.EXTRA_COURSE_KEY);
                     Toast.makeText(this, course.name + "_" + course.type, Toast.LENGTH_LONG).show();
                 }
-
-
 
         if(course == null){
             Toast.makeText(this, name + "_" + type, Toast.LENGTH_LONG).show();
@@ -65,8 +59,9 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
             course = dbAdapter.getCourse(name, type);
         }
         LinearLayout linearLayout = new LinearLayout(this);
-        new SearchableFragment(course, getSupportFragmentManager()).
-                onCreateView((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE), linearLayout, null);
+        linearLayout.addView(new SearchableFragment(course, getSupportFragmentManager()).
+                onCreateView((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE), linearLayout, null));
+
         setContentView(linearLayout);
 
         /*//this.setListAdapter(createAdapter(absPres));

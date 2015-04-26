@@ -1,7 +1,7 @@
 package com.developer.alexandru.aplicatie_studenti;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -10,21 +10,21 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
 import com.developer.alexandru.aplicatie_studenti.data.DBAdapter;
+import com.developer.alexandru.aplicatie_studenti.data.SQLStmtHelper;
 import com.developer.alexandru.aplicatie_studenti.data.SyncFinishedReceiver;
 import com.developer.alexandru.aplicatie_studenti.data.Synchronizer;
-import com.developer.alexandru.aplicatie_studenti.data.TimetableDownloader;
+import com.developer.alexandru.aplicatie_studenti.data.TimetableDownloaderTask;
 
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 
 /**
  * Created by Alexandru on 7/30/14.
@@ -32,25 +32,33 @@ import java.util.EmptyStackException;
  * Preferences associated with this activity contain data about the user (settings activity)
  */
 
-public class SettingsActivity extends FragmentActivity {
+public class SettingsActivity extends ActionBarActivity {
 
     // Partial URl for non_modular timetables
-    public static final String PARTIAL_TIMETABLE_URL = "http://orar.usv.ro/vizualizare/orarSPG.php?mod=grupa&back=&mod2=vizual&print=da&ID=";
+    public static final String PARTIAL_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=grupa&ID=";
 
     // Dialog displayed while downloading
-    AlertDialog dialog;
-
+    //AlertDialog dialog;
+    private ProgressDialog progressDialog;
     // Three spinners: undergraduates, masters, phd
-    Spinner groupUndergraduates, groupMasters, groupPhd;
+    private Spinner groupUndergraduates, groupMasters, groupPhd;
 
     // Main spinner for choosing faculty. Hint: always visible
-    Spinner faculties;;
+    private Spinner faculties;
+    private ArrayAdapter<Elem> facultiesAdapter;
+    private ArrayAdapter<Elem> groupUndergrAdapter;
+    private ArrayAdapter<Elem> groupMastersAdapter;
+    private ArrayAdapter<Elem> groupPhdAdapter;
 
-    SharedPreferences prefs;
-    String studiesLevel;
-    int facultyID;
+    private SharedPreferences prefs;
+    private String studiesLevel;
+    private int facultyID;
+    private int groupID;
+
     // Local receiver for sync finished event
     private SyncFinishedReceiver syncFinishedReceiver;
+
+    private TimetableDownloaderTask downloaderTask;
 
     // Preferences
     private static final String FACULTY_NAME_PREF = "faculty";
@@ -62,26 +70,32 @@ public class SettingsActivity extends FragmentActivity {
     private static final String MASTERS = "masters";
     private static final String PHD = "phd";
 
-    DBAdapter dbAdapter;
+    private DBAdapter dbAdapter;
 
     //Columns for faculties and groups database query
-    public static int ID = 0;
-    public static int FACULTY_NAME = 1;
-    public static int GEOUP_NAME = 3;
+    public static int FACULTY_NAME = 2;
     public static int LINK = 2;
+    public static int ID = 0;
+
+    public static int GROUP_ID = 1;
+    public static int GROUP_NAME = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         prefs = getPreferences(MODE_PRIVATE);
-        facultyID = prefs.getInt(FACULTY_ID_PREF, 1);
 
         setContentView(R.layout.activity_settings);
-
+        Toolbar settingsToolbar = (Toolbar)findViewById(R.id.settings_toolbar);
+        setSupportActionBar(settingsToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         // The helper for SQLite database operations
         dbAdapter = new DBAdapter(this);
-        dbAdapter.open();
-
+        try {
+            dbAdapter.open();
+        }catch (Exception e){
+            Log.e("SettingsActivity", "database locked");
+        }
         // Spinners used by the user
         faculties = (Spinner)findViewById(R.id.spinner_faculty);
         groupUndergraduates = (Spinner)findViewById(R.id.spinner_group_undergraduate);
@@ -91,19 +105,20 @@ public class SettingsActivity extends FragmentActivity {
         // Retrieve the data and create the adapters for the four spinners
         // Faculties spinner
         ArrayList<Elem> facultiesNames = faculties(dbAdapter);
-        ArrayAdapter<Elem> facultiesAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, facultiesNames);
+        facultiesAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_layout, facultiesNames);
         faculties.setAdapter(facultiesAdapter);
         // Reset the last selected faculty
+        facultyID = prefs.getInt(FACULTY_ID_PREF, 1);
         faculties.setSelection(facultiesNames.indexOf(new Elem(facultyID)));
-        faculties.setOnItemSelectedListener(new FacultySelected());
+
 
         ArrayList<Elem> groupsUndergraduates = new ArrayList<Elem>();
         ArrayList<Elem> groupsMasters = new ArrayList<Elem>();
         ArrayList<Elem> groupsPhd = new ArrayList<Elem>();
 
-        ArrayAdapter<Elem> groupUndergrAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsUndergraduates);
-        ArrayAdapter<Elem> groupMastersAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsMasters);
-        ArrayAdapter<Elem> groupPhdAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsPhd);
+        groupUndergrAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsUndergraduates);
+        groupMastersAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsMasters);
+        groupPhdAdapter = new ArrayAdapter<Elem>(this, R.layout.spinner_item_layout, groupsPhd);
 
         groupUndergrAdapter.setDropDownViewResource(R.layout.spinner_item_layout);
         groupMastersAdapter.setDropDownViewResource(R.layout.spinner_item_layout);
@@ -113,26 +128,33 @@ public class SettingsActivity extends FragmentActivity {
         groupMasters.setAdapter(groupMastersAdapter);
         groupPhd.setAdapter(groupPhdAdapter);
 
+        // Set the selected studies level and the selected group
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+        studiesLevel = prefs.getString(LEVEL_PREF, LICENCE);
+        groupID = prefs.getInt(SettingsActivity.GROUP_ID_PREF, -1);
+        if (studiesLevel.equals(LICENCE)) {
+            radioGroup.check(R.id.licence_btn);
+        }
+        if(studiesLevel.equals(MASTERS)) {
+            radioGroup.check(R.id.master_btn);
+        }
+        if(studiesLevel.equals(PHD)) {
+            radioGroup.check(R.id.phd_btn);
+        }
         // Event for a groups spinner
         GroupSelected groupSelected = new GroupSelected();
         groupUndergraduates.setOnItemSelectedListener(groupSelected);
         groupMasters.setOnItemSelectedListener(groupSelected);
         groupPhd.setOnItemSelectedListener(groupSelected);
 
+        // Event for selecting a faculty
+        faculties.setOnItemSelectedListener(new FacultySelected());
+
         // Event for the download button
-        Button downloadBtn = (Button)findViewById(R.id.donwload_btn);
-        OnButtonClickListener clickListener = new OnButtonClickListener(this);
+        Button downloadBtn = (Button)findViewById(R.id.download_btn);
+        OnButtonClickListener clickListener = new OnButtonClickListener();
         downloadBtn.setOnClickListener(clickListener);
 
-        // Set the selected studies level
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group);
-        studiesLevel = prefs.getString(LEVEL_PREF, LICENCE);
-        if (studiesLevel.equals(LICENCE))
-            radioGroup.check(R.id.licence_btn);
-        if(studiesLevel.equals(MASTERS))
-            radioGroup.check(R.id.master_btn);
-        if(studiesLevel.equals(PHD))
-            radioGroup.check(R.id.phd_btn);
         // Event for radio group (studies level)
         radioGroup.setOnCheckedChangeListener(new StudiesLevelSelected());
 
@@ -151,7 +173,12 @@ public class SettingsActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sync_btn:
-                Log.d("Download", "sync pressed");
+
+                if (!Utils.hasInternetAccess(SettingsActivity.this)) {
+                    Utils.toastNoInternetAccess(SettingsActivity.this);
+                    return true;
+                }
+
                 Intent serviceI = new Intent(this, Synchronizer.class);
                 startService(serviceI);
                 return true;
@@ -167,18 +194,39 @@ public class SettingsActivity extends FragmentActivity {
 
     // Show dialog when downloading starts
     public void showDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.
-                setCancelable(true).
-                setTitle("Descarcare ...")
+                setCancelable(true)
+                .setTitle("Descarcare ...")
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+
+                    }
+                })
                 .setView(View.inflate(this, R.layout.loading, null));
+
         dialog = builder.create();
-        dialog.show();
+        dialog.show();*/
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setTitle("Descarcare ...");
+        progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                Log.d("SettingsActivity", "canceled");
+                if (downloaderTask != null && !downloaderTask.isCancelled())
+                    downloaderTask.cancel(true);
+            }
+        });
+        progressDialog.show();
     }
 
     // Remove the dialog when downloading operation finishes
     public void cancelDialog(){
-        dialog.cancel();
+        //dialog.cancel();
+        progressDialog.cancel();
         this.finish();
     }
 
@@ -192,13 +240,6 @@ public class SettingsActivity extends FragmentActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        // If the user presses back, no download was requested
-        this.setResult(Activity.RESULT_OK);
-        super.onBackPressed();
-    }
-
-    @Override
     protected void onDestroy() {
         dbAdapter.close();
         unregisterSyncObserver();
@@ -209,6 +250,8 @@ public class SettingsActivity extends FragmentActivity {
     public ArrayList<Elem> faculties(DBAdapter dbAdapter){
         ArrayList<Elem> faculties = new ArrayList<Elem>();
         try {
+            if (!dbAdapter.isOpen())
+                dbAdapter.open();
             Cursor c = dbAdapter.getFaculties();
             c.moveToFirst();
             Elem faculty;
@@ -237,13 +280,15 @@ public class SettingsActivity extends FragmentActivity {
     public ArrayList<Elem> groups(DBAdapter dbAdapter, int facultyID, int type){
         ArrayList<Elem> groups = new ArrayList<Elem>();
         try {
+            if (!dbAdapter.isOpen())
+                dbAdapter.open();
             Cursor c = dbAdapter.getGroupsFromFaculty(facultyID, type);
             c.moveToFirst();
             Elem group;
             while (!c.isAfterLast()) {
                 group = new Elem();
-                group.id = c.getInt(ID);
-                group.name = c.getString(GEOUP_NAME);
+                group.id = c.getInt(GROUP_ID);
+                group.name = c.getString(GROUP_NAME);
                 groups.add(group);
                 c.moveToNext();
             }
@@ -251,6 +296,10 @@ public class SettingsActivity extends FragmentActivity {
 
         }
         return groups;
+    }
+
+    public void groups(ArrayAdapter<Elem> arrayAdapter, int facultyID, int type){
+        new SQLiteDataLoader(arrayAdapter, facultyID, type).execute(GROUP_ID, GROUP_NAME);
     }
 
     // Local broadcast receiver. Fired when the syncing operation is successful
@@ -279,14 +328,20 @@ public class SettingsActivity extends FragmentActivity {
         if (prefs == null)
             prefs = getPreferences(MODE_PRIVATE);
         String studies = prefs.getString(LEVEL_PREF, LICENCE);
-        if (studies.equals(LICENCE))
+        if (studies.equals(LICENCE)) {
             groupUndergraduates.setVisibility(View.VISIBLE);
+            saveSelectedGroup((Elem) groupUndergraduates.getSelectedItem());
+        }
         else
-        if (studies.equals(MASTERS))
-            groupMasters.setVisibility(View.VISIBLE);
+            if (studies.equals(MASTERS)) {
+                groupMasters.setVisibility(View.VISIBLE);
+                saveSelectedGroup((Elem) groupMasters.getSelectedItem());
+            }
         else
-        if(studies.equals(PHD))
-            groupPhd.setVisibility(View.VISIBLE);
+            if(studies.equals(PHD)) {
+                groupPhd.setVisibility(View.VISIBLE);
+                saveSelectedGroup((Elem)groupPhd.getSelectedItem());
+            }
     }
 
     // Compatibility for API < 11
@@ -315,24 +370,35 @@ public class SettingsActivity extends FragmentActivity {
 
             // Non modular faculty. Has groups
             // Refresh the data of the three types of spinners for the groups
+            // If there is a previous selected group select it accordingly
             adapter = (ArrayAdapter) groupUndergraduates.getAdapter();
-            groupsList = groups(dbAdapter, faculty.id, DBAdapter.UNDERGRADUATES);
+            /*groupsList = groups(dbAdapter, faculty.id, SQLStmtHelper.UNDERGRADUATES);
             adapter.clear();
             addAll(adapter, groupsList);
             adapter.notifyDataSetChanged();
-
+            if (studiesLevel.equals(LICENCE))
+                groupUndergraduates.setSelection(groupsList.indexOf(new Elem(groupID)));
+            */
+            groups(adapter, faculty.id, SQLStmtHelper.UNDERGRADUATES);
             adapter = (ArrayAdapter) groupMasters.getAdapter();
-            groupsList = groups(dbAdapter, faculty.id, DBAdapter.MASTERS);
+            /*groupsList = groups(dbAdapter, faculty.id, SQLStmtHelper.MASTERS);
             adapter.clear();
             addAll(adapter, groupsList);
             adapter.notifyDataSetChanged();
+            if (studiesLevel.equals(MASTERS))
+                groupMasters.setSelection(groupsList.indexOf(new Elem(groupID)));
+            */
+            groups(adapter, faculty.id, SQLStmtHelper.MASTERS);
 
             adapter = (ArrayAdapter) groupPhd.getAdapter();
-            groupsList = groups(dbAdapter, faculty.id, DBAdapter.PHD);
+            /*groupsList = groups(dbAdapter, faculty.id, SQLStmtHelper.PHD);
             adapter.clear();
             addAll(adapter, groupsList);
             adapter.notifyDataSetChanged();
-
+            if(studiesLevel.equalsIgnoreCase(PHD))
+                groupPhd.setSelection(groupsList.indexOf(new Elem(groupID)));
+            */
+            groups(adapter, faculty.id, SQLStmtHelper.PHD);
             resetGroupsSpinners();                                          // Only one group spinner must be visible
         }
 
@@ -352,12 +418,10 @@ public class SettingsActivity extends FragmentActivity {
             switch (checkedId) {
                 case R.id.licence_btn:
                     //Set adapter to group with licence values
-                    Log.d("Downloader", "licence");
                     editor.putString(LEVEL_PREF, LICENCE);
                     break;
                 case R.id.master_btn:
                     //set adapter to group with master values
-                    Log.d("Downloader", "master");
                     editor.putString(LEVEL_PREF, MASTERS);
                     break;
                 case R.id.phd_btn:
@@ -377,7 +441,6 @@ public class SettingsActivity extends FragmentActivity {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
             Elem group = (Elem) parent.getAdapter().getItem(position);
-            Log.d("Settings", "saved " + group.name);
             switch (parent.getId()) {
                 case R.id.spinner_group_undergraduate:
                     if (studiesLevel.equals(LICENCE))
@@ -399,40 +462,45 @@ public class SettingsActivity extends FragmentActivity {
 
         }
 
-        private void saveSelectedGroup(Elem group){
-            if (prefs == null)
-                prefs = getPreferences(MODE_PRIVATE);
+    }
 
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putLong(GROUP_ID_PREF, group.id);
-            editor.putString(GROUP_NAME_PREF, group.name);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
-                editor.apply();
-            else
-                editor.commit();
-        }
-
+    // Save selected group to preferences
+    public void saveSelectedGroup(Elem group){
+        if (prefs == null)
+            prefs = getPreferences(MODE_PRIVATE);
+        if (group == null)
+            return;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(GROUP_ID_PREF, group.id);
+        editor.putString(GROUP_NAME_PREF, group.name);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
+            editor.apply();
+        else
+            editor.commit();
     }
 
     // Click listener for download button
     private class OnButtonClickListener implements View.OnClickListener{
-        private SettingsActivity activity;
-        public OnButtonClickListener(SettingsActivity activity) {
-            this.activity = activity;
-        }
 
         @Override
         public void onClick(View view) {
+
             String url;
             if(prefs == null)
                 prefs = getPreferences(MODE_PRIVATE);
             facultyID = prefs.getInt(FACULTY_ID_PREF, 1);
-            long groupID = prefs.getLong(GROUP_ID_PREF, 0);
+            int groupID = prefs.getInt(GROUP_ID_PREF, 0);
             switch (view.getId()) {
-                case R.id.donwload_btn:
-                    if (facultyID != 0) {
+                case R.id.download_btn:
+
+                    if (!Utils.hasInternetAccess(SettingsActivity.this)) {
+                        Utils.toastNoInternetAccess(SettingsActivity.this);
+                        break;
+                    }
+                    if (facultyID != 0) {                           // Check if non-modular timetable is requested
                         url = PARTIAL_TIMETABLE_URL + groupID;
-                        new TimetableDownloader(activity).execute(url);
+                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
+                        downloaderTask.execute(url);
                     }
                 break;
             }
@@ -453,7 +521,7 @@ public class SettingsActivity extends FragmentActivity {
 
         @Override
         public boolean equals(Object o) {
-            return this.id == ((Elem)o).id;
+            return o instanceof Elem && this.id == ((Elem) o).id;
         }
 
         @Override
@@ -462,10 +530,80 @@ public class SettingsActivity extends FragmentActivity {
         }
     }
 
-    private class SQLiteDataLoader extends AsyncTask<String, Void, Void>{
+    private class SQLiteDataLoader extends AsyncTask<Integer, Void, Void>{
+
+        private ArrayAdapter<Elem> adapter;
+        private int facultyId;
+        private int type;
+
+        private int positionToChoose = 0;
+
+        ArrayList<Elem> elems = new ArrayList<>();
+
+        public SQLiteDataLoader(ArrayAdapter<Elem> adapter, int facultyId, int type) {
+            this.adapter = adapter;
+            this.facultyId = facultyId;
+            this.type = type;
+        }
+
         @Override
-        protected Void doInBackground(String... params) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            adapter.clear();
+        }
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+
+            try {
+                if (!dbAdapter.isOpen())
+                    dbAdapter.open();
+                Cursor c = dbAdapter.getGroupsFromFaculty(facultyId, type);
+                c.moveToFirst();
+                Elem elem;
+
+
+                while (!c.isAfterLast()) {
+                    elem = new Elem();
+                    elem.id = c.getInt(params[0]);               //ID or GROUP_ID
+                    elem.name = c.getString(params[1]);       //FACULTY_NAME or GROUP_NAME
+                    if (elem.id == groupID)
+                        positionToChoose = c.getPosition();
+                    elems.add(elem);
+                    c.moveToNext();
+                }
+
+                c.close();
+
+                dbAdapter.close();
+            }catch (SQLiteException e){
+                e.printStackTrace();
+            }
+
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            addAll(adapter, elems);
+            adapter.notifyDataSetChanged();
+            switch (type){
+                case SQLStmtHelper.UNDERGRADUATES:
+                    if (studiesLevel.equals(LICENCE))
+                        groupUndergraduates.setSelection(positionToChoose);
+                    break;
+                case SQLStmtHelper.MASTERS:
+                    if (studiesLevel.equals(MASTERS))
+                        groupMasters.setSelection(positionToChoose);
+                    break;
+                case SQLStmtHelper.PHD:
+                    if(studiesLevel.equalsIgnoreCase(PHD))
+                        groupPhd.setSelection(positionToChoose);
+                    break;
+            }
+
         }
     }
 

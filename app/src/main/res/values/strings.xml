@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Aplicatie studenti</string>
-
     <string name="settings">Setări</string>
-
     <string name="download_timetable">Descarcă orar</string>
-
     <string name="action_search">Caută</string>
+    <string name="action_note">Adaugă notiță</string>
     <string name="action_sync">Sincronizează</string>
-
     <string name="search_hint">Numele unei discipline</string>
     <string name="no_result_search">Niciun rezultat</string>
     <string name="provider_authority">com.alexandru.developer.aplicatie_studenti.data.CoursesContentProvider</string>
     <string name="done">Done</string>
-
+    <string name="choose">Alegeți:</string>
     <string name="widget_label">Orar USV</string>
     <string name="widget_week">Săptămâna </string>
-
     <string name="title_nav_closed">@string/app_name</string>
-    <string name="title_nav_opened"> </string>
-
+    <string name="title_nav_opened"></string>
     <string name="start_results_fragment">Arată progresul</string>
     <string name="no_course_text">\u003c Nicun curs \u003e</string>
     <string name="no_holidays_text">\u003c Nicio vacanță \u003e</string>
-
     <string name="prof">Profesor: </string>
     <string name="time">Interval orar: </string>
     <string name="location">Locație: </string>
-
     <string name="label_faculty">Facultate: </string>
     <string name="label_group">Grupă: </string>
-
     <string name="label_licence">Licență: </string>
     <string name="label_master">Master: </string>
     <string name="label_phd">Post-universitar: </string>
-
     <string name="no_course_widget">Nimic</string>
     <string name="empty_string"></string>
+    <string name="title_activity_edit_note">EditNote</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_note">NoteActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

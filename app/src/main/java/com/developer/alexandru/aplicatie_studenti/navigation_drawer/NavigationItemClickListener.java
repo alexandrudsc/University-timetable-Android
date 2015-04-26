@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 
 /**
  * Created by Alexandru on 9/14/2014.
+ * Listener for navigation drawer's elements
  */
 public class NavigationItemClickListener implements AdapterView.OnItemClickListener {
 

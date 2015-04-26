@@ -7,9 +7,10 @@
 
     <ImageView
             android:id="@+id/nav_elem_img"
-            android:src="@android:drawable/ic_menu_week"
             android:layout_width="48dp"
             android:layout_height="48dp"/>
+
+    <!--             android:src="@android:drawable/ic_menu_week" -->
 
     <TextView
             android:id="@+id/nav_elem_tv"

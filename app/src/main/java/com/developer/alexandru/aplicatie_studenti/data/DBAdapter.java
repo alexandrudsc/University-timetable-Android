@@ -14,7 +14,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Alexandru on 7/6/14.
- * Helper class managing the various queries for the local database
+ * Helper class managing the various queries for the local database.
+ * Allows to CRUD operations upon the database.
+ * See SQLStmtHelper for all the data and queries
  */
 public class DBAdapter {
     //debug
@@ -22,90 +24,21 @@ public class DBAdapter {
     public static final String TAG = "DBAdapter";
 
     public static final String DB_NAME ="usv_timetable.db";
+    public static final String DB_TMP_NAME ="usv_timetable.tmp";
+    private static String DB_DIR;
     public static int DB_VER = 1;
 
-    //Tables
-    public static final String COURSES_TABLE = "COURSES";
-    public static final String FACULTIES_TABLE = "FACULTIES";
-    public static final String UNDERGRADUATES_GROUPS_TABLE = "UNDERGRADUATES_GROUPS";
-    public static final String MASTERS_GROUPS_TABLE = "MASTERS_GROUPS";
-    public static final String PHD_GROUPS_TABLE = "PHD_GROUPS";
-
-    //Common columns of tables
-    public static final String ID = "_id";
-    public static final String NAME = "name";
-
-    //Columns of courses' table
-    public static final String FULL_NAME = "full_name";
-    public static final String TYPE = "type";
-    public static final String LOCATION = "location";
-    public static final String TIME = "time";
-    public static final String DAY = "day";
-    public static final String PROF = "prof";
-    public static final String INFO = "info";
-
-    //Columns of faculties' table
-    public static final String LINK = "link";
-    public static final String FACULTY_ID = "_id";
-
-    //Columns for groups' table
-    public static final String GROUP_ID = "ID";
-    public static final String FACULTY_FROM_ID = "FACULTY_ID";
-    public static final int UNDERGRADUATES = 0;
-    public static final int MASTERS = 1;
-    public static final int PHD = 2;
-
-    // SQLite statements
-    private static final String TYPE_TEXT_NOT_NULL = " TEXT NOT NULL";
-    private static final String TYPE_INTEGER_NOT_NULL = " INTEGER NOT NULL";
-    private static final String COMMA  = ",";
-    private static final String END_STATEMENT = " );" ;
-
-    //SQLite statements for courses table
-    private static final String CREATE_COURSES_TABLE = "CREATE TABLE " + COURSES_TABLE + " (" +
-            ID + " INTEGER PRIMARY KEY," +
-            NAME + TYPE_TEXT_NOT_NULL + COMMA +
-            FULL_NAME + " TEXT" + COMMA +
-            TYPE + " TEXT," +
-            LOCATION + TYPE_TEXT_NOT_NULL + COMMA +
-            TIME + TYPE_TEXT_NOT_NULL + COMMA +
-            DAY + TYPE_TEXT_NOT_NULL + COMMA +
-            PROF + " TEXT,"+
-            INFO + TYPE_TEXT_NOT_NULL + END_STATEMENT;
-    private static final String DELETE_COURSES_TABLE = "DROP TABLE IF EXISTS "+ COURSES_TABLE;
-
-    //SQLite statements for faculties table
-    private static final String CREATE_FACULTIES_TABLE = "CREATE TABLE " + FACULTIES_TABLE + " (" +
-            ID + TYPE_INTEGER_NOT_NULL + COMMA +
-            NAME + TYPE_TEXT_NOT_NULL + COMMA +
-            LINK + " TEXT" + END_STATEMENT;
-    private static final String DELETE_FACULTIES_TABLE = "DROP TABLE IF EXISTS "+ FACULTIES_TABLE;
-
-    //SQLite statements for groups
-    private static final String CREATE_UNDERGRADUATES_TABLE = "CREATE TABLE " + UNDERGRADUATES_GROUPS_TABLE + " (" +
-            ID + " INTEGER PRIMARY KEY," +
-            GROUP_ID + " INTEGER NOT NULL," +
-            FACULTY_FROM_ID + " INTEGER NOT NULL," +
-            NAME + END_STATEMENT;
-    private static final String CREATE_MASTERS_TABLE = "CREATE TABLE " + MASTERS_GROUPS_TABLE + " (" +
-            ID + " INTEGER PRIMARY KEY," +
-            GROUP_ID + " INTEGER NOT NULL," +
-            FACULTY_FROM_ID + " INTEGER NOT NULL," +
-            NAME + END_STATEMENT;
-    private static final String CREATE_PHD_TABLE = "CREATE TABLE " + PHD_GROUPS_TABLE + " (" +
-            ID + " INTEGER PRIMARY KEY," +
-            GROUP_ID + " INTEGER NOT NULL," +
-            FACULTY_FROM_ID + " INTEGER NOT NULL," +
-            NAME + END_STATEMENT;
-    private static final String DELETE_UNDERGRADUATES_GROUPS_TABLE = "DROP TABLE IF EXISTS "+ UNDERGRADUATES_GROUPS_TABLE;
-    private static final String DELETE_MASTERS_GROUPS_TABLE = "DROP TABLE IF EXISTS "+ MASTERS_GROUPS_TABLE;
-    private static final String DELETE_PHD_GROUPS_TABLE = "DROP TABLE IF EXISTS "+ PHD_GROUPS_TABLE;
 
     private DBOpenHelper dbHelper;
     private SQLiteDatabase database;
 
     public DBAdapter(Context context) {
         dbHelper = new DBOpenHelper(context);
+    }
+
+    // Create a temporary .db file; used when downloading data
+    public DBAdapter(Context context, boolean isTemporary) {
+        dbHelper = new DBOpenHelper(context, isTemporary);
     }
 
     public void open() throws SQLiteException{
@@ -123,50 +56,163 @@ public class DBAdapter {
         dbHelper.onCreate(database);
     }
 
+    /**
+     * Create a temporary table to insert downloading courses: if there are any courses downloaded
+     * this will not block the access to the current courses, and it used as safety if network access fails during download
+     */
+    protected void createTMPCoursesTable(){
+        if (!dbHelper.tableExists(database, SQLStmtHelper.COURSES_TMP_TABLE)) {
+            if (!dbHelper.tableExists(database, SQLStmtHelper.COURSES_TABLE))
+                database.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
+            database.execSQL("CREATE TABLE " + SQLStmtHelper.COURSES_TMP_TABLE + " AS SELECT * FROM " + SQLStmtHelper.COURSES_TABLE);
+        }
+        database.delete(SQLStmtHelper.COURSES_TMP_TABLE, null, null);           // DELETE the rows in the tmp table
+    }
+
+    protected void deleteTMPCourses(){
+        database.execSQL("DROP TABLE IF EXISTS " + SQLStmtHelper.COURSES_TMP_TABLE);
+    }
+
+    /**
+     * Before calling this function there should be 2 databases, an old one and the newly created one
+     * Replace the old one, as there is no need for it
+     * @return true if operation was successful, false otherwise
+     */
+    protected boolean replaceOldCourses(){
+        database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
+        database.execSQL("ALTER TABLE " + SQLStmtHelper.COURSES_TMP_TABLE + " RENAME TO " + SQLStmtHelper.COURSES_TABLE);
+        return true;
+    }
+
+    /**
+     * Create a temporary table to insert downloading faculties: if there are any faculties  downloaded
+     * this will not block the access to the current faculties, and it used as safety if network access fails during download
+     */
+    protected void createTMPFaculties(){
+        if (!dbHelper.tableExists(database, SQLStmtHelper.FACULTIES_TABLE))
+            database.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
+        database.execSQL("CREATE TABLE " + SQLStmtHelper.FACULTIES_TMP_TABLE + " AS SELECT * FROM " + SQLStmtHelper.FACULTIES_TABLE);
+        database.delete(SQLStmtHelper.FACULTIES_TMP_TABLE, null, null);
+    }
+
+    /**
+     * Delete the courses table from the database
+     */
     public void deleteCourses(){
-        database.execSQL(DELETE_COURSES_TABLE);
+        database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
     }
 
+    /**
+     * Delete the faculties table and the table describing the structures of groups
+     */
     public void deleteFaculties(){
-        database.execSQL(DELETE_FACULTIES_TABLE);
-        database.execSQL(DELETE_UNDERGRADUATES_GROUPS_TABLE);
-        database.execSQL(DELETE_MASTERS_GROUPS_TABLE);
-        database.execSQL(DELETE_PHD_GROUPS_TABLE);
+        database.execSQL(SQLStmtHelper.DELETE_FACULTIES_TABLE);
+        database.execSQL(SQLStmtHelper.DELETE_UNDERGRADUATES_GROUPS_TABLE);
+        database.execSQL(SQLStmtHelper.DELETE_MASTERS_GROUPS_TABLE);
+        database.execSQL(SQLStmtHelper.DELETE_PHD_GROUPS_TABLE);
     }
 
+    /**
+     * Insert the course in the database
+     * @param course course to be inserted
+     * @param day the day of this course
+     * @return the ID of the row if insertion was successful, -1 otherwise
+     */
     public long insertCourse(Course course, String day){
 
-        ContentValues values = new ContentValues();
-        values.put(NAME, course.name);
-        values.put(FULL_NAME, course.fullName);
-        values.put(TYPE, course.type);
-        values.put(LOCATION, course.location);
-        values.put(TIME, course.time);
-        values.put(DAY, day);
-        values.put(PROF, course.prof);
-        values.put(INFO, course.info);
-        return database.insert(COURSES_TABLE, null, values);
+        ContentValues values = createValuesForInserting(course, day);
+
+        return database.insert(SQLStmtHelper.COURSES_TABLE, null, values);
     }
 
+    /**
+     * Same as insertCourse() except data is inserted into a temporary table. Used when downloading new courses.
+     * @param course course to be inserted
+     * @param day the day of this course
+     * @return the ID of the row if insertion was successful, -1 otherwise
+     */
+    public long insertTmpCourse(Course course, String day){
+        ContentValues values = createValuesForInserting(course, day);
+
+        return database.insert(SQLStmtHelper.COURSES_TMP_TABLE, null, values);
+    }
+
+    /**
+     * Replace the course1 with the course 2 (course 2 will be placed in day of week passed by the "day" param)
+     * Used when user customizes his timetable.
+     * @param course1 the course currently in the database
+     * @param course2 the new course
+     * @param day the day of the new course
+     * @return the number of rows affected
+     */
+    public int replaceCourse(Course course1, Course course2, String day){
+
+        ContentValues values = createValuesForInserting(course2, day);
+
+        String whereClause = "name = ? AND type = ?";
+        String[] whereArgs = {course1.name, course1.type};
+        return database.update(SQLStmtHelper.COURSES_TABLE, values, whereClause, whereArgs);
+    }
+
+    // Used only in DbAdapter.java as a helper method.
+    // Create a ContentValues object representing a course in the database.
+    private ContentValues createValuesForInserting(Course course, String day){
+
+        ContentValues values = new ContentValues();
+        values.put(SQLStmtHelper.NAME, course.name);
+        values.put(SQLStmtHelper.FULL_NAME, course.fullName);
+        values.put(SQLStmtHelper.TYPE, course.type);
+        values.put(SQLStmtHelper.LOCATION, course.location);
+        values.put(SQLStmtHelper.FULL_LOCATION, course.fullLocation);
+        values.put(SQLStmtHelper.START_TIME, course.startTime);
+        values.put(SQLStmtHelper.END_TIME, course.endTime);
+        values.put(SQLStmtHelper.DAY, day);
+        values.put(SQLStmtHelper.PROF, course.prof);
+        values.put(SQLStmtHelper.PROF_ID, course.profID);
+        values.put(SQLStmtHelper.PARITY, course.parity);
+        values.put(SQLStmtHelper.INFO, course.info);
+        return values;
+    }
+
+    /**
+     * Insert a faculty in the database
+     * @param _id the ID of the faculty
+     * @param name the name of the faculty
+     * @param link the link to courses (if necessary)
+     * @return the ID of the row if insertion was successful, -1 otherwise
+     */
     public long insertFaculty(int _id, String name, String link){
         ContentValues values = new ContentValues();
-        values.put(FACULTY_ID, _id);
-        values.put(NAME, name);
-        values.put(LINK, link);
-        return database.insert(FACULTIES_TABLE, null, values);
+        values.put(SQLStmtHelper.FACULTY_ID, _id);
+        values.put(SQLStmtHelper.NAME, name);
+        values.put(SQLStmtHelper.LINK, link);
+        return database.insert(SQLStmtHelper.FACULTIES_TABLE, null, values);
     }
 
+    /**
+     * Insert a group (students from a certain faculty; a faculty can have multiple groups) in the database
+     * @param table table where to insert (UNDERGRADUATES, MASTERS, PHD)
+     * @param name the the name of the group
+     * @param groupID the ID of the group
+     * @param facultyID the ID of the faculty containing this group
+     * @return the ID of the row if insertion was successful, -1 otherwise
+     */
     public long insertGroup(String table, String name, int groupID, int facultyID){
         ContentValues values = new ContentValues();
-        values.put(GROUP_ID, groupID);
-        values.put(FACULTY_FROM_ID, facultyID);
-        values.put(NAME, name);
+        values.put(SQLStmtHelper.GROUP_ID, groupID);
+        values.put(SQLStmtHelper.FACULTY_FROM_ID, facultyID);
+        values.put(SQLStmtHelper.NAME, name);
         return database.insert(table, null, values);
     }
 
+
+    /**
+     * Query for all the faculties
+     * @return a Cursor containing the data
+     */
     public Cursor getFaculties(){
 
-        return database.query(FACULTIES_TABLE,
+        return database.query(SQLStmtHelper.FACULTIES_TABLE,
                             null,
                             null,
                             null,
@@ -175,23 +221,31 @@ public class DBAdapter {
                             null);
     }
 
+    /**
+     * Query for all the groups within a faculty.
+     * @param facultyID the ID of the faculty
+     * @param type the type of groups (UNDERGRADUATES, MASTERS, PHD)
+     * @return a Cursor object containing the data
+     */
     public Cursor getGroupsFromFaculty(int facultyID, int type){
         String table;
-        String mSelection = FACULTY_FROM_ID + " = ?";
+        String mSelection = SQLStmtHelper.FACULTY_FROM_ID + " = ?";
         String[] mSelectionArgs = {String.valueOf(facultyID)};
         switch (type){
-            case UNDERGRADUATES:
-                table = UNDERGRADUATES_GROUPS_TABLE;
+            case SQLStmtHelper.UNDERGRADUATES:
+                table = SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE;
                 break;
-            case MASTERS:
-                table = MASTERS_GROUPS_TABLE;
+            case SQLStmtHelper.MASTERS:
+                table = SQLStmtHelper.MASTERS_GROUPS_TABLE;
                 break;
-            case PHD:
-                table = PHD_GROUPS_TABLE;
+            case SQLStmtHelper.PHD:
+                table = SQLStmtHelper.PHD_GROUPS_TABLE;
                 break;
             default:
                 table = null;
         }
+        if (table == null)
+            return null;
         return database.query(table,
                               null,
                               mSelection,
@@ -201,58 +255,75 @@ public class DBAdapter {
                               null);
     }
 
-    public ArrayList<Course> getCourses(int week, String day){
-        String[] mProjection={ "name",
-                               "full_name",
-                               "type",
-                               "location",
-                               "time",
-                               "prof",
-                               "info"
+    /**
+     * Query for all the courses from a day from a week of the semester.
+     * @param week the week of the semester
+     * @param day the day of the week
+     * @return an ArrayList object containing only the courses that respect the type of week (odd or even) in the right order
+     */
+    public ArrayList<Course> getCourses(int week, int day) throws SQLiteException{
+        String[] mProjection = {SQLStmtHelper.NAME,
+                SQLStmtHelper.FULL_NAME,
+                SQLStmtHelper.TYPE,
+                SQLStmtHelper.LOCATION,
+                SQLStmtHelper.FULL_LOCATION,
+                SQLStmtHelper.START_TIME,
+                SQLStmtHelper.END_TIME,
+                SQLStmtHelper.PROF,
+                SQLStmtHelper.PROF_ID,
+                SQLStmtHelper.PARITY,
+                SQLStmtHelper.INFO
         };
 
-        String selection ="day == ? AND ( info == ? OR info == ? OR info == ?)";
+        String selection = SQLStmtHelper.DAY + " == ? AND (" + SQLStmtHelper.PARITY + " == ? OR " + SQLStmtHelper.PARITY + " == ? OR " +
+                                                SQLStmtHelper.PARITY + " == ?)";
         String[] selectionArgs = new String[4];
-        String orderBy = "time";
-        selectionArgs[0] = day;
-        selectionArgs[2] = "";
-        if(week % 2 == 0)
+        String orderBy = SQLStmtHelper.START_TIME;
+        selectionArgs[0] = String.valueOf(day);
+        selectionArgs[2] = "-";
+        if (week % 2 == 0)
             selectionArgs[1] = ViewPagerAdapter.COURSES_IN_EVEN_WEEK;
         else
             selectionArgs[1] = ViewPagerAdapter.COURSES_IN_ODD_WEEK;
         selectionArgs[3] = "10 sapt.+1h";
-        Cursor cursor = database.query(COURSES_TABLE,
-                                       mProjection,
-                                       selection,
-                                       selectionArgs,
-                                       null,
-                                       null,
-                                       orderBy);
-        if(cursor == null)
+        Cursor cursor = null;
+        cursor = database.query(SQLStmtHelper.COURSES_TABLE,
+                mProjection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                orderBy);
+        if (cursor == null)
             return null;
         ArrayList<Course> courses = new ArrayList<Course>();
-        String name, fullName, type, time, info, location, prof;
-        while(cursor.moveToNext()){
+        String name, fullName, type, time, info, location, fullLocation, parity, prof, profID;
+        while (cursor.moveToNext()) {
             name = cursor.getString(0);
             fullName = cursor.getString(1);
             type = cursor.getString(2);
             location = cursor.getString(3);
-            time = cursor.getString(4);
-            prof = cursor.getString(5);
-            info = cursor.getString(6);
+            fullLocation = cursor.getString(4);
+            time = cursor.getString(5) + ":00 - " + cursor.getString(6) + ":00";
+            prof = cursor.getString(7);
+            profID = cursor.getString(8);
+            parity = cursor.getString(9);
+            info = cursor.getString(10);
 
-            courses.add(new Course(name, fullName, type, location, time, prof, info));
+            courses.add(new Course(name, fullName, type, location, fullLocation,
+                    time, prof, profID, parity, info));
 
         }
+        cursor.close();
         return courses;
     }
 
+    // Used by content provider for search suggestions
     public Cursor fullQuery(String[] projection, String selection, String[] selectionArgs, String order){
-        // Used by content provider for search suggestions
         if (D) Log.d(TAG, "query for search");
         if (D) Log.d(TAG, selection + " " + selectionArgs[0] + " " + order);
         String[] selArgs = new String[]{selectionArgs[0]+"%"};
-        return database.query(COURSES_TABLE,
+        return database.query(SQLStmtHelper.COURSES_TABLE,
                             projection,
                             selection,
                             selArgs,
@@ -261,19 +332,27 @@ public class DBAdapter {
                             order);
     }
 
+    /**
+     * Query for all the fields of a specific row. NOT USED
+     * @param name the name of the course
+     * @param type the type of the course (COURSE, LAB or SEMINAR)
+     * @return an array of strings with the fields
+     */
     public String[] getInfoAboutCourse(String name, String type){
         //Used by SearchableActivity when searching was made specifically
-        String[] projection={ "name",
-                            "full_name",
-                            "type",
-                            "location",
-                            "time",
-                            "prof",
-                            "info"
+        String[] projection={ SQLStmtHelper.NAME,
+                SQLStmtHelper.FULL_NAME,
+                SQLStmtHelper.TYPE,
+                SQLStmtHelper.LOCATION,
+                SQLStmtHelper.FULL_LOCATION,
+                SQLStmtHelper.START_TIME,
+                SQLStmtHelper.PROF,
+                SQLStmtHelper.PARITY,
+                SQLStmtHelper.INFO
         };
         String selection = "LOWER(name) == ? AND LOWER(type) == ?";
         String[] selectionArgs = {name.toLowerCase(), type.toLowerCase()};
-        Cursor result = database.query(COURSES_TABLE,
+        Cursor result = database.query(SQLStmtHelper.COURSES_TABLE,
                                         projection,
                                         selection,
                                         selectionArgs,
@@ -286,24 +365,31 @@ public class DBAdapter {
         return new String[]{result.getString(0), result.getString(1), result.getString(2)};
     }
 
+    /**
+     * Query for a row in the courses table. Used by SearchableActivity when searching was made specifically
+     * @param name the name of the course
+     * @param type the type of the course (COURSE, LAB or SEMINAR)
+     * @return a Course object
+     */
     public Course getCourse(String name, String type){
-        //Used by SearchableActivity when searching was made specifically
-
         if(name == null || type == null)
             return null;
 
-        String[] mProjection={ "name",
-                "full_name",
-                "type",
-                "location",
-                "time",
-                "prof",
-                "info"
+        String[] mProjection={ SQLStmtHelper.NAME,
+                SQLStmtHelper.FULL_NAME,
+                SQLStmtHelper.TYPE,
+                SQLStmtHelper.LOCATION,
+                SQLStmtHelper.FULL_LOCATION,
+                SQLStmtHelper.START_TIME,
+                SQLStmtHelper.PROF,
+                SQLStmtHelper.PROF_ID,
+                SQLStmtHelper.PARITY,
+                SQLStmtHelper.INFO
         };
 
         String selection = "LOWER(name) == ? AND LOWER(type) == ?";
         String[] selectionArgs = {name.toLowerCase(), type.toLowerCase()};
-        Cursor result = database.query(COURSES_TABLE,
+        Cursor result = database.query(SQLStmtHelper.COURSES_TABLE,
                 mProjection,
                 selection,
                 selectionArgs,
@@ -315,7 +401,7 @@ public class DBAdapter {
         result.moveToFirst();
         return  new Course(result.getString(0), result.getString(1), result.getString(2),
                             result.getString(3), result.getString(4), result.getString(5),
-                            result.getString(6));
+                            result.getString(6), result.getString(7), result.getString(8), result.getString(9));
 
     }
 
@@ -326,21 +412,25 @@ public class DBAdapter {
     private class DBOpenHelper extends SQLiteOpenHelper{
 
         public DBOpenHelper(Context context){
-            super(context, DB_NAME, null, DB_VER);
+                super(context, DB_NAME, null, DB_VER);
+        }
+
+        public DBOpenHelper(Context context, boolean isTemporary){
+            super(context, DB_TMP_NAME, null, DB_VER);
         }
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            if (!tableExists(sqLiteDatabase, COURSES_TABLE))
-                sqLiteDatabase.execSQL(CREATE_COURSES_TABLE);
-            if (!tableExists(sqLiteDatabase, FACULTIES_TABLE))
-                sqLiteDatabase.execSQL(CREATE_FACULTIES_TABLE);
-            if (!tableExists(sqLiteDatabase, UNDERGRADUATES_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(CREATE_UNDERGRADUATES_TABLE);
-            if (!tableExists(sqLiteDatabase, MASTERS_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(CREATE_MASTERS_TABLE);
-            if (!tableExists(sqLiteDatabase, PHD_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(CREATE_PHD_TABLE);
+            if (!tableExists(sqLiteDatabase, SQLStmtHelper.COURSES_TABLE))
+                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
+            if (!tableExists(sqLiteDatabase, SQLStmtHelper.FACULTIES_TABLE))
+                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
+            if (!tableExists(sqLiteDatabase, SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE))
+                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_UNDERGRADUATES_TABLE);
+            if (!tableExists(sqLiteDatabase, SQLStmtHelper.MASTERS_GROUPS_TABLE))
+                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_MASTERS_TABLE);
+            if (!tableExists(sqLiteDatabase, SQLStmtHelper.PHD_GROUPS_TABLE))
+                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_PHD_TABLE);
         }
 
         @Override
@@ -351,15 +441,15 @@ public class DBAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
             DB_VER = newVersion;
-            sqLiteDatabase.execSQL(DELETE_COURSES_TABLE);
-            sqLiteDatabase.execSQL(DELETE_FACULTIES_TABLE);
-            sqLiteDatabase.execSQL(DELETE_UNDERGRADUATES_GROUPS_TABLE);
-            sqLiteDatabase.execSQL(DELETE_MASTERS_GROUPS_TABLE);
-            sqLiteDatabase.execSQL(DELETE_PHD_GROUPS_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_FACULTIES_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_UNDERGRADUATES_GROUPS_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_MASTERS_GROUPS_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_PHD_GROUPS_TABLE);
 
             onCreate(sqLiteDatabase);
         }
-
+        // Used to avoid unnecessary creation of tables
         private boolean tableExists(SQLiteDatabase sqLiteDatabase, String table){
             String[] mProj ={"name"};
 

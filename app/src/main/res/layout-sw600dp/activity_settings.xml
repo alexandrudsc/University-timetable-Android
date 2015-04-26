@@ -5,6 +5,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/downloader_activity_margins">
+
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/settings_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"/>
+
     <TableRow
         android:gravity="center">
         <TextView
@@ -19,7 +26,8 @@
     </TableRow>
 
     <RadioGroup
-            android:gravity="center">
+        android:id="@+id/radio_group"
+        android:gravity="center">
 
         <RadioButton
                 android:id="@+id/licence_btn"
@@ -79,7 +87,7 @@
     <TableRow
         android:gravity="center_horizontal">
         <Button
-                android:id="@+id/donwload_btn"
+                android:id="@+id/download_btn"
                 android:text="@string/download_timetable"/>
     </TableRow>
 

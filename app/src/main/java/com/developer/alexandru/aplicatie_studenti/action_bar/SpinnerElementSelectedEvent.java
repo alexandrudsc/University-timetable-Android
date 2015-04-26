@@ -6,13 +6,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+
 import com.developer.alexandru.aplicatie_studenti.MainActivity;
 import com.developer.alexandru.aplicatie_studenti.R;
 
 /**
  * Created by Alexandru on 6/1/14.
  */
-public class SpinnerElementSelectedEvent implements ActionBar.OnNavigationListener {
+public class SpinnerElementSelectedEvent implements Spinner.OnItemSelectedListener{//ActionBar.OnNavigationListener {
     public static final String
                         ACTION_LAUNCH_EVENT_ACTIVITY = "com.alexandru.developer.action.LAUNCH_NON_CURRENT_WEEK_ACTIVITY";
     public static final String
@@ -26,8 +30,19 @@ public class SpinnerElementSelectedEvent implements ActionBar.OnNavigationListen
         this.context = activity;
     }
 
+
     @Override
-    public boolean onNavigationItemSelected(int position, long itemId) {
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long itemId) {
+        onNavigationItemSelected(position, itemId);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+          //TODO: dunno yet
+    }
+
+
+        public boolean onNavigationItemSelected(int position, long itemId) {
 
         SharedPreferences prefs = activity.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE);
 
@@ -60,4 +75,5 @@ public class SpinnerElementSelectedEvent implements ActionBar.OnNavigationListen
         }
         return true;
     }
+
 }

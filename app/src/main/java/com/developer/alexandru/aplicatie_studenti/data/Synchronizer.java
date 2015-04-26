@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.webkit.JsPromptResult;
 
 import com.developer.alexandru.aplicatie_studenti.R;
 
@@ -16,10 +15,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,7 +34,11 @@ public class Synchronizer extends IntentService {
     public static final String ACTION_SYNC_FINISHED =  "synchronization finished";
 
     private final String URL_FACULTIES = "http://orar.usv.ro/vizualizare/intro1.php";
+    private final String URL_GROUPS = "http://www.orar.usv.ro/vizualizare/data/subgrupe.php";
+    private final String URL_FACULTIES2 = "http://www.orar.usv.ro/vizualizare/data/facultati.php";
     private final String PARTIAL_URL_FACULTY = "http://orar.usv.ro/vizualizare/orarUp2.php?facultateID=";
+
+    private DBAdapter dbAdapter;
 
     private NotificationManager notificationManager;
     private static final int REFRESH_NOTIF_CODE = 1;
@@ -65,7 +64,7 @@ public class Synchronizer extends IntentService {
         syncFinished.setAction(ACTION_SYNC_FINISHED);
 
         //Form a GET request for the time organization
-        HttpGet request = new HttpGet(URL_FACULTIES);
+        HttpGet request = new HttpGet(URL_FACULTIES2);
         //Default HTTP client
         HttpClient client = new DefaultHttpClient();
         try {
@@ -75,26 +74,22 @@ public class Synchronizer extends IntentService {
 
             showNotification();
 
-            DBAdapter dbAdapter;
+
             dbAdapter = new DBAdapter(this);
             dbAdapter.open();
-            dbAdapter.deleteFaculties();
-            dbAdapter.create();
+            //dbAdapter.deleteFaculties();
+            //dbAdapter.create();
 
-            //Form a string from the response
-            String line ;
-            String htmlText= "";
-            while ((line = reader.readLine()) != null )
-                htmlText += line;
-            htmlText = htmlText.substring(htmlText.indexOf("<ul"));                 // Delete unnecessary html code
+            FacultiesParser facultiesParser = new FacultiesParser(reader);
+            facultiesParser.parse();
 
-            if (D) Log.d(TAG, htmlText);
-            Document document = Jsoup.parse(htmlText);
-            Elements elements = document.getElementsByAttribute("href");
+            request = new HttpGet(URL_GROUPS);
+            response = client.execute(request);
+            in = response.getEntity().getContent();
+            reader = new BufferedReader(new InputStreamReader(in));
+            GroupsParser groupsParser = new GroupsParser(reader);
+            groupsParser.parse();
 
-            for (Element element : elements) {
-                addFacultyToDatabase(dbAdapter, element);
-            }
             cancelNotification();
             dbAdapter.close();
             LocalBroadcastManager.getInstance(this).sendBroadcast(syncFinished);
@@ -104,7 +99,58 @@ public class Synchronizer extends IntentService {
         }
     }
 
-    void addFacultyToDatabase(DBAdapter dbAdapter, Element element){
+    private class FacultiesParser extends CSVParser{
+        public FacultiesParser(BufferedReader br) {
+            super(br);
+        }
+
+        @Override
+        public boolean handleData(String[] data) {
+            //Log.d(TAG, data[0] + " " + data[1] + " " + data[2]);
+            addFacultyToDatabase(data);
+            return true;
+        }
+    }
+
+    private class GroupsParser extends CSVParser{
+        public GroupsParser(BufferedReader br) {
+            super(br);
+        }
+
+        @Override
+        public boolean handleData(String[] data) {
+            //Log.d(TAG, data[0] + " " + data[1] + " " + data[2]);
+            addGroupToDatabase(data);
+            return true;
+        }
+    }
+
+    void addFacultyToDatabase(String[] data){
+        dbAdapter.insertFaculty(Integer.parseInt(data[0]), data[1], data[2]);
+    }
+
+    void addGroupToDatabase(String[] data){
+        String name;
+        if (data.length > 6)
+            name = data[3] + " an " + data[4] + "__" + data[5] + data[6];
+        else
+            name = data[3] + " an " + data[4] + "__" + data[5];
+        Log.d(TAG, name);
+        switch (Integer.valueOf(data[1])){
+            case 1:
+                dbAdapter.insertGroup(SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                break;
+            case 2:
+                dbAdapter.insertGroup(SQLStmtHelper.MASTERS_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                break;
+            case 3:
+                dbAdapter.insertGroup(SQLStmtHelper.PHD_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                break;
+        }
+
+    }
+
+    /*void addFacultyToDatabase(DBAdapter dbAdapter, Element element){
         String str;
         String link;
         String name;
@@ -156,13 +202,13 @@ public class Synchronizer extends IntentService {
                     elements2 = Jsoup.parse(e.toString()).getElementsByAttribute("value");
                     switch (i){
                         case 0:
-                            table = DBAdapter.UNDERGRADUATES_GROUPS_TABLE;
+                            table = SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE;
                             break;
                         case 1:
-                            table = DBAdapter.MASTERS_GROUPS_TABLE;
+                            table = SQLStmtHelper.MASTERS_GROUPS_TABLE;
                             break;
                         case 2:
-                            table = DBAdapter.PHD_GROUPS_TABLE;
+                            table = SQLStmtHelper.PHD_GROUPS_TABLE;
                             break;
                         default:
                             table = null;
@@ -212,7 +258,7 @@ public class Synchronizer extends IntentService {
             return id;
         }
         return -1;
-    }
+    }*/
 
     void showNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.refresh_anim)
@@ -220,7 +266,6 @@ public class Synchronizer extends IntentService {
                 .setContentText("Sincronizare facultăți")
                 .setProgress(0, 0, true);
         Notification n = builder.build();
-
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(REFRESH_NOTIF_CODE, n);
     }

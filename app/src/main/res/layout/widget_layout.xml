@@ -14,24 +14,23 @@
             android:background="@drawable/widget_title_background">
 
 
-            <ImageButton
+            <!--<ImageButton
                     android:id="@+id/change_day"
-                    android:src="@drawable/ic_action_next_item"
+
                     android:layout_width="@dimen/widget_title_button_width"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/widget_margin_left"
                     android:layout_marginLeft="@dimen/widget_margin_left"
-                    android:layout_marginRight="@dimen/widget_margin_left"/>
+                    android:layout_marginRight="@dimen/widget_margin_left"/> -->
 
                 <TextView
                         android:id="@+id/day_of_week"
                         android:textSize="@dimen/small_text"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:layout_width="0dip"
+                        android:layout_width="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@id/change_day"
                         android:layout_height="@dimen/half_widget_title"
                         android:layout_gravity="bottom|fill_vertical"
                         android:layout_marginTop="@dimen/widget_margin_left"
@@ -43,11 +42,10 @@
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:layout_width="0dip"
-                        android:layout_height="0dip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@id/day_of_week"
                         android:layout_alignParentLeft="true"
-                        android:layout_toLeftOf="@id/change_day"
                         android:layout_alignParentBottom="true"
                         android:layout_gravity="top|fill_vertical"
                         android:layout_marginTop="-10dp"

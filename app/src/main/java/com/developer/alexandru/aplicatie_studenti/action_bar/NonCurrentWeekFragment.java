@@ -1,6 +1,5 @@
 package com.developer.alexandru.aplicatie_studenti.action_bar;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -49,6 +48,8 @@ public class NonCurrentWeekFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null)
+            weekNumber = savedInstanceState.getInt(WEEK_NUMBER);
         View fragmentView = inflater.inflate(R.layout.non_current_week_activity, container, false);
         ListView listView = (ListView)fragmentView.findViewById(android.R.id.list);
         listView.setAdapter(new ListViewAdapterNonCurWeek(activity, backupFileName, weekNumber));
@@ -65,13 +66,7 @@ public class NonCurrentWeekFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         Log.d("NonCurrentWeek", "create options");
         menu.findItem(R.id.search_from_menu).setVisible(false);
-       ((MainActivity)getActivity()).getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
+       ((MainActivity)getActivity()).getSupportActionBar().setTitle("Săptămâna " + weekNumber);
     }
 
     @Override

@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:background="@color/gray2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:layout_height="112dp"
+            android:layout_width="match_parent"/>
+    </RelativeLayout>
+
 
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_marginTop="112dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <FrameLayout
                      android:id="@+id/timetable_container"
-                     android:layout_width="0dip"
-                     android:layout_height="match_parent"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dip"
                      android:layout_weight="1">
             <fragment class="com.developer.alexandru.aplicatie_studenti.TimetableFragment"
                       android:id="@+id/timetable_fragment"
@@ -24,8 +37,8 @@
         </FrameLayout>
         <FrameLayout
                 android:id="@+id/searchable_container"
-                android:layout_width="0dip"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
                 android:layout_weight="1">
         <fragment class="com.developer.alexandru.aplicatie_studenti.SearchableFragment"
                   android:id="@+id/searchable_fragment"

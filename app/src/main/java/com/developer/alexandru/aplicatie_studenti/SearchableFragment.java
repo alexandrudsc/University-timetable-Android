@@ -1,16 +1,19 @@
 package com.developer.alexandru.aplicatie_studenti;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -21,11 +24,15 @@ import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
 
 /**
  * Created by Alexandru on 7/14/14.
- * Details fragment - displays info of a selected class
+ * Details fragment - displays info about a  selected class (details and progress)
+ * DetailsFragment and ResultsFragment must be seen
  */
 public class SearchableFragment extends  Fragment{
     public static final String TAG = "SEARCHABLE FRAGMENT";
     public static final boolean D = true;
+
+    public static final String EXTRA_COURSE_KEY = "course_to_view";
+    public static final String actionViewDetails = "com.alexandru.developer.VIEW_DETAILS";
 
     private Course course;
     private DetailsFragment detailsFragment;
@@ -36,6 +43,9 @@ public class SearchableFragment extends  Fragment{
 
     Bundle detailsFragmentArgs;
     private boolean wasResultTable;
+
+    // Toolbar used at horizontal two-pane layout
+    private Toolbar toolbar;
 
     public SearchableFragment() {
         super();
@@ -83,7 +93,7 @@ public class SearchableFragment extends  Fragment{
                     if (wasResultTable) {
                         //The results table was displayed
                         if (D) Log.d(TAG, "recreating with results table");
-                        ResultsFragment resultsFragment = new ResultsFragment(fm, course.name, course.type, course.info);
+                        ResultsFragment resultsFragment = new ResultsFragment(fm, course.name, course.type, course.parity);
                         FragmentTransaction tr = fm.beginTransaction();
                         tr.replace(R.id.course_fragment_container,
                                 resultsFragment, DetailsFragment.REPLACE_DETAILS_WITH_RESULT);
@@ -122,6 +132,8 @@ public class SearchableFragment extends  Fragment{
                 courseTitle.setText(course.fullName+ " " + course.type);
         }
 
+        // Find the toolbar (two-pane layout)
+        toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar_searchable);
         return fragmentView;
     }
 
@@ -129,14 +141,30 @@ public class SearchableFragment extends  Fragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (D) Log.d("NonCurrentWeek", "create options");
-
-        ((MainActivity)getActivity()).getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
+        //((MainActivity) getActivity()).getSupportActionBar().setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_STANDARD);
+        if (toolbar == null)            // One pane layout
+            getActivity().getMenuInflater().inflate(R.menu.searchable_fragment, menu);
+        else                            // Two pane layout
+            toolbar.inflateMenu(R.menu.searchable_fragment);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItemCompat.collapseActionView(menu.findItem(R.id.search_from_menu));
+        menu.findItem(R.id.search_from_menu).setVisible(false);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_note:
+                Intent editNoteIntent = new Intent(this.getActivity(), NoteActivity.class);
+                editNoteIntent.putExtra(NoteActivity.COURSE_NAME_EXTRA, course.name);
+                startActivity( editNoteIntent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -155,11 +183,6 @@ public class SearchableFragment extends  Fragment{
                 //In two pane layout and no course was selected yet
             }
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     public void updateContent(Course c, FragmentManager fm){
