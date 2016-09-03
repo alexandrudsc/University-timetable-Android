@@ -6,4 +6,10 @@
             android:title="@string/done"
             android:icon="@drawable/done_button"
             android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/add_note"
+        android:title="@string/done"
+        android:icon="@drawable/abc_edit_text_material"
+        android:showAsAction="always"/>
 </menu>

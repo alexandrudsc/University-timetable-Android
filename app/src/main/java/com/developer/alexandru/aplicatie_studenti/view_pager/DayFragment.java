@@ -210,5 +210,5 @@ public class DayFragment extends ListFragment {
         super.onSaveInstanceState(outState);
         if (D) Log.d(TAG, "SAVE");
     }
-
+    
 }

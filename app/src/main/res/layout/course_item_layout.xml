@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:background="@drawable/list_item_background"
-                android:id="@+id/course_in_list_layout"
+                android:id="@+id/layout_course"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
@@ -31,7 +31,7 @@
             android:orientation="vertical">
 
         <TextView
-                android:id="@+id/event_name"
+                android:id="@+id/course_name"
                 android:layout_gravity="center_vertical"
                 android:textSize="22sp"
                 android:layout_weight="6"
@@ -39,7 +39,7 @@
                 android:layout_height="0dip"/>
 
         <TextView
-                android:id="@+id/event_type"
+                android:id="@+id/course_description"
                 android:layout_gravity="center_vertical"
                 android:textSize="14sp"
                 android:text="type"

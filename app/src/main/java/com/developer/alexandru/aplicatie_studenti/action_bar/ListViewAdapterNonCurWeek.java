@@ -90,7 +90,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
                 viewHolder.eventName = (TextView) convertView.findViewById(R.id.spinner_elem_tv);
                 convertView.setTag(viewHolder);
             }else{
-                convertView = inflater.inflate(R.layout.course_item, parent, false);
+                convertView = inflater.inflate(R.layout.course_item_layout, parent, false);
                 viewHolder = new MyListViewAdapter.ViewHolder();
                 viewHolder.eventName = (TextView)convertView.findViewById(R.id.course_name);
                 viewHolder.eventType = (TextView)convertView.findViewById(R.id.course_description);

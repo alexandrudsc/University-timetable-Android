@@ -16,7 +16,8 @@ import com.developer.alexandru.aplicatie_studenti.R;
 import com.developer.alexandru.aplicatie_studenti.TimetableFragment;
 import com.developer.alexandru.aplicatie_studenti.Utils;
 import com.developer.alexandru.aplicatie_studenti.app_widget.ListRemoteViewsFactory;
-import com.developer.alexandru.aplicatie_studenti.view_pager.*;
+import com.developer.alexandru.aplicatie_studenti.view_pager.PagerSlidingTabStrip;
+import com.developer.alexandru.aplicatie_studenti.view_pager.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,12 +108,12 @@ public class DataLoader extends AsyncTask<Void, Void, Void> {
                 dbAdapter = new DBAdapter(activity);
                 dbAdapter.open();
 
-                if (ViewPagerAdapter.listsOfCourses == null)
-                    ViewPagerAdapter.listsOfCourses = new ArrayList[ViewPagerAdapter.NUM_DAYS];
-
-                for (int i = 0; i < ViewPagerAdapter.NUM_DAYS; i++) {
-                    ViewPagerAdapter.listsOfCourses[i] = dbAdapter.getCourses(currentWeek, i);
-                }
+//                if (ViewPagerAdapter.listsOfCourses == null)
+//                    ViewPagerAdapter.listsOfCourses = new ArrayList[ViewPagerAdapter.NUM_DAYS];
+//
+//                for (int i = 0; i < ViewPagerAdapter.NUM_DAYS; i++) {
+//                    ViewPagerAdapter.listsOfCourses[i] = dbAdapter.getCourses(currentWeek, i);
+//                }
 
             } catch (ArrayIndexOutOfBoundsException e){
                 e.printStackTrace();

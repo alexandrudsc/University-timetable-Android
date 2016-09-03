@@ -228,10 +228,9 @@ public class SearchableFragment extends  Fragment{
                 else
                     result.absences ++;
 
-
                 result.table.put(i, wasPresent);
             }
-        }else if(info.equals(ViewPagerAdapter.COURSES_IN_ODD_WEEK)){
+        } else if(info.equals(ViewPagerAdapter.COURSES_IN_ODD_WEEK)){
             for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
@@ -244,7 +243,7 @@ public class SearchableFragment extends  Fragment{
 
                 result.table.put(i, wasPresent);
             }
-        }else{
+        } else {
             for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i++){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +101,7 @@ public class MyListViewAdapter extends BaseAdapter {
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater)
                                         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.course_item, parent, false);
+            convertView = inflater.inflate(R.layout.course_item_layout, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.eventType = (TextView) convertView.findViewById(R.id.course_description);
             viewHolder.eventCheckBox = (CheckBox) convertView.findViewById(R.id.event_checkbox);
@@ -207,9 +206,9 @@ public class MyListViewAdapter extends BaseAdapter {
             //dbAdapter.open();
 
 
-            ArrayList<Course> items = new ArrayList<Course>();
+            ArrayList<Course> items = new ArrayList<>();
 
-            DialogListAdapter adapter = new DialogListAdapter(context, R.layout.course_item, items);
+            DialogListAdapter adapter = new DialogListAdapter(context, R.layout.course_item_layout, items);
 
             builder.setTitle(R.string.choose)
                     .setAdapter(adapter, new DialogInterface.OnClickListener() {
@@ -287,7 +286,7 @@ public class MyListViewAdapter extends BaseAdapter {
                 c = new Course();
                 c.fullName = data[12];
                 c.name = data[13];
-                adapter.courses.add(c);
+                adapter.add(c);
                 return true;
             }
         }

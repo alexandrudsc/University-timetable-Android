@@ -114,7 +114,7 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
             conn.disconnect();
             if (parser.wasSuccessful()) {
                 dbAdapter.replaceOldCourses();
-                ViewPagerAdapter.listsOfCourses = null;
+//                ViewPagerAdapter.listsOfCourses = null;
             } else {
                 success = false;
                 dbAdapter.deleteTMPCourses();

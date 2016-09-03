@@ -185,7 +185,7 @@ public class DBAdapter {
         ContentValues values = new ContentValues();
         values.put(SQLStmtHelper.FACULTY_ID, _id);
         values.put(SQLStmtHelper.NAME, name);
-        values.put(SQLStmtHelper.LINK, link);
+        values.put(SQLStmtHelper.FACULTY_LINK, link);
         return database.insert(SQLStmtHelper.FACULTIES_TABLE, null, values);
     }
 
@@ -221,7 +221,7 @@ public class DBAdapter {
                             null);
     }
 
-    /**
+    /**`
      * Query for all the groups within a faculty.
      * @param facultyID the ID of the faculty
      * @param type the type of groups (UNDERGRADUATES, MASTERS, PHD)

@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
      * Static array which holds for as long as possible the data for the current week.
      * Used to avoid unnecessary queries to the database.
      */
-    public static ArrayList<Course>[] listsOfCourses ;
+//    public static ArrayList<Course>[] listsOfCourses ;
 
     public static final String[] days={"duminica", "luni", "marti", "miercuri", "joi", "vineri", "sambata"};
 
@@ -86,14 +86,5 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return NUM_DAYS;
-    }
-
-    public static boolean isAnyListNull(){
-        if(ViewPagerAdapter.listsOfCourses == null)
-            return true;
-        for(int i = 0;i < NUM_DAYS; i++)
-            if(listsOfCourses[i] == null)
-                return true;
-        return false;
     }
 }
