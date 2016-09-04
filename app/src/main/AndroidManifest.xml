@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.developer.alexandru.aplicatie_studenti" >
+    package="com.developer.alexandru.orarusv" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,7 +12,7 @@
         android:allowBackup="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.developer.alexandru.orarusv.MainActivity"
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,17 +35,17 @@
         </activity>
 
         <activity
-            android:name=".SettingsActivity">
+            android:name="com.developer.alexandru.orarusv.SettingsActivity">
         </activity>
 
-        <service android:name=".data.TimetableDownloaderService" >
+        <service android:name="com.developer.alexandru.orarusv.data.TimetableDownloaderService" >
         </service>
 
-        <service android:name=".data.Synchronizer" >
+        <service android:name="com.developer.alexandru.orarusv.data.Synchronizer" >
         </service>
 
         <receiver
-            android:name=".app_widget.TimetableWidgetProvider"
+            android:name="com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider"
             android:label="@string/widget_label" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -57,12 +57,12 @@
         </receiver>
 
         <service
-            android:name=".app_widget.ListWidgetService"
+            android:name="com.developer.alexandru.orarusv.app_widget.ListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" >
         </service>
 
         <provider
-            android:name=".data.CoursesContentProvider"
+            android:name="com.developer.alexandru.orarusv.data.CoursesContentProvider"
             android:authorities="com.alexandru.developer.aplicatie_studenti.data.CoursesContentProvider"
             android:readPermission="com.alexandru.developer.provider.READ_MY_DATA"
             android:writePermission="com.alexandru.developer.provider.WRITE_MY_DATA" >
@@ -72,13 +72,13 @@
         </provider>
 
         <activity
-            android:name=".NoteActivity"
+            android:name="com.developer.alexandru.orarusv.NoteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_note"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.developer.alexandru.orarusv.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.developer.alexandru.aplicatie_studenti.MainActivity" />
+                android:value="com.developer.alexandru.orarusv.MainActivity" />
         </activity>
 
         <receiver

@@ -31,7 +31,7 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.7">
-            <fragment class="com.developer.alexandru.aplicatie_studenti.TimetableFragment"
+            <fragment class="com.developer.alexandru.orarusv.TimetableFragment"
                       android:id="@+id/timetable_fragment"
                       android:layout_height="match_parent"
                       android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
             android:layout_marginLeft="@dimen/abc_action_bar_default_height_material"
             android:layout_marginTop="@dimen/abc_action_bar_default_height_material">
-        <fragment class="com.developer.alexandru.aplicatie_studenti.SearchableFragment"
+        <fragment class="com.developer.alexandru.orarusv.SearchableFragment"
                   android:id="@+id/searchable_fragment"
                   android:layout_height="match_parent"
                   android:layout_width="match_parent"

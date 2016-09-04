@@ -29,7 +29,7 @@
                      android:layout_width="match_parent"
                      android:layout_height="0dip"
                      android:layout_weight="1">
-            <fragment class="com.developer.alexandru.aplicatie_studenti.TimetableFragment"
+            <fragment class="com.developer.alexandru.orarusv.TimetableFragment"
                       android:id="@+id/timetable_fragment"
                       android:layout_height="match_parent"
                       android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
                 android:layout_weight="1">
-        <fragment class="com.developer.alexandru.aplicatie_studenti.SearchableFragment"
+        <fragment class="com.developer.alexandru.orarusv.SearchableFragment"
                   android:id="@+id/searchable_fragment"
                   android:layout_height="match_parent"
                   android:layout_width="match_parent"
