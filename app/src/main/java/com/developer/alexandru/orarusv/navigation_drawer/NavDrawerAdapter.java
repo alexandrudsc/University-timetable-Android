@@ -38,6 +38,8 @@ public class NavDrawerAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
+        if (position < 0 && position > NAV_DRAWER_ELEM_COUNT)
+            return null;
         return titles[position];
     }
 
@@ -54,27 +56,6 @@ public class NavDrawerAdapter extends BaseAdapter{
         }
 
         TextView tv = (TextView)convertView.findViewById(R.id.nav_elem_tv);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.nav_elem_img);
-
-        /*switch (position){
-            case CURRENT_WEEK:
-                imageView.setImageResource(android.R.drawable.ic_menu_week);
-                break;
-            case EXAMS:
-                imageView.setImageResource(android.R.drawable.ic_menu_agenda);
-                break;
-            case HOLIDAYS:
-                imageView.setImageResource(android.R.drawable.ic_menu_myplaces);
-                break;
-            case HELP:
-                imageView.setImageResource(android.R.drawable.ic_menu_help);
-                break;
-            case ABOUT:
-                imageView.setImageResource(android.R.drawable.ic_menu_info_details);
-                break;
-            default:
-                break;
-        }*/
         tv.setText(titles[position]);
 
         return convertView;

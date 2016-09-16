@@ -29,7 +29,7 @@ public abstract class CSVParser {
                 // The char within the string is part of data, not part of a HTML tag
                 boolean isData = false;
                 int start = 0, stop;
-                for (int j = 1; j < len; j++) {
+                for (int j = 1; j < len - 1; j++) {
 
                     String buffer;
                     try {

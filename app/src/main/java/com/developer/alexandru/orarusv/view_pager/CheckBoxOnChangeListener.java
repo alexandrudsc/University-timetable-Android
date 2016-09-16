@@ -1,4 +1,4 @@
-package com.developer.alexandru.orarusv;
+package com.developer.alexandru.orarusv.view_pager;
 
 import android.content.Context;
 import android.content.SharedPreferences;

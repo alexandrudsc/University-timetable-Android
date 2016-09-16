@@ -1,6 +1,7 @@
 package com.developer.alexandru.orarusv.navigation_drawer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.developer.alexandru.orarusv.AboutFragment;
+import com.developer.alexandru.orarusv.HelpActivity;
 import com.developer.alexandru.orarusv.HolidaysFragment;
 import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.R;
@@ -81,9 +83,13 @@ public class DrawerToggle extends ActionBarDrawerToggle {
                 replaceFragment(examsFragment);
                 break;
             case NavDrawerAdapter.HELP:
-                helpFragment = new HolidaysFragment();
-                currentPage = NavDrawerAdapter.HELP;
-                replaceFragment(helpFragment);
+                if(this.activity != null) {
+                    Intent var2 = new Intent(this.activity, HelpActivity.class);
+                    this.activity.startActivity(var2);
+                    this.setSelectedPage(0);
+                    this.setCurrentPage(0);
+                    return;
+                }
                 break;
             case NavDrawerAdapter.HOLIDAYS:
                 holidaysFragment = new HolidaysFragment();

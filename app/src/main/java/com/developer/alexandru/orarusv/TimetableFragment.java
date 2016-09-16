@@ -50,10 +50,10 @@ public class TimetableFragment extends Fragment {
      * Main functionality is to determine the event that will happen at click on a course
      * Also contains a reference to the activity_main activity
      */
-    public static interface OnCourseSelected{
-        public MainActivity getActivity();
-        public FragmentManager getFragManager();
-        public boolean onCourseClicked(Course c);
+    public  interface OnCourseSelected{
+        MainActivity getActivity();
+        FragmentManager getFragManager();
+        boolean onCourseClicked(Course c);
     }
 
     @Override
@@ -160,7 +160,9 @@ public class TimetableFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (D) Log.d(TAG, "onActivityResult");
         for (Fragment fr: getChildFragmentManager().getFragments())
-            fr.onActivityResult(requestCode, resultCode, data);
+            if (fr != null) {
+                fr.onActivityResult(requestCode, resultCode, data);
+            }
         super.onActivityResult(requestCode, resultCode, data);
 
     }

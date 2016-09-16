@@ -22,6 +22,7 @@ import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.DownloadFinished;
 import com.developer.alexandru.orarusv.data.SQLStmtHelper;
 import com.developer.alexandru.orarusv.data.Synchronizer;
+import com.developer.alexandru.orarusv.data.TimetableDownloaderService;
 import com.developer.alexandru.orarusv.data.TimetableDownloaderTask;
 
 import java.util.ArrayList;
@@ -194,20 +195,6 @@ public class SettingsActivity extends ActionBarActivity {
 
     // Show dialog when downloading starts
     public void showDialog(){
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.
-                setCancelable(true)
-                .setTitle("Descarcare ...")
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-
-                    }
-                })
-                .setView(View.inflate(this, R.layout.loading, null));
-
-        dialog = builder.create();
-        dialog.show();*/
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
@@ -248,7 +235,7 @@ public class SettingsActivity extends ActionBarActivity {
 
     // get faculties from the database
     public ArrayList<Elem> faculties(DBAdapter dbAdapter){
-        ArrayList<Elem> faculties = new ArrayList<Elem>();
+        ArrayList<Elem> faculties = new ArrayList<>();
         try {
             if (!dbAdapter.isOpen())
                 dbAdapter.open();
@@ -499,8 +486,11 @@ public class SettingsActivity extends ActionBarActivity {
                     }
                     if (facultyID != 0) {                           // Check if non-modular timetable is requested
                         url = PARTIAL_TIMETABLE_URL + groupID;
-                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
-                        downloaderTask.execute(url);
+//                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
+//                        downloaderTask.execute(url);
+                        Intent intent = new Intent(SettingsActivity.this, TimetableDownloaderService.class);
+                        intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
+                        startService(intent);
                     }
                 break;
             }

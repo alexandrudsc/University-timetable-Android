@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.developer.alexandru.orarusv" >
+    package="com.developer.alexandru.orarusv">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Alexandru"
-        android:allowBackup="true">
-
+        android:theme="@style/Theme.Alexandru">
         <activity
-            android:name="com.developer.alexandru.orarusv.MainActivity"
-            android:launchMode="singleTask" >
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,20 +32,14 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
+        <activity android:name=".SettingsActivity"></activity>
 
-        <activity
-            android:name="com.developer.alexandru.orarusv.SettingsActivity">
-        </activity>
-
-        <service android:name="com.developer.alexandru.orarusv.data.TimetableDownloaderService" >
-        </service>
-
-        <service android:name="com.developer.alexandru.orarusv.data.Synchronizer" >
-        </service>
+        <service android:name=".data.TimetableDownloaderService"></service>
+        <service android:name=".data.Synchronizer"></service>
 
         <receiver
-            android:name="com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider"
-            android:label="@string/widget_label" >
+            android:name=".app_widget.TimetableWidgetProvider"
+            android:label="@string/widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -57,25 +50,24 @@
         </receiver>
 
         <service
-            android:name="com.developer.alexandru.orarusv.app_widget.ListWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" >
-        </service>
+            android:name=".app_widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
 
         <provider
-            android:name="com.developer.alexandru.orarusv.data.CoursesContentProvider"
+            android:name=".data.CoursesContentProvider"
             android:authorities="com.alexandru.developer.aplicatie_studenti.data.CoursesContentProvider"
             android:readPermission="com.alexandru.developer.provider.READ_MY_DATA"
-            android:writePermission="com.alexandru.developer.provider.WRITE_MY_DATA" >
+            android:writePermission="com.alexandru.developer.provider.WRITE_MY_DATA">
             <path-permission
                 android:pathPrefix="/search_suggest_query"
                 android:readPermission="android.permission.GLOBAL_SEARCH" />
         </provider>
 
         <activity
-            android:name="com.developer.alexandru.orarusv.NoteActivity"
+            android:name=".NoteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_note"
-            android:parentActivityName="com.developer.alexandru.orarusv.MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.developer.alexandru.orarusv.MainActivity" />
@@ -84,8 +76,8 @@
         <receiver
             android:name=".data.DownloadFinished"
             android:enabled="true"
-            android:exported="true" >
-        </receiver>
+            android:exported="true"></receiver>
+
     </application>
 
 </manifest>

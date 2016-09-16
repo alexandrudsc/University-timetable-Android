@@ -21,11 +21,12 @@ public class NavigationItemClickListener implements AdapterView.OnItemClickListe
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(position == drawerToggle.getCurrentPage())
-            return;
+        if(position == drawerToggle.getCurrentPage())  {
+            drawer.closeDrawer(Gravity.START);
+        } else {
+            drawerToggle.setSelectedPage(position);
 
-        drawerToggle.setSelectedPage(position);
-
-        drawer.closeDrawer(Gravity.START);
+            drawer.closeDrawer(Gravity.START);
+        }
     }
 }

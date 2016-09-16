@@ -1,7 +1,6 @@
 package com.developer.alexandru.orarusv.view_pager;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -32,8 +31,6 @@ public class DayFragment extends ListFragment {
     private int day;
     private int week;
 
-    private ProgressDialog dialog;
-
     //public static TimetableFragment.OnCourseSelected onCourseSelected;
     private WeakReference<DayCoursesLoader> taskLoaderReference;
     private ArrayList<Course> list;
@@ -60,11 +57,13 @@ public class DayFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         setHasOptionsMenu(true);
+
         if (savedInstanceState != null){
             if (D) Log.d(TAG, " create from previous state");
             day = savedInstanceState.getInt("day");
             list = savedInstanceState.getParcelableArrayList("courses");
         }
+
         if(args != null){
             if (D) Log.d(TAG, " created with args");
             title = args.getString("title");
@@ -85,50 +84,36 @@ public class DayFragment extends ListFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == MainActivity.REQUEST_CODE_DOWNLOAD)
-            if (resultCode == Activity.RESULT_OK){
-                if (D) Log.d(TAG, "data downloaded");
-                this.list = null;
-                adapter.notifyDataSetChanged();
-                dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
-                taskLoaderReference = new WeakReference<>(dayCoursesLoader);
-                dayCoursesLoader.execute(day, week);
-            } else
+        switch (requestCode)
+        {
+            case MainActivity.REQUEST_CODE_DOWNLOAD:
+                if (resultCode == Activity.RESULT_OK){
+                    if (D) Log.d(TAG, "data downloaded");
+                    this.list = null;
+                    adapter.notifyDataSetChanged();
+                    dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
+                    taskLoaderReference = new WeakReference<>(dayCoursesLoader);
+                    dayCoursesLoader.execute(day, week);
+                    break;
+                }
                 if (D) Log.d(TAG, "Not downloaded");
+            case MainActivity.REQUEST_CODE_UNKNOW:
+                if(resultCode == Activity.RESULT_OK) {
+                    if (D) Log.d("DayFragment", "data changed");
+                    this.list = null;
+                    this.adapter.notifyDataSetChanged();
+                    dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
+                    taskLoaderReference = new WeakReference<>(dayCoursesLoader);
+                    dayCoursesLoader.execute(day, week);
+                }
+                break;
+        }
     }
 
     // Check for previously saved state
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View frag = inflater.inflate(R.layout.fragment_day, container, false);
-
-        //checked for saved instance (mainly in case of screen rotation)
-        /*if(savedInstanceState != null){
-            if(D) Log.d(TAG, "RESTORE");
-
-            int day = savedInstanceState.getInt("day");
-            if(ViewPagerAdapter.listsOfCourses == null)
-                ViewPagerAdapter.listsOfCourses = new ArrayList[ViewPagerAdapter.NUM_DAYS];
-            try{
-                if(ViewPagerAdapter.listsOfCourses[day] == null){
-                    ViewPagerAdapter.listsOfCourses[day] = savedInstanceState.getParcelableArrayList("courses");
-                    if(ViewPagerAdapter.listsOfCourses[day] == null)
-                        if(D) Log.d("DAY FRAG", "nothing changed");
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            if(D) Log.d("FRAGMENT", "adapter from saved state" + title);
-            if(this.getListAdapter() == null){
-                this.setListAdapter(new MyListViewAdapter((MainActivity)getActivity(), ViewPagerAdapter.listsOfCourses[day]));
-
-                if(D) Log.d("FRAGMENT", "adapter set " + title);
-                //this.getListView().setItemsCanFocus(false);
-            }else {
-                if(D) Log.d("DAY FRAGMENT RESUMED", "old adapter");
-            }
-        }*/
-
         if (list == null || list.size() == 0) {
             if (savedInstanceState != null) {
                 day = savedInstanceState.getInt("day");
@@ -175,13 +160,6 @@ public class DayFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        /*try {
-            if(ViewPagerAdapter.listsOfCourses == null)
-                ViewPagerAdapter.listsOfCourses = new ArrayList[ViewPagerAdapter.NUM_DAYS];
-            this.setListAdapter(new MyListViewAdapter((MainActivity)getActivity(), ViewPagerAdapter.listsOfCourses[day]));
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }*/
     }
 
     @Override
@@ -199,12 +177,6 @@ public class DayFragment extends ListFragment {
         outState.setClassLoader(Course.class.getClassLoader());
         outState.putInt("day", day);
         outState.putInt("week", week);
-        /*if (!ViewPagerAdapter.isAnyListNull()) {
-            if (ViewPagerAdapter.listsOfCourses[day] != null)
-                outState.putParcelableArrayList("courses", ViewPagerAdapter.listsOfCourses[day]);
-            else
-                outState.putParcelableArrayList("courses", ((MyListViewAdapter) getListAdapter()).getValues());
-        }*/
         outState.putParcelableArrayList ("courses", ((MyListViewAdapter) getListAdapter()).getValues());
         super.onSaveInstanceState(outState);
         if (D) Log.d(TAG, "SAVE");

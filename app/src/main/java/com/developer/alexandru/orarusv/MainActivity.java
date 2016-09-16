@@ -38,6 +38,7 @@ public class MainActivity extends ActionBarActivity
     private static final String TAG = "MainActivity";
 
     public static final char REQUEST_CODE_DOWNLOAD = 12;
+    public static final char REQUEST_CODE_UNKNOW = 13;  // TODO must be changed
 
     public static final String TIMETABLE_FRAGMENT_TAG = "this_is_timetable_fragment";
 

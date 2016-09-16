@@ -1,28 +1,16 @@
 package com.developer.alexandru.orarusv.view_pager;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.developer.alexandru.orarusv.*;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
-import com.developer.alexandru.orarusv.data.CSVParser;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.data.DBAdapter;
-import com.developer.alexandru.orarusv.data.DialogListAdapter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -106,12 +94,6 @@ public class MyListViewAdapter extends BaseAdapter {
             viewHolder.eventType = (TextView) convertView.findViewById(R.id.course_description);
             viewHolder.eventCheckBox = (CheckBox) convertView.findViewById(R.id.event_checkbox);
             viewHolder.eventName = (TextView)convertView.findViewById(R.id.course_name);
-            /*viewHolder.eventType = (TextView)convertView.findViewById(R.id.event_type);
-            viewHolder.eventTime = (TextView)convertView.findViewById(R.id.event_time);
-            viewHolder.eventLocation = (TextView)convertView.findViewById(R.id.event_location);
-
-            viewHolder.eventCheckBox = (CheckBox)convertView.findViewById(R.id.event_checkbox);
-            */
             convertView.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) convertView.getTag();
@@ -119,38 +101,20 @@ public class MyListViewAdapter extends BaseAdapter {
         if(checkBoxOnChangeListener == null)
             checkBoxOnChangeListener = new CheckBoxOnChangeListener();
         final Course c = values.get(position);
-        /*viewHolder.eventName.setText(c.name);
-        viewHolder.eventType.setText(c.type);
-        viewHolder.eventTime.setText(c.time);
-        viewHolder.eventLocation.setText(c.location);*/
         viewHolder.eventCheckBox.setTag(currentWeekFileName + ";" + c.name+ "_" + c.type);
         viewHolder.eventCheckBox.setOnCheckedChangeListener(checkBoxOnChangeListener);
 
 
         viewHolder.eventName.setText(c.name.toUpperCase());
-        viewHolder.eventType.setText(c.type + "\n" + c.time + "\n" +
-                c.location);
+        viewHolder.eventType.setText(c.type + "\n" + c.time + "\n" + c.location);
         boolean currentCourseProgress = false;
-        /*if(currentWeeksProgress == null)
-            currentWeeksProgress = context.getSharedPreferences(currentWeekFileName, Context.MODE_PRIVATE);
 
-        currentCourseProgress = currentWeeksProgress.getBoolean(c.name+ "_" +
-                c.type, false);
-        */
         if(currentCourseProgress)
             viewHolder.eventCheckBox.setChecked(true);
 
         RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_course);//course_in_list_layout);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("CLICKED ON", c.fullName);
-                onCourseSelected.onCourseClicked(c);
-                view.setSelected(true);
-            }
-        });
-
-        layout.setOnLongClickListener(new ReplaceItem(c));
+        layout.setOnClickListener(new OnCourseClickListener(this.onCourseSelected, c));
+        layout.setOnLongClickListener(new OnCourseLongClickListener(this.onCourseSelected, c));
 
         return convertView;
     }
@@ -185,112 +149,103 @@ public class MyListViewAdapter extends BaseAdapter {
         public CheckBox eventCheckBox;
     }
 
-    private class ReplaceItem implements View.OnLongClickListener{
-
-        private Course course;
-
-        public ReplaceItem(Course course) {
-            this.course = course;
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            Log.d("LONG CLICKED ON", course.toString());
-
-            if (!Utils.hasInternetAccess(context)) {
-                Utils.toastNoInternetAccess(context);
-                return true;
-            }
-
-            DBAdapter dbAdapter = new DBAdapter(onCourseSelected.getActivity());
-            //dbAdapter.open();
-
-
-            ArrayList<Course> items = new ArrayList<>();
-
-            DialogListAdapter adapter = new DialogListAdapter(context, R.layout.course_item_layout, items);
-
-            builder.setTitle(R.string.choose)
-                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Event handled by the inner view. See DialogListItem's implementation of getView()
-                        }
-                    });
-            dialog = builder.create();
-            adapter.setDialog(dialog);
-            dialog.show();
-
-            new Thread(new Run(adapter, course.profID)).start();
-
-            //dbAdapter.replaceCourse(course, newCourse, "6");
-            //dbAdapter.close();
-            /*try {
-                new DataLoader(onCourseSelected,onCourseSelected.getFragManager(),
-                        2, null, null, null).execute();
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }*/
-            return true;
-        }
-    }
-
-    private class Run implements Runnable{
-
-        private DialogListAdapter adapter;
-        private String profId;
-
-        public Run(DialogListAdapter adapter, String profId) {
-            super();
-            this.adapter = adapter;
-            this.profId = profId;
-        }
-
-        @Override
-        public void run() {
-            try {
-                Thread.sleep(1000);
-                URL url = new URL(DialogListAdapter.PROF_URL + this.profId);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                InputStreamReader is = new InputStreamReader(conn.getInputStream());
-                BufferedReader br = new BufferedReader(is);
-
-                ParallelCoursesParser parser = new ParallelCoursesParser(br);
-                parser.parse();
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-                conn.disconnect();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private class ParallelCoursesParser extends CSVParser{
-
-            private Course c;
-
-            public ParallelCoursesParser(BufferedReader br) {
-                super(br);
-            }
-
-            @Override
-            public boolean handleData(String[] data) {
-                c = new Course();
-                c.fullName = data[12];
-                c.name = data[13];
-                adapter.add(c);
-                return true;
-            }
-        }
-    }
+//    private class ReplaceItem implements View.OnLongClickListener{
+//
+//        private Course course;
+//
+//        public ReplaceItem(Course course) {
+//            this.course = course;
+//        }
+//
+//        @Override
+//        public boolean onLongClick(View v) {
+//            Log.d("LONG CLICKED ON", course.toString());
+//
+//            if (!Utils.hasInternetAccess(context)) {
+//                Utils.toastNoInternetAccess(context);
+//                return true;
+//            }
+//
+//            DBAdapter dbAdapter = new DBAdapter(onCourseSelected.getActivity());
+//            //dbAdapter.open();
+//
+//
+//            ArrayList<Course> items = new ArrayList<>();
+//
+//            DialogListAdapter adapter = new DialogListAdapter(context, R.layout.simple_course_layout, items);
+//
+//            builder.setTitle(R.string.choose)
+//                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            // Event handled by the inner view. See DialogListItem's implementation of getView()
+//                        }
+//                    });
+//            dialog = builder.create();
+//            adapter.setDialog(dialog);
+//            dialog.show();
+//
+//            new Thread(new Run(adapter, course.profID)).start();
+//            return true;
+//        }
+//    }
+//
+//    private class Run implements Runnable{
+//
+//        private DialogListAdapter adapter;
+//        private String profId;
+//
+//        public Run(DialogListAdapter adapter, String profId) {
+//            super();
+//            this.adapter = adapter;
+//            this.profId = profId;
+//        }
+//
+//        @Override
+//        public void run() {
+//            try {
+//                Thread.sleep(1000);
+//                URL url = new URL(DialogListAdapter.PROF_URL + this.profId);
+//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                InputStreamReader is = new InputStreamReader(conn.getInputStream());
+//                BufferedReader br = new BufferedReader(is);
+//
+//                ParallelCoursesParser parser = new ParallelCoursesParser(br);
+//                parser.parse();
+//                ((Activity)context).runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
+//                conn.disconnect();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        private class ParallelCoursesParser extends CSVParser{
+//
+//            private Course c;
+//
+//            public ParallelCoursesParser(BufferedReader br) {
+//                super(br);
+//            }
+//
+//            @Override
+//            public boolean handleData(String[] data) {
+//                c = new Course();
+//                c.fullName = data[12];
+//                c.name = data[13];
+//                adapter.add(c);
+//                return true;
+//            }
+//        }
+//    }
 
 }
 

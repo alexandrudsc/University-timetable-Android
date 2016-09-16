@@ -12,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.developer.alexandru.orarusv.CheckBoxOnChangeListener;
+import com.developer.alexandru.orarusv.view_pager.CheckBoxOnChangeListener;
 import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.DBAdapter;

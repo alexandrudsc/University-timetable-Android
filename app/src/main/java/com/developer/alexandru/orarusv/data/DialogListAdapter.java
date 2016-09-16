@@ -2,9 +2,13 @@ package com.developer.alexandru.orarusv.data;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import com.developer.alexandru.orarusv.R;
 
 import java.util.ArrayList;
 
@@ -30,12 +34,17 @@ public class DialogListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        if (items == null) {
+            return 0;
+        }
+        return items.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        if (items == null)
+            return null;
+        return items.get(i);
     }
 
     @Override
@@ -44,8 +53,26 @@ public class DialogListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+    public View getView(int i, View convertView, ViewGroup viewGroup) {
+        ViewHolder viewHolder = null;
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(this.courseItemLayout, viewGroup, false);
+            viewHolder = new ViewHolder();
+            viewHolder.name = (TextView) convertView.findViewById(R.id.course_name);
+            viewHolder.description = (TextView) convertView.findViewById(R.id.course_description);
+            convertView.setTag(viewHolder);
+        }
+
+        if (viewHolder == null) {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        Course course = this.items.get(i);
+        viewHolder.name.setText(course.fullName);
+
+        viewHolder.description.setText(course.startTime + " - " + course.endTime + ", " + ", \n" + "Săptămâni: " + course.parity);
+        return convertView;
     }
 
     public void setDialog(AlertDialog dialog) {
@@ -54,5 +81,10 @@ public class DialogListAdapter extends BaseAdapter {
 
     public boolean add(Course c) {
         return this.items.add(c);
+    }
+
+    private static class ViewHolder {
+        TextView name;
+        TextView description;
     }
 }
