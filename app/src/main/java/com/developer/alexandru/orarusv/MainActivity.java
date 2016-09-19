@@ -27,7 +27,7 @@ import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickList
 /**
  * Created by Alexandru
  * The activity_main entry point of the app.
- * Activity responsible for choosing the right design (phones and tablets, aka one or two panes layout).
+ * Activity responsible for choosing the right design (phones and tablets, one or two panes layout).
  * Implements an interface for easy interaction with the timetable fragment.
  */
 public class MainActivity extends ActionBarActivity
@@ -90,18 +90,14 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "create activity_main");
+
         Utils.setCurrentWeek(this);
         setContentView(R.layout.activity_main);
-        //setTitle("Săptămâna " + Utils.getCurrentWeek(this));
-        /*Spinner spinner = (Spinner)findViewById(R.id.weeks_selector);
 
-        spinner.setOnItemSelectedListener(new SpinnerElementSelectedEvent(this));
-        spinner.setAdapter(new MySpinnerAdapter(this));
-        spinner.setSelection(6);
-        */
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_navigation_drawer);
         setSupportActionBar(toolbar);
-
 
         drawerLayout = (DrawerLayout)this.findViewById(R.id.drawer_layout);
 
@@ -109,8 +105,6 @@ public class MainActivity extends ActionBarActivity
                 toolbar,
                 R.string.title_nav_opened,
                 R.string.title_nav_closed);
-
-        Log.d(TAG, "create activity_main");
 
         if(savedInstanceState != null){
             Log.d("MAIN ACTIVITY", "create activity_main with saved instance state");

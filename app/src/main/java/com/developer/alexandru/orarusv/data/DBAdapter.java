@@ -296,7 +296,7 @@ public class DBAdapter {
                 orderBy);
         if (cursor == null)
             return null;
-        ArrayList<Course> courses = new ArrayList<Course>();
+        ArrayList<Course> courses = new ArrayList<>();
         String name, fullName, type, time, info, location, fullLocation, parity, prof, profID;
         while (cursor.moveToNext()) {
             name = cursor.getString(0);

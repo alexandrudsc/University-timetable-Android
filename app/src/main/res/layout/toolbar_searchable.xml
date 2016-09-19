@@ -15,6 +15,7 @@
         android:textSize="@dimen/large_text"
         android:layout_height="0dip"
         android:layout_weight="1.2"
-        tools:showIn="@layout/fragment_searchable" />
+        tools:showIn="@layout/fragment_searchable"
+        android:text="text test"/>
 
 </android.support.v7.widget.Toolbar>

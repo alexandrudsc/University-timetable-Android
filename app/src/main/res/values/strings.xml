@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Aplicatie studenti</string>
+    <string name="app_name">Orar</string>
     <string name="settings">Setări</string>
     <string name="download_timetable">Descarcă orar</string>
     <string name="action_search">Caută</string>

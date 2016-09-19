@@ -17,7 +17,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+
 import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.DownloadFinished;
 import com.developer.alexandru.orarusv.data.SQLStmtHelper;
@@ -62,14 +67,14 @@ public class SettingsActivity extends ActionBarActivity {
     private TimetableDownloaderTask downloaderTask;
 
     // Preferences
-    private static final String FACULTY_NAME_PREF = "faculty";
-    private static final String FACULTY_ID_PREF = "faculty_id";
-    private static final String GROUP_NAME_PREF = "group_name";
-    private static final String GROUP_ID_PREF = "group_id";
-    private static final String LEVEL_PREF = "studies_level";
-    private static final String LICENCE = "licence";
-    private static final String MASTERS = "masters";
-    private static final String PHD = "phd";
+    public static final String FACULTY_NAME_PREF = "faculty";
+    public static final String FACULTY_ID_PREF = "faculty_id";
+    public static final String GROUP_NAME_PREF = "group_name";
+    public static final String GROUP_ID_PREF = "group_id";
+    public static final String LEVEL_PREF = "studies_level";
+    public static final String LICENCE = "licence";
+    public static final String MASTERS = "masters";
+    public static final String PHD = "phd";
 
     private DBAdapter dbAdapter;
 
@@ -143,7 +148,7 @@ public class SettingsActivity extends ActionBarActivity {
             radioGroup.check(R.id.phd_btn);
         }
         // Event for a groups spinner
-        GroupSelected groupSelected = new GroupSelected();
+        SettingsGroupSelected groupSelected = new SettingsGroupSelected(this.prefs);
         groupUndergraduates.setOnItemSelectedListener(groupSelected);
         groupMasters.setOnItemSelectedListener(groupSelected);
         groupPhd.setOnItemSelectedListener(groupSelected);
@@ -296,12 +301,12 @@ public class SettingsActivity extends ActionBarActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(syncFinishedReceiver, filter);
     }
 
-    private void unregisterSyncObserver(){
+    private void unregisterSyncObserver() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(syncFinishedReceiver);
     }
 
     // Make sure that only one spinner is visible at given time
-    private void resetGroupsSpinners(){
+    private void resetGroupsSpinners() {
         if (groupUndergraduates == null)
             groupUndergraduates = (Spinner)findViewById(R.id.spinner_group_undergraduate);
         groupUndergraduates.setVisibility(View.INVISIBLE);
@@ -422,35 +427,6 @@ public class SettingsActivity extends ActionBarActivity {
         }
     }
 
-    // ItemSelected listener for groups spinner
-    private class GroupSelected implements AdapterView.OnItemSelectedListener{
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            Elem group = (Elem) parent.getAdapter().getItem(position);
-            switch (parent.getId()) {
-                case R.id.spinner_group_undergraduate:
-                    if (studiesLevel.equals(LICENCE))
-                        saveSelectedGroup(group);
-                    break;
-                case R.id.spinner_group_master:
-                    if (studiesLevel.equals(MASTERS))
-                        saveSelectedGroup(group);
-                    break;
-                case R.id.spinner_group_phd:
-                    if (studiesLevel.equals(PHD))
-                        saveSelectedGroup(group);
-                    break;
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-
-    }
-
     // Save selected group to preferences
     public void saveSelectedGroup(Elem group){
         if (prefs == null)
@@ -494,29 +470,6 @@ public class SettingsActivity extends ActionBarActivity {
                     }
                 break;
             }
-        }
-    }
-
-    // Faculties and groups
-    private class Elem{
-        public int id;
-        public String name;
-        public String link;
-        Elem () {
-
-        }
-        Elem(int id){
-            this.id = id;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return o instanceof Elem && this.id == ((Elem) o).id;
-        }
-
-        @Override
-        public String toString() {
-            return name;
         }
     }
 

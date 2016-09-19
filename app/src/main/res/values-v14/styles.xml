@@ -34,6 +34,7 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Alexandru</item>
         <item name="android:textColorHint">@color/white </item>
         -->
+        <item name="displayOptions">useLogo|homeAsUp</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>

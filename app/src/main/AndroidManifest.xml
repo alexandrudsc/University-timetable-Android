@@ -32,10 +32,10 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity"/>
 
-        <service android:name=".data.TimetableDownloaderService"></service>
-        <service android:name=".data.Synchronizer"></service>
+        <service android:name=".data.TimetableDownloaderService"/>
+        <service android:name=".data.Synchronizer"/>
 
         <receiver
             android:name=".app_widget.TimetableWidgetProvider"
@@ -51,7 +51,7 @@
 
         <service
             android:name=".app_widget.ListWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <provider
             android:name=".data.CoursesContentProvider"
@@ -76,7 +76,7 @@
         <receiver
             android:name=".data.DownloadFinished"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true"/>
 
     </application>
 
