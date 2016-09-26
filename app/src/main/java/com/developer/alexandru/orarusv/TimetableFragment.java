@@ -23,6 +23,8 @@ import com.developer.alexandru.orarusv.view_pager.ViewPagerAdapter;
 
 import java.util.Calendar;
 
+import com.developer.alexandru.orarusv.download.DownloadActivity;
+
 /**
  * Created by Alexandru on 7/12/14.
  * The fragment displayed as activity_main page in the activity_main activity.
@@ -140,8 +142,8 @@ public class TimetableFragment extends Fragment {
         if (D) Log.d(TAG, "on create options");
         switch (item.getItemId()){
             case R.id.download_from_menu:
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
-
+//                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                Intent intent = new Intent(getActivity(), DownloadActivity.class);
                 // Register a receiver for the notification of the downloading status
                 /*if (timetableFragment == null)
                         timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentByTag(TIMETABLE_FRAGMENT_TAG);

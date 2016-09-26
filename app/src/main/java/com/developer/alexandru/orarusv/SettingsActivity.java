@@ -156,7 +156,7 @@ public class SettingsActivity extends ActionBarActivity {
         // Event for selecting a faculty
         faculties.setOnItemSelectedListener(new FacultySelected());
 
-        // Event for the download button
+        // Event for the com.developer.alexandru.orarusv.download button
         Button downloadBtn = (Button)findViewById(R.id.download_btn);
         OnButtonClickListener clickListener = new OnButtonClickListener();
         downloadBtn.setOnClickListener(clickListener);
@@ -442,7 +442,7 @@ public class SettingsActivity extends ActionBarActivity {
             editor.commit();
     }
 
-    // Click listener for download button
+    // Click listener for com.developer.alexandru.orarusv.download button
     private class OnButtonClickListener implements View.OnClickListener{
 
         @Override

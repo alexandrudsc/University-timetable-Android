@@ -232,7 +232,7 @@ public class MainActivity extends ActionBarActivity
                     Log.d("Main", "NOT downloaded");
                     //Toast.makeText(this, "Eroare la descarcare ..,", Toast.LENGTH_SHORT).show();
                     // If the user hasn't downloaded anything, unregister the receiver
-                    // (the result will be RESULT_CANCELED if the user hasn't pressed the download button)
+                    // (the result will be RESULT_CANCELED if the user hasn't pressed the com.developer.alexandru.orarusv.download button)
 
                 }
         }

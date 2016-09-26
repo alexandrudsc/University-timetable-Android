@@ -58,7 +58,7 @@ public class DBAdapter {
 
     /**
      * Create a temporary table to insert downloading courses: if there are any courses downloaded
-     * this will not block the access to the current courses, and it used as safety if network access fails during download
+     * this will not block the access to the current courses, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
      */
     protected void createTMPCoursesTable(){
         if (!dbHelper.tableExists(database, SQLStmtHelper.COURSES_TMP_TABLE)) {
@@ -86,7 +86,7 @@ public class DBAdapter {
 
     /**
      * Create a temporary table to insert downloading faculties: if there are any faculties  downloaded
-     * this will not block the access to the current faculties, and it used as safety if network access fails during download
+     * this will not block the access to the current faculties, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
      */
     protected void createTMPFaculties(){
         if (!dbHelper.tableExists(database, SQLStmtHelper.FACULTIES_TABLE))
