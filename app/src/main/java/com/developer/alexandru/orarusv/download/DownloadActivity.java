@@ -8,43 +8,44 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.developer.alexandru.orarusv.R;
 
-public class DownloadActivity extends Activity implements DownloadActivityView {
+public class DownloadActivity extends Activity implements DownloadActivityView, View.OnClickListener {
 
     private WebView webView;
+    private Button downloadBtn;
+
     private DownloadActivityPresenterImpl presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         webView = (WebView) findViewById(R.id.webview);
-
+        downloadBtn = (Button) findViewById(R.id.timetable_download_btn);
         presenter = new DownloadActivityPresenterImpl(this);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new OrarUSVWebViewClient());
+        webView.loadUrl("http://www.usv.ro/orar/mobilorar/vizualizare/orarUp1.php");
 
-        webView.loadUrl("http://www.usv.ro/orar/mobilorar/vizualizare/orarUp1.php");;
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-                return super.onJsAlert(view, url, message, result);
-            }
-        });
-
-        findViewById(R.id.timetable_download_btn).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                presenter.downloadButtonClicked(DownloadActivity.this);
-            }
-        });
+        downloadBtn.setOnClickListener(this);
     }
 
     @Override
     public void setJavascriptInterface(DownloadActivityPresenterImpl.JavascriptInterface javascriptInterface) {
         webView.addJavascriptInterface(javascriptInterface, "Android");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.timetable_download_btn:
+                presenter.downloadButtonClicked(this, webView);
+        }
     }
 
     private class OrarUSVWebViewClient extends WebViewClient {
@@ -57,7 +58,6 @@ public class DownloadActivity extends Activity implements DownloadActivityView {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            presenter.webViewPageFinished(view);
 
         }
     }

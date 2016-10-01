@@ -7,6 +7,5 @@ import android.webkit.WebView;
  * Created by alexandru on 9/26/16.
  */
 public interface DownloadActivityPresenter {
-    void downloadButtonClicked(Context context);
-    void webViewPageFinished(WebView webView);
+    void downloadButtonClicked(Context context, WebView webView);
 }
