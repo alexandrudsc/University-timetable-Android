@@ -6,16 +6,4 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/course_title"
-        android:layout_width="match_parent"
-        android:singleLine="false"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:textSize="@dimen/large_text"
-        android:layout_height="0dip"
-        android:layout_weight="1.2"
-        tools:showIn="@layout/fragment_searchable"
-        android:text="text test"/>
-
 </android.support.v7.widget.Toolbar>

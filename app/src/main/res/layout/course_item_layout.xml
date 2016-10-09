@@ -31,39 +31,21 @@
             android:orientation="vertical">
 
         <TextView
-                android:id="@+id/course_name"
-                android:layout_gravity="center_vertical"
-                android:textSize="22sp"
-                android:layout_weight="6"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"/>
+            android:id="@+id/course_name"
+            android:layout_gravity="center_vertical"
+            android:textSize="22sp"
+            android:layout_weight="6"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"/>
 
         <TextView
-                android:id="@+id/course_description"
-                android:layout_gravity="center_vertical"
-                android:textSize="14sp"
-                android:text="type"
-                android:layout_weight="6"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"/>
-
-        <TextView
-                android:id="@+id/event_time"
-                android:layout_gravity="center_vertical"
-                android:textSize="14sp"
-                android:text="time"
-                android:layout_weight="3"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"/>
-
-        <TextView
-                android:id="@+id/event_location"
-                android:layout_gravity="center_vertical"
-                android:textSize="14sp"
-                android:text="location"
-                android:layout_weight="3"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"/>
+            android:id="@+id/course_description"
+            android:layout_gravity="center_vertical"
+            android:textSize="14sp"
+            android:layout_weight="6"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_marginBottom="@dimen/abc_action_bar_subtitle_bottom_margin_material"/>
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.developer.alexandru.orarusv">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -81,6 +82,12 @@
         <activity
             android:name=".download.DownloadActivity"
             android:theme="@style/Theme.Alexandru">
+
+        </activity>
+
+        <activity
+            android:name=".HelpActivity"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         </activity>
     </application>

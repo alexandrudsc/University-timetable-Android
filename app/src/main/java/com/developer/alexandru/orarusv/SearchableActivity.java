@@ -18,6 +18,7 @@ import java.util.HashMap;
  * Created by Alexandru on 7/4/14.
  * NOT USED!
  */
+@Deprecated
 public class SearchableActivity extends FragmentActivity {//extends ListActivity {
 
 

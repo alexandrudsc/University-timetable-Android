@@ -24,6 +24,7 @@ import java.sql.Date;
  * The work is done off the activity_main thread with an AsyncTask
  * NOT ACTIVE NOW!!
  */
+@Deprecated
 public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
 
     //Debug
@@ -55,7 +56,6 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
     public static final int PARITY = 18;
     public static final int INFO = 19;
     public static final int TYPE = 21;
-
 
     public TimetableDownloaderTask(SettingsActivity activity) {
         this.activity = activity;

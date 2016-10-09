@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider;
+import com.developer.alexandru.orarusv.download.DownloadActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +33,7 @@ public class TimetableDownloaderService extends IntentService {
 
     //Debug
     private static final boolean D = true;
-    public static final String TAG = "timetable_downloader";
+    public static final String TAG = "TIMETABLE_DOWNLOADER";
 
     public static final String EXTRA_URL = "timetable_url";
     public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
@@ -102,6 +104,7 @@ public class TimetableDownloaderService extends IntentService {
             String line;
             String[] strs;
             while ((line = br.readLine()) != null) {
+                Log.d(TAG, line);
                 strs = line.split("<br />");
                 if (strs.length > 1)
                     saveTimeStructure(strs);
@@ -111,20 +114,6 @@ public class TimetableDownloaderService extends IntentService {
             is.close();
             conn.disconnect();
 
-                /*URL profsURL = new URL(PROFS_URL);
-                conn = (HttpURLConnection) profsURL.openConnection();
-                is = new InputStreamReader(conn.getInputStream());
-                br = new BufferedReader(is);
-
-                String filePath = getApplicationContext().getFilesDir().getPath() + "/profs.txt";
-                BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
-                while ((line = br.readLine()) != null)
-                writer.write(line + "\n");
-                writer.close();
-
-                br.close();
-                is.close();
-                conn.disconnect();*/
 
             URL url = new URL(adr);
             conn = (HttpURLConnection) url.openConnection();
@@ -137,9 +126,10 @@ public class TimetableDownloaderService extends IntentService {
             CoursesParser parser = new CoursesParser(br);
             parser.parse();
             conn.disconnect();
-
-            dbAdapter.replaceOldCourses();
-//            ViewPagerAdapter.listsOfCourses = null;
+            if (parser.wasSuccessful()) {
+                dbAdapter.replaceOldCourses();
+                sendNotificationDownloaded();
+            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -150,6 +140,11 @@ public class TimetableDownloaderService extends IntentService {
 
         cancelNotification();
         dbAdapter.close();
+    }
+
+    private void sendNotificationDownloaded() {
+        final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.sendBroadcast(new Intent(DownloadActivity.TIMETABLE_DOWNLOADED));
     }
 
     private void showNotification(){
@@ -179,7 +174,10 @@ public class TimetableDownloaderService extends IntentService {
                 if ( i == time.length - 2)
                     s2.end = Date.valueOf(dates[0]).getTime() - TimetableWidgetProvider.DAY_TO_MILLIS;
                 else {
-                    if (dates[2].toLowerCase().contains("sesiune")) {
+                    if (dates.length > 2 && dates[2] != null && dates[2].toLowerCase().contains("deschidere")) {
+                        s1.start = Date.valueOf(dates[1]).getTime();
+                    }
+                    if (dates.length > 2 && dates[2] != null && dates[2].toLowerCase().contains("sesiune")) {
                         if (!afterFirstSemester)
                             s1.end = Date.valueOf(dates[0]).getTime() - TimetableWidgetProvider.DAY_TO_MILLIS;
                         else {
@@ -189,7 +187,7 @@ public class TimetableDownloaderService extends IntentService {
                         }
                         afterFirstSemester = true;
                     }
-                    if (dates[2].toLowerCase().contains("vacanta"))
+                    if (dates.length > 2 && dates[2] != null && dates[2].toLowerCase().contains("vacanta"))
                         if (afterFirstSemester) {
                             s2.startHoliday = Date.valueOf(dates[0]).getTime();
                             s2.endHoliday = Date.valueOf(dates[1]).getTime();
@@ -199,8 +197,14 @@ public class TimetableDownloaderService extends IntentService {
                         }
                     switch (i) {
                         case 0:
-                            s1.start = Date.valueOf(dates[1]).getTime();
+                            if (dates.length > 2 && dates[2] != null && dates[2].toLowerCase().contains("deschidere")) {
+                                s1.start = Date.valueOf(dates[1]).getTime();
+                            }
                             break;
+                        default:
+                            if (dates.length > 2 && dates[2] != null && dates[2].toLowerCase().contains("deschidere")) {
+                                s1.start = Date.valueOf(dates[1]).getTime();
+                            }
                     }
                 }
             }
@@ -265,7 +269,7 @@ public class TimetableDownloaderService extends IntentService {
             return str;
         }
 
-        public boolean contains(long dateMilis){
+        public boolean contains(long dateMilis) {
             return Utils.isDateBetween(start, end, dateMilis);
         }
 
@@ -282,7 +286,6 @@ public class TimetableDownloaderService extends IntentService {
             editor.commit();
             return true;
         }
-
     }
 
 }

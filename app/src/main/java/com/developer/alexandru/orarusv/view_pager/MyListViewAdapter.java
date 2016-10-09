@@ -105,14 +105,13 @@ public class MyListViewAdapter extends BaseAdapter {
         viewHolder.eventCheckBox.setOnCheckedChangeListener(checkBoxOnChangeListener);
 
 
-        viewHolder.eventName.setText(c.name.toUpperCase());
-        viewHolder.eventType.setText(c.type + "\n" + c.time + "\n" + c.location);
-        boolean currentCourseProgress = false;
+        viewHolder.eventName.setText (c.name.toUpperCase());
+        viewHolder.eventType.setText (c.type + "\n" + c.time + "\n" + c.location);
+        boolean currentCourseProgress = getCourseProgress(viewHolder.eventCheckBox.getContext(),
+                                                            viewHolder.eventCheckBox.getTag());
+        viewHolder.eventCheckBox.setChecked(currentCourseProgress);
 
-        if(currentCourseProgress)
-            viewHolder.eventCheckBox.setChecked(true);
-
-        RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_course);//course_in_list_layout);
+        RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_course);
         layout.setOnClickListener(new OnCourseClickListener(this.onCourseSelected, c));
         layout.setOnLongClickListener(new OnCourseLongClickListener(this.onCourseSelected, c));
 
@@ -147,6 +146,16 @@ public class MyListViewAdapter extends BaseAdapter {
     public static class ViewHolder{
         public TextView eventName, eventType;
         public CheckBox eventCheckBox;
+    }
+
+    private boolean getCourseProgress(Context context, Object tag) {
+        if (! (tag instanceof String))
+            return false;
+        final String str = (String)tag;
+        String[] fileAndPreference = str.split(";");
+        final SharedPreferences currentWeekProgressFile = context.getSharedPreferences(fileAndPreference[0],
+                                                        Context.MODE_PRIVATE);
+        return currentWeekProgressFile.getBoolean(fileAndPreference[1], false);
     }
 
 //    private class ReplaceItem implements View.OnLongClickListener{

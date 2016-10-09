@@ -297,25 +297,33 @@ public class DBAdapter {
         if (cursor == null)
             return null;
         ArrayList<Course> courses = new ArrayList<>();
-        String name, fullName, type, time, info, location, fullLocation, parity, prof, profID;
-        while (cursor.moveToNext()) {
-            name = cursor.getString(0);
-            fullName = cursor.getString(1);
-            type = cursor.getString(2);
-            location = cursor.getString(3);
-            fullLocation = cursor.getString(4);
-            time = cursor.getString(5) + ":00 - " + cursor.getString(6) + ":00";
-            prof = cursor.getString(7);
-            profID = cursor.getString(8);
-            parity = cursor.getString(9);
-            info = cursor.getString(10);
 
-            courses.add(new Course(name, fullName, type, location, fullLocation,
-                    time, prof, profID, parity, info));
+        while (cursor.moveToNext()) {
+            Course course = getCourseFromCursor(cursor);
+            courses.add(course);
 
         }
         cursor.close();
         return courses;
+    }
+
+    private Course getCourseFromCursor(Cursor cursor) {
+        if (cursor == null)
+            return null;
+        String name, fullName, type, time, info, location, fullLocation, parity, prof, profID;
+        name = cursor.getString(0);
+        fullName = cursor.getString(1);
+        type = cursor.getString(2);
+        location = cursor.getString(3);
+        fullLocation = cursor.getString(4);
+        time = cursor.getString(5) + ":00 - " + cursor.getString(6) + ":00";
+        prof = cursor.getString(7);
+        profID = cursor.getString(8);
+        parity = cursor.getString(9);
+        info = cursor.getString(10);
+
+        return new Course(name, fullName, type, location, fullLocation,
+                time, prof, profID, parity, info);
     }
 
     // Used by content provider for search suggestions
@@ -381,6 +389,7 @@ public class DBAdapter {
                 SQLStmtHelper.LOCATION,
                 SQLStmtHelper.FULL_LOCATION,
                 SQLStmtHelper.START_TIME,
+                SQLStmtHelper.END_TIME,
                 SQLStmtHelper.PROF,
                 SQLStmtHelper.PROF_ID,
                 SQLStmtHelper.PARITY,
@@ -399,9 +408,7 @@ public class DBAdapter {
         if(result == null || result.getCount() == 0)
             return null;
         result.moveToFirst();
-        return  new Course(result.getString(0), result.getString(1), result.getString(2),
-                            result.getString(3), result.getString(4), result.getString(5),
-                            result.getString(6), result.getString(7), result.getString(8), result.getString(9));
+        return  getCourseFromCursor(result);
 
     }
 

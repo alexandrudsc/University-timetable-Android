@@ -1,6 +1,5 @@
 package com.developer.alexandru.orarusv;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,7 +27,6 @@ public class DetailsFragment extends Fragment {
     public static final String REPLACE_DETAILS_WITH_RESULT = "result_replacement";
 
     private Course course;
-    private Context context;
     private boolean attachFrToContainer;
     private TextView courseTime = null, courseProf, courseLocation;
 
@@ -98,7 +96,7 @@ public class DetailsFragment extends Fragment {
 
             courseProf.setText(course.prof);
             courseTime.setText(course.time);
-            courseLocation.setText(course.fullLocation);
+            courseLocation.setText("Corp " + course.fullLocation);
         }
         catch (NullPointerException e ){
         }

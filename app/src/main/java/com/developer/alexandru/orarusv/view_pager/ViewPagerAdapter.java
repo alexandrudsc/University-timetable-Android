@@ -8,7 +8,6 @@ import com.developer.alexandru.orarusv.Utils;
 /**
  * Created by Alexandru on 6/13/14.
  * Adapter providing fragments for each day
- * Contains a static array @listsOfCourses which holds for as long as possible the data for the current week (BAD IDEA)
  * NOT SURE IF I SHOULD USE FragmentStatePagerAdapter or a simple FragmentPagerAdapter
  */
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {

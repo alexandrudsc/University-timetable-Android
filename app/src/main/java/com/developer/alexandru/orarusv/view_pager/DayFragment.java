@@ -94,25 +94,25 @@ public class DayFragment extends ListFragment {
             case MainActivity.REQUEST_CODE_DOWNLOAD:
                 if (resultCode == Activity.RESULT_OK){
                     if (D) Log.d(TAG, "data downloaded");
-                    this.list = null;
-                    adapter.notifyDataSetChanged();
-                    dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
-                    taskLoaderReference = new WeakReference<>(dayCoursesLoader);
-                    dayCoursesLoader.execute(day, week);
+                    refreshCourses();
                     break;
                 }
                 if (D) Log.d(TAG, "Not downloaded");
             case MainActivity.REQUEST_CODE_UNKNOW:
                 if(resultCode == Activity.RESULT_OK) {
                     if (D) Log.d("DayFragment", "data changed");
-                    this.list = null;
-                    this.adapter.notifyDataSetChanged();
-                    dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
-                    taskLoaderReference = new WeakReference<>(dayCoursesLoader);
-                    dayCoursesLoader.execute(day, week);
+                    refreshCourses();
                 }
                 break;
         }
+    }
+
+    private void refreshCourses() {
+        this.list = null;
+        adapter.notifyDataSetChanged();
+        dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
+        taskLoaderReference = new WeakReference<>(dayCoursesLoader);
+        dayCoursesLoader.execute(day, week);
     }
 
     // Check for previously saved state

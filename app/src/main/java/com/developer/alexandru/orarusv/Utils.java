@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.developer.alexandru.orarusv.data.Course;
+
 /**
  * Created by Alexandru on 2/10/2015.
  * Class with static methods providing utilities like: calculating the current week of the semester avoiding the holidays,

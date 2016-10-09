@@ -3,10 +3,13 @@ package com.developer.alexandru.orarusv;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -19,9 +22,13 @@ import android.widget.TextView;
 
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.data.DBAdapter;
+import com.developer.alexandru.orarusv.data.DownloadFinished;
+import com.developer.alexandru.orarusv.data.TimetableDownloadFinished;
 import com.developer.alexandru.orarusv.navigation_drawer.DrawerToggle;
 import com.developer.alexandru.orarusv.navigation_drawer.NavDrawerAdapter;
 import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickListener;
+
+import java.util.List;
 
 
 /**
@@ -74,8 +81,8 @@ public class MainActivity extends ActionBarActivity
     //The last week selected from navigation list in action bar
     public static final String PREF_LAST_SELECTED_WEEK = "vp_last_position";
 
-    public static long WEEK_IN_MILLIS = 7 * 24 * 3600 * 1000;
-    public static int WEEKS_IN_SEMESTER = 14;
+    public static final long WEEK_IN_MILLIS = 7 * 24 * 3600 * 1000;
+    public static final int WEEKS_IN_SEMESTER = 14;
 
     //Main fragment
     private TimetableFragment timetableFragment = null;
@@ -161,26 +168,8 @@ public class MainActivity extends ActionBarActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
 
-        /*switch (item.getItemId()){
-            case R.id.download_from_menu:
-                Intent intent = new Intent(this, SettingsActivity.class);
-
-                // Register a receiver for the notification of the downloading status
-                /*if (timetableFragment == null)
-                        timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentByTag(TIMETABLE_FRAGMENT_TAG);
-                downloadFinishedReceiver = new DownloadFinishedReceiver(this, timetableFragment.getChildFragmentManager());
-                IntentFilter downloadFinishedFilter = new IntentFilter(TimetableDownloaderService.ACTION_DOWNLOAD_FINISHED);
-                LocalBroadcastManager.getInstance(this).registerReceiver(downloadFinishedReceiver, downloadFinishedFilter);
-
-                startActivityForResult(intent, REQUEST_CODE_DOWNLOAD);
-
-                return true;
-        }*/
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -213,27 +202,11 @@ public class MainActivity extends ActionBarActivity
 
         if(requestCode == REQUEST_CODE_DOWNLOAD){
             if(resultCode == RESULT_OK) {
-               /* Log.d("Main", "downloaded. " + "Refresh data.");
-                //Check if two pane layout
-                if(timetableFragment == null)
-                    timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentById(R.id.timetable_fragment);
-
-                if(timetableFragment == null)
-                    timetableFragment = (TimetableFragment)getSupportFragmentManager().findFragmentByTag(TIMETABLE_FRAGMENT_TAG);
-                try {
-                    new DataLoader(this, timetableFragment.getChildFragmentManager(),
-                            2, null, null, null).execute();
-                }catch (NullPointerException e){
-                    e.printStackTrace();
-                }*/
-            }
+               Log.d("Main", "downloaded. " + "Refresh data.");
+         }
             else
                 if(resultCode == RESULT_CANCELED) {
                     Log.d("Main", "NOT downloaded");
-                    //Toast.makeText(this, "Eroare la descarcare ..,", Toast.LENGTH_SHORT).show();
-                    // If the user hasn't downloaded anything, unregister the receiver
-                    // (the result will be RESULT_CANCELED if the user hasn't pressed the com.developer.alexandru.orarusv.download button)
-
                 }
         }
         super.onActivityResult(requestCode, resultCode, data);

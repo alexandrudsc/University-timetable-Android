@@ -12,6 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Alexandru on 7/9/14.
  */
+@Deprecated
 public class SearchableActivityAdapter extends BaseAdapter {
     private ArrayList<String> values;
     private Context context;

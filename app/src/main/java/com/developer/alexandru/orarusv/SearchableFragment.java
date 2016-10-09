@@ -75,9 +75,7 @@ public class SearchableFragment extends  Fragment{
 
         View fragmentView =  inflater.inflate(R.layout.fragment_searchable, container, false);
         FragmentManager fm = getChildFragmentManager();
-
-        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar_searchable);
-        TextView courseTitle = (TextView) toolbar.findViewById(R.id.course_title);
+        TextView courseTitle = (TextView) fragmentView.findViewById(R.id.course_title);
 
         if(course == null){
             if(savedInstanceState != null){
@@ -135,7 +133,7 @@ public class SearchableFragment extends  Fragment{
         }
 
         // Find the toolbar (two-pane layout)
-        toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar_searchable);
+        Toolbar toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar_searchable);
         return fragmentView;
     }
 
