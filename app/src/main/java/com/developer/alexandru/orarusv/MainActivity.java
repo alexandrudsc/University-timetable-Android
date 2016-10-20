@@ -279,7 +279,7 @@ public class MainActivity extends ActionBarActivity
         if (D) Log.d(TAG, "destroyed");
     }
 
-    public void initializeNavDrawer(){
+    public void initializeNavDrawer() {
         if(drawerLayout == null)
             drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerListener(drawerToggle);

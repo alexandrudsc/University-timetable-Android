@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.UrlQuerySanitizer;
 import android.util.Log;
-import android.webkit.WebResourceError;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.developer.alexandru.orarusv.SettingsActivity;
 import com.developer.alexandru.orarusv.Utils;
+import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.data.TimetableDownloaderService;
 
 /**
@@ -70,7 +70,7 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
         final Context context = view.getContext();
         Intent intent = new Intent(context, TimetableDownloaderService.class);
-        intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
+        intent.putExtra(CsvAPI.EXTRA_URL, url);
         context.startService(intent);
     }
 

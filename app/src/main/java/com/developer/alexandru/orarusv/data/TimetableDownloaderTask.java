@@ -39,24 +39,6 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
 
     public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
 
-    public static final int PROF_ID = 3;
-    public static final int PROF_LAST_NAME = 4;
-    public static final int PROF_FIRST_NAME = 5;
-    public static final int RANK = 6;
-    public static final int HAS_PHD= 7;
-    public static final int OTHER_TITLES = 8;
-    public static final int BUILDING = 10;
-    public static final int ROOM = 11;
-    public static final int ROOM_SHORT_NAME = 12;
-    public static final int COURSE_FULL_NAME = 13;
-    public static final int COURSE_NAME = 14;
-    public static final int DAY = 15;
-    public static final int START = 16;
-    public static final int STOP = 17;
-    public static final int PARITY = 18;
-    public static final int INFO = 19;
-    public static final int TYPE = 21;
-
     public TimetableDownloaderTask(SettingsActivity activity) {
         this.activity = activity;
         context = activity;
@@ -298,21 +280,12 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
         public boolean handleData(String[] data) {
             if (isCancelled())
                 return false;
-            final int startTime = Integer.valueOf(data[START]) / 60;
-            final int endTime = Integer.valueOf(data[STOP]) / 60 + startTime;
-
-            Course c = new Course(data[COURSE_NAME], data[COURSE_FULL_NAME], data[TYPE],
-                    data[ROOM_SHORT_NAME], data[BUILDING] + " " + data[ROOM],
-                    startTime + ":00 - " + endTime + ":00",
-                    data[RANK] + " " + data[HAS_PHD] + data[OTHER_TITLES] + " " +
-                            data[PROF_FIRST_NAME] + " " + data[PROF_LAST_NAME], data[PROF_ID],
-                    data[PARITY], data[INFO]);
-
-            c.startTime = startTime;
-            c.endTime = endTime;
+            Course c = CourseBuilder.build(data);
+            if (c == null)
+                return false;
 
             Log.d(TAG, c.toString());
-            dbAdapter.insertTmpCourse(c, data[DAY]);
+            dbAdapter.insertTmpCourse(c, data[CsvAPI.DAY]);
             return true;
         }
     }

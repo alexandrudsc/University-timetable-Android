@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.DownloadFinished;
 import com.developer.alexandru.orarusv.data.SQLStmtHelper;
@@ -465,7 +466,7 @@ public class SettingsActivity extends ActionBarActivity {
 //                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
 //                        downloaderTask.execute(url);
                         Intent intent = new Intent(SettingsActivity.this, TimetableDownloaderService.class);
-                        intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
+                        intent.putExtra(CsvAPI.EXTRA_URL, url);
                         startService(intent);
                     }
                 break;

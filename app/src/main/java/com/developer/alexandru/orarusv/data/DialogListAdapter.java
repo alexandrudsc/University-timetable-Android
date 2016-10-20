@@ -14,11 +14,10 @@ import java.util.ArrayList;
 
 /**
  * Created by alexandru on 9/3/16.
+ * Adapter for alternative courses displayed as dialog.
  */
 public class DialogListAdapter extends BaseAdapter {
 
-
-    public static final String PROF_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=prof&ID=";
 
     private Context context;
     private AlertDialog dialog;

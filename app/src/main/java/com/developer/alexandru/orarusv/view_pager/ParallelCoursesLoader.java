@@ -1,11 +1,11 @@
 package com.developer.alexandru.orarusv.view_pager;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
-import com.developer.alexandru.orarusv.data.CSVParser;
 import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.data.DialogListAdapter;
+import com.developer.alexandru.orarusv.data.ParallelCoursesParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,39 +16,31 @@ import java.net.URL;
 
 /**
  * Created by alexandru on 9/16/16.
+ * Async task downloader for alternative courses (same course, same prof, different timimg)
  */
 public class ParallelCoursesLoader extends AsyncTask<Void, Void, Void> {
 
+    private Course courseToReplace;
     private String profId;
-    private Activity activity;
     private DialogListAdapter adapter;
 
-    public ParallelCoursesLoader(Activity activity, DialogListAdapter adapter, String profId) {
-        this.profId = profId;
-        this.activity = activity;
+    public ParallelCoursesLoader(DialogListAdapter adapter, Course courseToReplace) {
         this.adapter = adapter;
+        this.courseToReplace = courseToReplace;
+        this.profId = courseToReplace.profID;
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            Thread.sleep(1000);
-            URL url = new URL(DialogListAdapter.PROF_URL + this.profId);
+            URL url = new URL(CsvAPI.PROF_URL + this.profId);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             InputStreamReader is = new InputStreamReader(conn.getInputStream());
             BufferedReader br = new BufferedReader(is);
 
-            ParallelCoursesParser parser = new ParallelCoursesParser(br);
+            ParallelCoursesParser parser = new ParallelCoursesParser(this.adapter, br, courseToReplace);
             parser.parse();
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
             conn.disconnect();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,21 +49,9 @@ public class ParallelCoursesLoader extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private class ParallelCoursesParser extends CSVParser {
-
-        private Course c;
-
-        public ParallelCoursesParser(BufferedReader br) {
-            super(br);
-        }
-
-        @Override
-        public boolean handleData(String[] data) {
-            c = new Course();
-            c.fullName = data[12];
-            c.name = data[13];
-            adapter.add(c);
-            return true;
-        }
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        adapter.notifyDataSetChanged();
     }
 }

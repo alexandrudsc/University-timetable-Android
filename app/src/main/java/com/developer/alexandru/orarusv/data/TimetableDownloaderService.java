@@ -35,30 +35,8 @@ public class TimetableDownloaderService extends IntentService {
     private static final boolean D = true;
     public static final String TAG = "TIMETABLE_DOWNLOADER";
 
-    public static final String EXTRA_URL = "timetable_url";
-    public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
-    public static final String PROFS_URL = "http://www.usv.ro/orar/vizualizare/data/cadre.php";
-
     public static final String ACTION_DOWNLOAD_FINISHED = "download_finished";
 
-    // Downloaded CSV data: elements indexes on a line
-    public static final int PROF_ID = 3;
-    public static final int PROF_LAST_NAME = 4;
-    public static final int PROF_FIRST_NAME = 5;
-    public static final int RANK = 6;
-    public static final int HAS_PHD= 7;
-    public static final int OTHER_TITLES = 8;
-    public static final int BUILDING = 10;
-    public static final int ROOM = 11;
-    public static final int ROOM_SHORT_NAME = 12;
-    public static final int COURSE_FULL_NAME = 13;
-    public static final int COURSE_NAME = 14;
-    public static final int DAY = 15;
-    public static final int START = 16;
-    public static final int STOP = 17;
-    public static final int PARITY = 18;
-    public static final int INFO = 19;
-    public static final int TYPE = 21;
 
     private NotificationManager notificationManager;
     private static final int DOWNLOAD_NOTIF_CODE = 1;
@@ -87,7 +65,7 @@ public class TimetableDownloaderService extends IntentService {
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
 
-        String address = intent.getStringExtra(EXTRA_URL);
+        String address = intent.getStringExtra(CsvAPI.EXTRA_URL);
         String adr;
 
         adr = address;
@@ -95,7 +73,7 @@ public class TimetableDownloaderService extends IntentService {
         try {
 
             // Get the structure of the current semester and save it
-            URL timeStructureURL = new URL(TIME_URL);
+            URL timeStructureURL = new URL(CsvAPI.TIME_URL);
             HttpURLConnection conn = (HttpURLConnection) timeStructureURL.openConnection();
             InputStreamReader is = new InputStreamReader(conn.getInputStream());
             BufferedReader br = new BufferedReader(is);
@@ -228,21 +206,12 @@ public class TimetableDownloaderService extends IntentService {
 
         @Override
         public boolean handleData(String[] data) {
-            final int startTime = Integer.valueOf(data[START]) / 60;
-            final int endTime = Integer.valueOf(data[STOP]) / 60 + startTime;
-
-            Course c = new Course(data[COURSE_NAME], data[COURSE_FULL_NAME], data[TYPE],
-                    data[ROOM_SHORT_NAME], data[BUILDING] + " " + data[ROOM],
-                    startTime + ":00 - " + endTime + ":00",
-                    data[RANK] + " " + data[HAS_PHD] + data[OTHER_TITLES] + " " +
-                    data[PROF_FIRST_NAME] + " " + data[PROF_LAST_NAME], data[PROF_ID],
-                    data[PARITY], data[INFO]);
-
-            c.startTime = startTime;
-            c.endTime = endTime;
+            Course c = CourseBuilder.build(data);
+            if (c == null)
+                return false;
 
             Log.d(TAG, c.toString());
-            dbAdapter.insertTmpCourse(c, data[DAY]);
+            dbAdapter.insertTmpCourse(c, data[CsvAPI.DAY]);
             return true;
         }
     }

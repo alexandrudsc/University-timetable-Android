@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Created by alexandru on 9/15/16.
+ * Event listener for LongClick on a course  from list (MainActivity, NonCurrentWeek)
  */
 public class OnCourseLongClickListener implements View.OnLongClickListener {
     private Course course;
@@ -33,7 +34,7 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
         }
         ArrayList<Course> items = new ArrayList<>();
 
-        DialogListAdapter adapter = new DialogListAdapter(courseSelectedCallback.getActivity(), R.layout.course_item_layout, items);
+        DialogListAdapter adapter = new DialogListAdapter(courseSelectedCallback.getActivity(), R.layout.simple_course_layout, items);
         // Builder for the dialog displayed at ItemLongClick
         AlertDialog.Builder builder = new AlertDialog.Builder(courseSelectedCallback.getActivity());
         builder.setTitle(R.string.choose)
@@ -47,7 +48,7 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
         adapter.setDialog(dialog);
         dialog.show();
 
-        ParallelCoursesLoader parallelCoursesLoader = new ParallelCoursesLoader(this.courseSelectedCallback.getActivity(), adapter, course.profID);
+        ParallelCoursesLoader parallelCoursesLoader = new ParallelCoursesLoader(adapter, this.course);
         parallelCoursesLoader.execute();
         return false;
     }
