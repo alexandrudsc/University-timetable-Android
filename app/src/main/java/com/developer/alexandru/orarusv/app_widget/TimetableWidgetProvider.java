@@ -85,7 +85,6 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
             final int widgetsId[] = appWidgetManager.getAppWidgetIds(appWidget);
             tomorrow = intent.getBooleanExtra("tomorrow", false);
 
-
             //Update day, week, month in calendar title
             updateDisplayedData(context, widgetsId);
 
@@ -99,7 +98,6 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        //updateDisplayedData(context, appWidgetIds);
         if(remoteViews == null)
             remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         for(int i = 0; i < appWidgetIds.length; i++){
@@ -108,7 +106,6 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
             int mWidgetId = appWidgetIds[i];
 
             remoteViews.setOnClickPendingIntent(R.id.calendar_title, getPendingIntentForStartApp(context) );
-            //remoteViews.setOnClickPendingIntent(R.id.change_day, getClickPendingIntent(context));
             remoteViews.setPendingIntentTemplate(R.id.widget_list, getPendingIntentForDetails(context) );
 
             //Intent - starting the service that provides content to the list view
@@ -127,39 +124,36 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
             remoteViews.setEmptyView(R.id.widget_list, R.id.empty_view);
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-
         }
-
     }
 
-    private String dayToString(Context context, int day){
+    private String dayToString(Context context, int day) {
         String[] days = context.getResources().getStringArray(R.array.days_of_week);
         return days[day-1];
     }
 
-    private String monthToString(Context context, int month){
+    private String monthToString(Context context, int month) {
         String[] months = context.getResources().getStringArray(R.array.months);
         return months[month];
     }
 
-    private void scheduleUpdate(Context context){
+    private void scheduleUpdate(Context context) {
         if (D) Log.d(TAG, "Widget created and alarm set!");
 
         final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        final Calendar calendar = Calendar.getInstance();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.AM_PM, Calendar.AM);
 
         final PendingIntent pendingIntentForUpdate = getPendingIntentForUpdate(context);
-
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 60 * 1000, pendingIntentForUpdate);
+        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntentForUpdate);
     }
 
-    private void updateDisplayedData(Context context, final int[] appWidgetIds){
-        /*Update the text views in the calendar widget title
-                weekOfSemester current week
-                weekWord "saptamana" translated
-                tomorrow boolean if tomorrow is requested
-                buttonClicked boolean if button in widget was clicked
-        */
+    private void updateDisplayedData (Context context, final int[] appWidgetIds) {
         Utils.setCurrentWeek(context);
         int weekOfSemester = context.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE).
                 getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
@@ -171,13 +165,10 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
             onUpdate(context, appWidgetManager, appWidgetIds);
         }
 
-        if (D) Log.d(TAG, "usual update: " + (calendar.get(Calendar.MINUTE) % 7 + 1));
+        if (D) Log.d(TAG, "usual update: " + (calendar.get(Calendar.DAY_OF_WEEK)));
         //Usual update because the day is finished
         for(int i = 0; i < appWidgetIds.length; i++) {
-            if (calendar.get(Calendar.MINUTE) % 7 + 1 == 6)
-                remoteViews.setTextViewText(R.id.day_of_week, "Now");
-            else
-                remoteViews.setTextViewText(R.id.day_of_week, "" + dayToString(context, calendar.get(Calendar.MINUTE) % 7 + 1));
+            remoteViews.setTextViewText(R.id.day_of_week, "" + dayToString(context, calendar.get(Calendar.DAY_OF_WEEK)));
 
             remoteViews.setTextViewText(R.id.day_of_month, monthToString(context, calendar.get(Calendar.MONTH)) + " " +
                     calendar.get(Calendar.DAY_OF_MONTH));
@@ -187,42 +178,6 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
             //remoteViews.setImageViewResource(R.id.change_day, R.drawable.ic_action_next_item);
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
         }
-        /*if (tomorrow && buttonClicked){
-            //The day after the current one is requested
-            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-            int monthOfYear = calendar.get(Calendar.MONTH);
-
-            if (D) Log.d(TAG, "forced update: " + dayOfWeek);
-
-            //If current day is saturday ( =7, end of week), the next day will be sunday and the week will be updated
-            //if the the current week is less than WEEKS_IN_SEMESTER
-            if(dayOfWeek != 7){
-                remoteViews.setTextViewText(R.id.day_of_week, dayToString(context, dayOfWeek + 1 ));
-                remoteViews.setTextViewText(R.id.current_week_widget, weekWord + " " +
-                        String.valueOf(weekOfSemester));
-            }
-            else{
-                remoteViews.setTextViewText(R.id.day_of_week, dayToString(context, 1));
-                if(weekOfSemester < MainActivity.WEEKS_IN_SEMESTER)
-                    remoteViews.setTextViewText(R.id.current_week_widget, weekWord + " " +
-                            String.valueOf(weekOfSemester + 1));
-                else
-                    remoteViews.setTextViewText(R.id.current_week_widget,weekWord + " " +
-                            String.valueOf(weekOfSemester));
-            }
-
-            //If the month is 12 (end of year) start again with month 1
-            if(monthOfYear != 12)
-                remoteViews.setTextViewText(R.id.day_of_month, monthToString(context, calendar.get(Calendar.MONTH))+ " "+
-                        (calendar.get(Calendar.DAY_OF_MONTH) + 1));
-            else
-                remoteViews.setTextViewText(R.id.day_of_month, monthToString(context, calendar.get(Calendar.MONTH))+ " "+
-                        1);
-            //Next day was chosen, so change the imageButton drawable ( now indicates back)
-            //remoteViews.setImageViewResource(R.id.change_day, R.drawable.ic_action_previous_item);
-
-            appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
-        }*/
     }
 
 

@@ -2,6 +2,7 @@ package com.developer.alexandru.orarusv;
 
 /**
  * Created by alexandru on 9/17/16.
+ * Simple class holding describing an element: Course, prof.
  */
 public class Elem {
     public int id;

@@ -2,7 +2,7 @@ package com.developer.alexandru.orarusv.data;
 
 /**
  * Created by alexandru on 10/20/16.
- * Very Raw API from USV server.
+ * Very Raw API of USV server.
  */
 public final class CsvAPI {
 

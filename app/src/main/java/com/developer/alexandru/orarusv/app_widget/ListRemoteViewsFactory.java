@@ -58,11 +58,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         int weekOfSemester = mContext.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE).
                 getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
 
-        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.MINUTE) % 7));
-        //if (!tommorow)
-
-        //else
-          //  this.setValues(dbAdapter.getCourses(11, (Calendar.getInstance().get(Calendar.MINUTE) + 1) % 7));
+        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
         dbAdapter.close();
 
     }
@@ -121,11 +117,12 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
     }
 
     public void setValues(ArrayList<Course> newValues){
-        if(this.valuesToday != null){
+        if (this.valuesToday != null) {
             this.valuesToday.clear();
             this.valuesToday.addAll(newValues);
-        }else
+        } else {
             this.valuesToday = newValues;
+        }
     }
 
     public boolean hasValues(){
@@ -140,7 +137,5 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         viewDetails.putExtras(args);
 
         return viewDetails;
-
     }
-
 }

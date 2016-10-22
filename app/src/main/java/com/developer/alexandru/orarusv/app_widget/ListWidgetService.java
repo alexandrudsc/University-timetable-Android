@@ -34,14 +34,9 @@ public class ListWidgetService extends RemoteViewsService {
         Boolean coursesForTomorrow = intent.getBooleanExtra("tomorrow", false);
 
         Log.d(TAG, "NO LOADING YET");
-        //DataLoader.widgetForTomorrow = coursesForTomorrow;
-        //new DataLoader(null, null, 0, listRemoteViewsFactory, this, widgetProviderName).execute();
-
 
         return listRemoteViewsFactory;
     }
-
-
 
     @Override
     public void onDestroy() {
