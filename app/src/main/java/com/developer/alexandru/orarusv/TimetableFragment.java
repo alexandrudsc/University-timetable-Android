@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.view_pager.DayFragment;
+import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
 import com.developer.alexandru.orarusv.view_pager.PagerSlidingTabStrip;
 import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
@@ -140,7 +142,6 @@ public class TimetableFragment extends Fragment {
                 fr.onActivityResult(requestCode, resultCode, data);
             }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     public void initializeActionBar(){

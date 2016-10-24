@@ -78,9 +78,9 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
         StringBuilder description = new StringBuilder(course.location + ", ");
         description.append(course.startTime + ":00 - " + course.endTime + ":00");
         description.append("\n");
-        if ("i".equals(course.parity)) {
+        if (CsvAPI.ODD_WEEK.equals(course.parity)) {
             description.append("Săptămâni impare");
-        } else if ("p".equals(course.parity)) {
+        } else if (CsvAPI.EVEN_WEEK.equals(course.parity)) {
             description.append("Săptămâni pare");
         }
         return description.toString();

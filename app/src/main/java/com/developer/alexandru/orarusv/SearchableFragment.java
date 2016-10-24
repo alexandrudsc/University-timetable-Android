@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
 import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 /**
@@ -216,7 +217,7 @@ public class SearchableFragment extends  Fragment{
         SearchableActivity.AbsPres result= new SearchableActivity.AbsPres();
         result.absences = result.presences = 0;
         int i;
-        if(info.equals(TimetableViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
+        if(info.equals(CsvAPI.EVEN_WEEK)){
             for(i = 2; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
@@ -229,7 +230,7 @@ public class SearchableFragment extends  Fragment{
 
                 result.table.put(i, wasPresent);
             }
-        } else if(info.equals(TimetableViewPagerAdapter.COURSES_IN_ODD_WEEK)){
+        } else if(info.equals(CsvAPI.ODD_WEEK)){
             for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,

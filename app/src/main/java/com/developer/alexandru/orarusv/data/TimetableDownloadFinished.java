@@ -19,7 +19,7 @@ public class TimetableDownloadFinished extends BroadcastReceiver {
 
     public TimetableDownloadFinished(DownloadActivity activity) {
         super();
-        this.activityWeakReference = new WeakReference<DownloadActivity>(activity);
+        this.activityWeakReference = new WeakReference<>(activity);
     }
 
     @Override
