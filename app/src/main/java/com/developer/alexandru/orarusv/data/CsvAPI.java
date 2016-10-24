@@ -1,5 +1,7 @@
 package com.developer.alexandru.orarusv.data;
 
+import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
+
 /**
  * Created by alexandru on 10/20/16.
  * Very Raw API of USV server.
@@ -8,11 +10,19 @@ public final class CsvAPI {
 
     public static final int CSV_COUNT = 21;
 
+    /**
+     * Public URLs.
+     */
     public static final String EXTRA_URL = "timetable_url";
     public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
     public static final String PROFS_URL = "http://www.usv.ro/orar/vizualizare/data/cadre.php";
     public static final String PROF_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=prof&ID=";
 
+
+    /**
+     * Result format for timetable of group.
+     * Result format for timetable of professor.
+     */
     public static final int PROF_ID = 3;
     public static final int PROF_LAST_NAME = 4;
     public static final int PROF_FIRST_NAME = 5;
@@ -30,4 +40,10 @@ public final class CsvAPI {
     public static final int PARITY = 18;
     public static final int INFO = 19;
     public static final int TYPE = 21;
+
+    /**
+     * Parity encoded
+     */
+    public static final String EVEN_WEEK = "p";
+    public static final String ODD_WEEK = "i";
 }

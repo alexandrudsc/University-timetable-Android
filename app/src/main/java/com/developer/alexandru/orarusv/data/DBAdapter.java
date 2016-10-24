@@ -282,9 +282,9 @@ public class DBAdapter {
         selectionArgs[0] = String.valueOf(day);
         selectionArgs[2] = "-";
         if (week % 2 == 0)
-            selectionArgs[1] = TimetableViewPagerAdapter.COURSES_IN_EVEN_WEEK;
+            selectionArgs[1] = CsvAPI.EVEN_WEEK;
         else
-            selectionArgs[1] = TimetableViewPagerAdapter.COURSES_IN_ODD_WEEK;
+            selectionArgs[1] = CsvAPI.ODD_WEEK;
         selectionArgs[3] = "10 sapt.+1h";
         Cursor cursor = null;
         cursor = database.query(SQLStmtHelper.COURSES_TABLE,

@@ -8,7 +8,8 @@ import android.widget.CompoundButton;
 
 /**
  * Created by Alexandru on 6/30/14.
- * Listener for checkbox change listener.A presence or absence can be marked here (save a bool value in a prefs file)
+ * Listener for checkbox change listener.
+ * A presence or absence can be marked here (save a bool value in a prefs file)
  */
 public class CheckBoxOnChangeListener implements CheckBox.OnCheckedChangeListener {
 
