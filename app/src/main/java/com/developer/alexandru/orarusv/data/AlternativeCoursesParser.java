@@ -6,12 +6,12 @@ import java.io.BufferedReader;
  * Created by alexandru on 10/16/16.
  * Parser for alternative courses;
  */
-public class ParallelCoursesParser extends CSVParser {
+public class AlternativeCoursesParser extends CSVParser {
 
-    private DialogListAdapter adapter;
+    private AlternativeCoursesListAdapter adapter;
     private Course courseToReplace;
 
-    public ParallelCoursesParser(DialogListAdapter adapter, BufferedReader br, Course courseToReplace) {
+    public AlternativeCoursesParser(AlternativeCoursesListAdapter adapter, BufferedReader br, Course courseToReplace) {
         super(br);
         this.adapter = adapter;
         this.courseToReplace = courseToReplace;

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.developer.alexandru.orarusv.view_pager.ViewPagerAdapter;
+import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -282,9 +282,9 @@ public class DBAdapter {
         selectionArgs[0] = String.valueOf(day);
         selectionArgs[2] = "-";
         if (week % 2 == 0)
-            selectionArgs[1] = ViewPagerAdapter.COURSES_IN_EVEN_WEEK;
+            selectionArgs[1] = TimetableViewPagerAdapter.COURSES_IN_EVEN_WEEK;
         else
-            selectionArgs[1] = ViewPagerAdapter.COURSES_IN_ODD_WEEK;
+            selectionArgs[1] = TimetableViewPagerAdapter.COURSES_IN_ODD_WEEK;
         selectionArgs[3] = "10 sapt.+1h";
         Cursor cursor = null;
         cursor = database.query(SQLStmtHelper.COURSES_TABLE,

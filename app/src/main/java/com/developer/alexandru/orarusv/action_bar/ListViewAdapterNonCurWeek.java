@@ -17,7 +17,7 @@ import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.view_pager.MyListViewAdapter;
+import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -81,17 +81,17 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MyListViewAdapter.ViewHolder viewHolder;
+        DayListViewAdapter.ViewHolder viewHolder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(isTitleAt(position)){
                 convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-                viewHolder = new MyListViewAdapter.ViewHolder();
+                viewHolder = new DayListViewAdapter.ViewHolder();
                 viewHolder.eventName = (TextView) convertView.findViewById(R.id.spinner_elem_tv);
                 convertView.setTag(viewHolder);
             }else{
                 convertView = inflater.inflate(R.layout.course_item_layout, parent, false);
-                viewHolder = new MyListViewAdapter.ViewHolder();
+                viewHolder = new DayListViewAdapter.ViewHolder();
                 viewHolder.eventName = (TextView)convertView.findViewById(R.id.course_name);
                 viewHolder.eventType = (TextView)convertView.findViewById(R.id.course_description);
 
@@ -99,7 +99,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
                 convertView.setTag(viewHolder);
             }
         }else
-            viewHolder = (MyListViewAdapter.ViewHolder) convertView.getTag();
+            viewHolder = (DayListViewAdapter.ViewHolder) convertView.getTag();
 
         if(isTitleAt(position)){
             viewHolder.eventName.setText(values.get(position).name);

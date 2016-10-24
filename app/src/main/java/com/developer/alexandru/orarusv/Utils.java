@@ -96,7 +96,7 @@ public class Utils {
 
         if(sharedPreferences.getInt(MainActivity.WEEK_OF_SEMESTER, -1) !=  currentWeek){
             // If the week is changed invalidate the old data set.
-//            ViewPagerAdapter.listsOfCourses = null;
+//            TimetableViewPagerAdapter.listsOfCourses = null;
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(MainActivity.WEEK_OF_SEMESTER, currentWeek);
             editor.commit();

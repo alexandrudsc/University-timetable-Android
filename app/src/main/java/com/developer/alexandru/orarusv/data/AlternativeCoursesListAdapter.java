@@ -2,6 +2,7 @@ package com.developer.alexandru.orarusv.data;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,7 @@ import java.util.ArrayList;
  * Created by alexandru on 9/3/16.
  * Adapter for alternative courses displayed as dialog.
  */
-public class DialogListAdapter extends BaseAdapter {
-
+public class AlternativeCoursesListAdapter extends BaseAdapter {
 
     private Context context;
     private AlertDialog dialog;
@@ -25,7 +25,7 @@ public class DialogListAdapter extends BaseAdapter {
     private ArrayList<Course> items;
 
 
-    public DialogListAdapter(Context context, int course_item_layout, ArrayList<Course> items) {
+    public AlternativeCoursesListAdapter(Context context, int course_item_layout, ArrayList<Course> items) {
         this.context = context;
         this.courseItemLayout = course_item_layout;
         this.items = items;
@@ -69,9 +69,21 @@ public class DialogListAdapter extends BaseAdapter {
 
         Course course = this.items.get(i);
         viewHolder.name.setText(course.fullName);
-
-        viewHolder.description.setText(course.startTime + " - " + course.endTime + ", " + ", \n" + "Săptămâni: " + course.parity);
+        viewHolder.description.setText(getDescription(course));
         return convertView;
+    }
+
+    @NonNull
+    private String getDescription(Course course) {
+        StringBuilder description = new StringBuilder(course.location + ", ");
+        description.append(course.startTime + ":00 - " + course.endTime + ":00");
+        description.append("\n");
+        if ("i".equals(course.parity)) {
+            description.append("Săptămâni impare");
+        } else if ("p".equals(course.parity)) {
+            description.append("Săptămâni pare");
+        }
+        return description.toString();
     }
 
     public void setDialog(AlertDialog dialog) {

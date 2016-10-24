@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.view_pager.ViewPagerAdapter;
+import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 /**
  * Created by Alexandru on 7/14/14.
@@ -217,7 +216,7 @@ public class SearchableFragment extends  Fragment{
         SearchableActivity.AbsPres result= new SearchableActivity.AbsPres();
         result.absences = result.presences = 0;
         int i;
-        if(info.equals(ViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
+        if(info.equals(TimetableViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
             for(i = 2; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
@@ -230,7 +229,7 @@ public class SearchableFragment extends  Fragment{
 
                 result.table.put(i, wasPresent);
             }
-        } else if(info.equals(ViewPagerAdapter.COURSES_IN_ODD_WEEK)){
+        } else if(info.equals(TimetableViewPagerAdapter.COURSES_IN_ODD_WEEK)){
             for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,

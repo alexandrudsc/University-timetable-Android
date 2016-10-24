@@ -15,12 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.developer.alexandru.orarusv.action_bar.MySpinnerAdapter;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.data.DataLoader;
-import com.developer.alexandru.orarusv.view_pager.DayFragment;
 import com.developer.alexandru.orarusv.view_pager.PagerSlidingTabStrip;
-import com.developer.alexandru.orarusv.view_pager.ViewPagerAdapter;
+import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 import java.util.Calendar;
 
@@ -37,7 +34,7 @@ public class TimetableFragment extends Fragment {
     private static final String TAG = "TimetableFragment";
 
     public ViewPager viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
+    private TimetableViewPagerAdapter timetableViewPagerAdapter;
     public PagerSlidingTabStrip pagerSlidingTabStrip;
 
     private OnCourseSelected onCourseSelected;
@@ -91,7 +88,7 @@ public class TimetableFragment extends Fragment {
             calendar = Calendar.getInstance();
         // Create here the view pager adapter so I can call getActivity() on a DayFragment anytime during it's lifecycle
         viewPager = (ViewPager) fragmentView.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new ViewPagerAdapter((MainActivity)getActivity(), getChildFragmentManager()));
+        viewPager.setAdapter(new TimetableViewPagerAdapter((MainActivity)getActivity(), getChildFragmentManager()));
         pagerSlidingTabStrip = (PagerSlidingTabStrip) fragmentView.findViewById(R.id.sliding_tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);
         viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1);

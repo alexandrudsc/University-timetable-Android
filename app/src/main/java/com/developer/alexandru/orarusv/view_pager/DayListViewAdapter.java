@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by Alexandru on 6/16/14.
  * Adapter for the list with courses in each DayFragment
  */
-public class MyListViewAdapter extends BaseAdapter {
+public class DayListViewAdapter extends BaseAdapter {
 
     private ArrayList<Course> values;
     private Context context;
@@ -32,8 +32,8 @@ public class MyListViewAdapter extends BaseAdapter {
     private AlertDialog.Builder builder;
     private AlertDialog dialog;
 
-    public MyListViewAdapter(TimetableFragment.OnCourseSelected onCourseSelected,
-                             ArrayList<Course> values) {
+    public DayListViewAdapter(TimetableFragment.OnCourseSelected onCourseSelected,
+                              ArrayList<Course> values) {
         this.onCourseSelected = onCourseSelected;
         this.context = onCourseSelected.getActivity();
         this.values = values;
@@ -157,104 +157,5 @@ public class MyListViewAdapter extends BaseAdapter {
                                                         Context.MODE_PRIVATE);
         return currentWeekProgressFile.getBoolean(fileAndPreference[1], false);
     }
-
-//    private class ReplaceItem implements View.OnLongClickListener{
-//
-//        private Course course;
-//
-//        public ReplaceItem(Course course) {
-//            this.course = course;
-//        }
-//
-//        @Override
-//        public boolean onLongClick(View v) {
-//            Log.d("LONG CLICKED ON", course.toString());
-//
-//            if (!Utils.hasInternetAccess(context)) {
-//                Utils.toastNoInternetAccess(context);
-//                return true;
-//            }
-//
-//            DBAdapter dbAdapter = new DBAdapter(onCourseSelected.getActivity());
-//            //dbAdapter.open();
-//
-//
-//            ArrayList<Course> items = new ArrayList<>();
-//
-//            DialogListAdapter adapter = new DialogListAdapter(context, R.layout.simple_course_layout, items);
-//
-//            builder.setTitle(R.string.choose)
-//                    .setAdapter(adapter, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            // Event handled by the inner view. See DialogListItem's implementation of getView()
-//                        }
-//                    });
-//            dialog = builder.create();
-//            adapter.setDialog(dialog);
-//            dialog.show();
-//
-//            new Thread(new Run(adapter, course.profID)).start();
-//            return true;
-//        }
-//    }
-//
-//    private class Run implements Runnable{
-//
-//        private DialogListAdapter adapter;
-//        private String profId;
-//
-//        public Run(DialogListAdapter adapter, String profId) {
-//            super();
-//            this.adapter = adapter;
-//            this.profId = profId;
-//        }
-//
-//        @Override
-//        public void run() {
-//            try {
-//                Thread.sleep(1000);
-//                URL url = new URL(DialogListAdapter.PROF_URL + this.profId);
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                InputStreamReader is = new InputStreamReader(conn.getInputStream());
-//                BufferedReader br = new BufferedReader(is);
-//
-//                ParallelCoursesParser parser = new ParallelCoursesParser(br);
-//                parser.parse();
-//                ((Activity)context).runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
-//                conn.disconnect();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        private class ParallelCoursesParser extends CSVParser{
-//
-//            private Course c;
-//
-//            public ParallelCoursesParser(BufferedReader br) {
-//                super(br);
-//            }
-//
-//            @Override
-//            public boolean handleData(String[] data) {
-//                c = new Course();
-//                c.fullName = data[12];
-//                c.name = data[13];
-//                adapter.add(c);
-//                return true;
-//            }
-//        }
-//    }
-
 }
 

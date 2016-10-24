@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.view_pager.DayFragment;
-import com.developer.alexandru.orarusv.view_pager.MyListViewAdapter;
+import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class DayCoursesLoader extends AsyncTask<Integer, Void, ArrayList<Course>
         currentWeek = timeOrganiser.getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
         if(activity != null){
             try {
-                //ViewPagerAdapter.context = activity;
+                //TimetableViewPagerAdapter.context = activity;
 
                 //Open the connection with the local database
 
@@ -79,7 +79,7 @@ public class DayCoursesLoader extends AsyncTask<Integer, Void, ArrayList<Course>
     @Override
     protected void onPostExecute(ArrayList<Course> courses) {
         super.onPostExecute(courses);
-        MyListViewAdapter listAdapter = (MyListViewAdapter) fragment.getListAdapter();
+        DayListViewAdapter listAdapter = (DayListViewAdapter) fragment.getListAdapter();
         listAdapter.setValues(courses);
         listAdapter.notifyDataSetChanged();
     }

@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
-import com.developer.alexandru.orarusv.view_pager.ViewPagerAdapter;
+import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 import java.util.HashMap;
 
@@ -107,7 +107,7 @@ public class ResultsFragment extends Fragment {
         AbsPres result= new AbsPres();
         result.absences = result.presences = 0;
         int i;
-        if(info.equals(ViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
+        if(info.equals(TimetableViewPagerAdapter.COURSES_IN_EVEN_WEEK)){
             for(i = 2; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,
@@ -121,7 +121,7 @@ public class ResultsFragment extends Fragment {
 
                 result.table.put(i, wasPresent);
             }
-        }else if(info.equals(ViewPagerAdapter.COURSES_IN_ODD_WEEK)){
+        }else if(info.equals(TimetableViewPagerAdapter.COURSES_IN_ODD_WEEK)){
             for(i = 1; i <= MainActivity.WEEKS_IN_SEMESTER; i+=2){
                 boolean wasPresent = false;
                 if(context.getSharedPreferences(NonCurrentWeekActivity.PARTIAL_NAME_BACKUP_FILE + i,

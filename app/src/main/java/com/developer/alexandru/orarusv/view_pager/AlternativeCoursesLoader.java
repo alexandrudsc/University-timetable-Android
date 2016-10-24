@@ -2,10 +2,10 @@ package com.developer.alexandru.orarusv.view_pager;
 
 import android.os.AsyncTask;
 
+import com.developer.alexandru.orarusv.data.AlternativeCoursesListAdapter;
+import com.developer.alexandru.orarusv.data.AlternativeCoursesParser;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.data.CsvAPI;
-import com.developer.alexandru.orarusv.data.DialogListAdapter;
-import com.developer.alexandru.orarusv.data.ParallelCoursesParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,13 +18,13 @@ import java.net.URL;
  * Created by alexandru on 9/16/16.
  * Async task downloader for alternative courses (same course, same prof, different timimg)
  */
-public class ParallelCoursesLoader extends AsyncTask<Void, Void, Void> {
+public class AlternativeCoursesLoader extends AsyncTask<Void, Void, Void> {
 
     private Course courseToReplace;
     private String profId;
-    private DialogListAdapter adapter;
+    private AlternativeCoursesListAdapter adapter;
 
-    public ParallelCoursesLoader(DialogListAdapter adapter, Course courseToReplace) {
+    public AlternativeCoursesLoader(AlternativeCoursesListAdapter adapter, Course courseToReplace) {
         this.adapter = adapter;
         this.courseToReplace = courseToReplace;
         this.profId = courseToReplace.profID;
@@ -38,7 +38,7 @@ public class ParallelCoursesLoader extends AsyncTask<Void, Void, Void> {
             InputStreamReader is = new InputStreamReader(conn.getInputStream());
             BufferedReader br = new BufferedReader(is);
 
-            ParallelCoursesParser parser = new ParallelCoursesParser(this.adapter, br, courseToReplace);
+            AlternativeCoursesParser parser = new AlternativeCoursesParser(this.adapter, br, courseToReplace);
             parser.parse();
             conn.disconnect();
         } catch (MalformedURLException e) {

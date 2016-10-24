@@ -8,8 +8,8 @@ import android.view.View;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.TimetableFragment.OnCourseSelected;
 import com.developer.alexandru.orarusv.Utils;
+import com.developer.alexandru.orarusv.data.AlternativeCoursesListAdapter;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.data.DialogListAdapter;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
         }
         ArrayList<Course> items = new ArrayList<>();
 
-        DialogListAdapter adapter = new DialogListAdapter(courseSelectedCallback.getActivity(), R.layout.simple_course_layout, items);
+        AlternativeCoursesListAdapter adapter = new AlternativeCoursesListAdapter(courseSelectedCallback.getActivity(), R.layout.simple_course_layout, items);
         // Builder for the dialog displayed at ItemLongClick
         AlertDialog.Builder builder = new AlertDialog.Builder(courseSelectedCallback.getActivity());
         builder.setTitle(R.string.choose)
@@ -48,8 +48,8 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
         adapter.setDialog(dialog);
         dialog.show();
 
-        ParallelCoursesLoader parallelCoursesLoader = new ParallelCoursesLoader(adapter, this.course);
-        parallelCoursesLoader.execute();
+        AlternativeCoursesLoader alternativeCoursesLoader = new AlternativeCoursesLoader(adapter, this.course);
+        alternativeCoursesLoader.execute();
         return false;
     }
 }

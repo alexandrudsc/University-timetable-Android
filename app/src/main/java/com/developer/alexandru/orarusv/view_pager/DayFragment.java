@@ -34,7 +34,7 @@ public class DayFragment extends ListFragment {
     //public static TimetableFragment.OnCourseSelected onCourseSelected;
     private WeakReference<DayCoursesLoader> taskLoaderReference;
     private ArrayList<Course> list;
-    private MyListViewAdapter adapter;
+    private DayListViewAdapter adapter;
     DayCoursesLoader dayCoursesLoader;
 
 
@@ -76,7 +76,7 @@ public class DayFragment extends ListFragment {
             week = args.getInt("week");
             if (list == null)
                 list = new ArrayList<>();
-            adapter = new MyListViewAdapter((MainActivity)getActivity(), list);
+            adapter = new DayListViewAdapter((MainActivity)getActivity(), list);
             setListAdapter(adapter);
             taskLoaderReference = new WeakReference<>(new DayCoursesLoader(getActivity(), this));   // getActivity() will be not null
             //taskLoaderReference.get().execute(day, 8);                                       // see TimetableFragment
@@ -125,9 +125,9 @@ public class DayFragment extends ListFragment {
                 if (D) Log.d(TAG, "onCreateView " + "day " + day + " from previous");
                 list = savedInstanceState.getParcelableArrayList("courses");
                 if (adapter == null)
-                    adapter = ((MyListViewAdapter)getListAdapter());
+                    adapter = ((DayListViewAdapter)getListAdapter());
                 if (adapter == null) {
-                    adapter = new MyListViewAdapter((MainActivity) getActivity(), list);
+                    adapter = new DayListViewAdapter((MainActivity) getActivity(), list);
                     setListAdapter(adapter);
                 } else {
                     if (D) Log.d(TAG, "size " + list.size() );
@@ -182,7 +182,7 @@ public class DayFragment extends ListFragment {
         outState.setClassLoader(Course.class.getClassLoader());
         outState.putInt("day", day);
         outState.putInt("week", week);
-        outState.putParcelableArrayList ("courses", ((MyListViewAdapter) getListAdapter()).getValues());
+        outState.putParcelableArrayList ("courses", ((DayListViewAdapter) getListAdapter()).getValues());
         super.onSaveInstanceState(outState);
         if (D) Log.d(TAG, "SAVE");
     }
