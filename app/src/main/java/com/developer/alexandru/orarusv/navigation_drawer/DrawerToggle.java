@@ -15,9 +15,10 @@ import android.view.View;
 import com.developer.alexandru.orarusv.AboutFragment;
 import com.developer.alexandru.orarusv.HelpActivity;
 import com.developer.alexandru.orarusv.HolidaysFragment;
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
-import com.developer.alexandru.orarusv.TimetableFragment;
+import com.developer.alexandru.orarusv.main.MainActivityPresenterImpl;
+import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekFragment;
 
 /**
@@ -51,7 +52,7 @@ public class DrawerToggle extends ActionBarDrawerToggle {
         this.drawer = (DrawerLayout)activity.findViewById(R.id.drawer_layout);
         this.activity = activity;
         this.fragmentManager = ((MainActivity)activity).getSupportFragmentManager();
-        timetableFragment = fragmentManager.findFragmentByTag(MainActivity.TIMETABLE_FRAGMENT_TAG);
+        timetableFragment = fragmentManager.findFragmentByTag(MainActivityPresenterImpl.TIMETABLE_FRAGMENT_TAG);
 
     }
 

@@ -20,14 +20,15 @@ import android.widget.TextView;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.data.CsvAPI;
-import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
+import com.developer.alexandru.orarusv.main.MainActivity;
+import com.developer.alexandru.orarusv.main.TimetableFragment;
 
 /**
  * Created by Alexandru on 7/14/14.
  * Details fragment - displays info about a  selected class (details and progress)
  * DetailsFragment and ResultsFragment must be seen
  */
-public class SearchableFragment extends  Fragment{
+public class CourseFragment extends  Fragment{
     public static final String TAG = "SEARCHABLE FRAGMENT";
     public static final boolean D = true;
 
@@ -47,7 +48,7 @@ public class SearchableFragment extends  Fragment{
     // Toolbar used at horizontal two-pane layout
     private Toolbar toolbar;
 
-    public SearchableFragment() {
+    public CourseFragment() {
         super();
     }
 
@@ -57,7 +58,7 @@ public class SearchableFragment extends  Fragment{
         setHasOptionsMenu(true);
     }
 
-    public SearchableFragment(Course course, FragmentManager fm) {
+    public CourseFragment(Course course, FragmentManager fm) {
         super();
         this.course = course;
         this.fm = fm;

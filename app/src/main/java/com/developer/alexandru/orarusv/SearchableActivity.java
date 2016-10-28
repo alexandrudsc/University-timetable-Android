@@ -11,6 +11,7 @@ import android.widget.*;
 
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.data.DBAdapter;
+import com.developer.alexandru.orarusv.main.MainActivity;
 
 import java.util.HashMap;
 
@@ -47,20 +48,20 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
                 type = typeAndName[0];
 
             }else
-                if(intent.getAction().equals(SearchableFragment.actionViewDetails)){
-                    course = intent.getExtras().getParcelable(SearchableFragment.EXTRA_COURSE_KEY);
+                if(intent.getAction().equals(CourseFragment.actionViewDetails)){
+                    course = intent.getExtras().getParcelable(CourseFragment.EXTRA_COURSE_KEY);
                     Toast.makeText(this, course.name + "_" + course.type, Toast.LENGTH_LONG).show();
                 }
 
         if(course == null){
             Toast.makeText(this, name + "_" + type, Toast.LENGTH_LONG).show();
-            AbsPres absPres = SearchableFragment.getResults(this, name, type, info);
+            AbsPres absPres = CourseFragment.getResults(this, name, type, info);
             DBAdapter dbAdapter = new DBAdapter(this);
             dbAdapter.open();
             course = dbAdapter.getCourse(name, type);
         }
         LinearLayout linearLayout = new LinearLayout(this);
-        linearLayout.addView(new SearchableFragment(course, getSupportFragmentManager()).
+        linearLayout.addView(new CourseFragment(course, getSupportFragmentManager()).
                 onCreateView((LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE), linearLayout, null));
 
         setContentView(linearLayout);
@@ -85,12 +86,9 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_done:
-                this.finish();
         }
         return true;
     }
-
 
 
     private TableLayout createTable(AbsPres absPres){

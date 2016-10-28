@@ -2,7 +2,7 @@ package com.developer.alexandru.orarusv.view_pager;
 
 import android.support.v4.app.*;
 import com.developer.alexandru.orarusv.R;
-import com.developer.alexandru.orarusv.TimetableFragment;
+import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.Utils;
 
 /**

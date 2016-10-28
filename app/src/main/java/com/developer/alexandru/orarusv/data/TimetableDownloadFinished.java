@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.developer.alexandru.orarusv.MainActivity;
 import com.developer.alexandru.orarusv.download.DownloadActivity;
 
 import java.lang.ref.WeakReference;

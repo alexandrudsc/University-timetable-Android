@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.main.MainActivity;
 
 /**
  * Created by Alexandru on 2/10/2015.

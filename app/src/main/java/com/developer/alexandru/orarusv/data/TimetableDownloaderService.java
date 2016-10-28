@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider;

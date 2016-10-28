@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.developer.alexandru.orarusv.SettingsActivity;
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider;
 

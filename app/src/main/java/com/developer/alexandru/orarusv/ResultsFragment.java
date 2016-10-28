@@ -15,14 +15,14 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
 import com.developer.alexandru.orarusv.data.CsvAPI;
-import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
+import com.developer.alexandru.orarusv.main.MainActivity;
 
 import java.util.HashMap;
 
 /**
  * Created by Alexandru on 7/14/14.
  * Fragment displaying a table with the number of classes the user has attained to and the classes the user has skipped
- * Will be contained in SearchableFragment
+ * Will be contained in CourseFragment
  */
 public class ResultsFragment extends Fragment {
 

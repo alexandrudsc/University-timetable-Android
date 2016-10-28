@@ -9,7 +9,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.Course;

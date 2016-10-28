@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.view_pager.DayFragment;
 import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
 

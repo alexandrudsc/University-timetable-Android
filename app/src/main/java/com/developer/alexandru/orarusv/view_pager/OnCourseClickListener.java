@@ -3,7 +3,7 @@ package com.developer.alexandru.orarusv.view_pager;
 import android.util.Log;
 import android.view.View;
 
-import com.developer.alexandru.orarusv.TimetableFragment;
+import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.data.Course;
 
 /**

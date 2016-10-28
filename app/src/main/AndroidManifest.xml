@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Alexandru">
         <activity
-            android:name=".MainActivity"
+            android:name=".main.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,10 +68,10 @@
             android:name=".NoteActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_note"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.developer.alexandru.orarusv.MainActivity" />
+                android:value=".main.MainActivity" />
         </activity>
 
         <receiver

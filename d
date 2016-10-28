@@ -180,7 +180,7 @@
 [1mindex dc6bd19..20fec76 100644[m
 [1m--- a/app/src/main/java/com/developer/alexandru/orarusv/action_bar/ListViewAdapterNonCurWeek.java[m
 [1m+++ b/app/src/main/java/com/developer/alexandru/orarusv/action_bar/ListViewAdapterNonCurWeek.java[m
-[36m@@ -17,7 +17,7 @@[m [mimport com.developer.alexandru.orarusv.MainActivity;[m
+[36m@@ -17,7 +17,7 @@[m [mimport com.developer.alexandru.orarusv.main.MainActivity;[m
  import com.developer.alexandru.orarusv.R;[m
  import com.developer.alexandru.orarusv.data.DBAdapter;[m
  import com.developer.alexandru.orarusv.data.Course;[m
@@ -250,7 +250,7 @@
 [1m+++ b/app/src/main/java/com/developer/alexandru/orarusv/data/DayCoursesLoader.java[m
 [36m@@ -9,7 +9,7 @@[m [mimport android.support.v4.app.FragmentActivity;[m
  [m
- import com.developer.alexandru.orarusv.MainActivity;[m
+ import com.developer.alexandru.orarusv.main.MainActivity;[m
  import com.developer.alexandru.orarusv.view_pager.DayFragment;[m
 [31m-import com.developer.alexandru.orarusv.view_pager.MyListViewAdapter;[m
 [32m+[m[32mimport com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;[m
@@ -449,7 +449,7 @@
 [1m+++ b/app/src/main/java/com/developer/alexandru/orarusv/view_pager/OnCourseLongClickListener.java[m
 [36m@@ -8,8 +8,8 @@[m [mimport android.view.View;[m
  import com.developer.alexandru.orarusv.R;[m
- import com.developer.alexandru.orarusv.TimetableFragment.OnCourseSelected;[m
+ import com.developer.alexandru.orarusv.main.TimetableFragment.OnCourseSelected;[m
  import com.developer.alexandru.orarusv.Utils;[m
 [32m+[m[32mimport com.developer.alexandru.orarusv.data.AlternativeCoursesListAdapter;[m
  import com.developer.alexandru.orarusv.data.Course;[m

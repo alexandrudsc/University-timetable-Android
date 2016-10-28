@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.developer.alexandru.orarusv.R;
-import com.developer.alexandru.orarusv.TimetableFragment.OnCourseSelected;
+import com.developer.alexandru.orarusv.main.TimetableFragment.OnCourseSelected;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.AlternativeCoursesListAdapter;
 import com.developer.alexandru.orarusv.data.Course;

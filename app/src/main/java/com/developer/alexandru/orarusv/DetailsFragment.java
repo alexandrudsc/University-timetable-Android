@@ -16,7 +16,7 @@ import com.developer.alexandru.orarusv.data.Course;
 /**
  * Created by Alexandru on 7/14/14.
  * Fragment displaying general info about a course (name, type, location)
- * Will be contained in SearchableFragment
+ * Will be contained in CourseFragment
  */
 public class DetailsFragment extends Fragment {
 

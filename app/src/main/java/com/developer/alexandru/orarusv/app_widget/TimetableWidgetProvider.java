@@ -13,9 +13,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.RemoteViews;
-import com.developer.alexandru.orarusv.MainActivity;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
-import com.developer.alexandru.orarusv.SearchableFragment;
+import com.developer.alexandru.orarusv.CourseFragment;
 import com.developer.alexandru.orarusv.Utils;
 
 import java.util.Calendar;
@@ -205,7 +205,7 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
 
     private PendingIntent getPendingIntentForDetails(Context context){
         Intent viewDetails = new Intent(context, MainActivity.class);
-        viewDetails.setAction(SearchableFragment.actionViewDetails);
+        viewDetails.setAction(CourseFragment.actionViewDetails);
         return PendingIntent.getActivity(context, ListRemoteViewsFactory.VIEW_DETAILS_CODE,
                     viewDetails, PendingIntent.FLAG_UPDATE_CURRENT);
 

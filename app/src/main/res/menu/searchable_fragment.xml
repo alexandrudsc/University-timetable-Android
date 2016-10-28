@@ -2,14 +2,8 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/menu_done"
-            android:title="@string/done"
-            android:icon="@drawable/done_button"
-            android:showAsAction="always"/>
-
-    <item
         android:id="@+id/add_note"
-        android:title="@string/done"
+        android:title="@string/add_note"
         android:icon="@drawable/abc_edit_text_material"
         android:showAsAction="always"/>
 </menu>

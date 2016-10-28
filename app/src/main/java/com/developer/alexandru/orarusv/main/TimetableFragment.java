@@ -1,4 +1,4 @@
-package com.developer.alexandru.orarusv;
+package com.developer.alexandru.orarusv.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,9 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developer.alexandru.orarusv.R;
+import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.view_pager.DayFragment;
-import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
+import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.view_pager.PagerSlidingTabStrip;
 import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 

@@ -1,15 +1,12 @@
-package com.developer.alexandru.orarusv;
+package com.developer.alexandru.orarusv.main;
 
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -20,15 +17,12 @@ import android.view.*;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.developer.alexandru.orarusv.R;
+import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.Course;
-import com.developer.alexandru.orarusv.data.DBAdapter;
-import com.developer.alexandru.orarusv.data.DownloadFinished;
-import com.developer.alexandru.orarusv.data.TimetableDownloadFinished;
 import com.developer.alexandru.orarusv.navigation_drawer.DrawerToggle;
 import com.developer.alexandru.orarusv.navigation_drawer.NavDrawerAdapter;
 import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickListener;
-
-import java.util.List;
 
 
 /**
@@ -38,7 +32,7 @@ import java.util.List;
  * Implements an interface for easy interaction with the timetable fragment.
  */
 public class MainActivity extends ActionBarActivity
-        implements TimetableFragment.OnCourseSelected{
+        implements TimetableFragment.OnCourseSelected, MainActivityView {
 
     //debug
     private static final boolean D = true;
@@ -46,8 +40,6 @@ public class MainActivity extends ActionBarActivity
 
     public static final char REQUEST_CODE_DOWNLOAD = 12;
     public static final char REQUEST_CODE_UNKNOW = 13;  // TODO must be changed
-
-    public static final String TIMETABLE_FRAGMENT_TAG = "this_is_timetable_fragment";
 
     //General preferences file name
     public static final String PREFERENCES_FILE_NAME = "preferences";
@@ -84,19 +76,19 @@ public class MainActivity extends ActionBarActivity
     public static final long WEEK_IN_MILLIS = 7 * 24 * 3600 * 1000;
     public static final int WEEKS_IN_SEMESTER = 14;
 
-    //Main fragment
-    private TimetableFragment timetableFragment = null;
-
     private  DrawerToggle drawerToggle;
     private  DrawerLayout drawerLayout;
     private NavDrawerAdapter drawerAdapter;
 
     private android.support.v7.app.ActionBar actionBar;
 
+    private MainActivityPresenterImpl presenter;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new MainActivityPresenterImpl(this);
         Log.d(TAG, "create activity_main");
 
         Utils.setCurrentWeek(this);
@@ -118,33 +110,7 @@ public class MainActivity extends ActionBarActivity
             return; //Must not overlap old fragment
         }
 
-        final FragmentManager fm = getSupportFragmentManager();
-        ViewGroup fragmentContainer = (ViewGroup) findViewById(R.id.fragment_container);
-
-       if(fragmentContainer != null){
-            //One-pane layout
-            timetableFragment = (TimetableFragment) fm.findFragmentByTag(TIMETABLE_FRAGMENT_TAG);
-            if(timetableFragment == null)
-                timetableFragment = new TimetableFragment();
-            fm.beginTransaction().replace(R.id.fragment_container, timetableFragment, TIMETABLE_FRAGMENT_TAG).commit();
-        } else {
-            //Two pane layout
-
-        }
-
-        Intent intent = getIntent();
-        if (intent == null || intent.getAction() == null)
-            return;                                                 // App started normal
-
-        // Check if activity was started from app widget. Must show the course
-        if (getIntent().getAction().equals(SearchableFragment.actionViewDetails)) {
-            final Bundle bundle = getIntent().getExtras();
-            Course c;
-            if (bundle != null){
-                c = bundle.getParcelable(SearchableFragment.EXTRA_COURSE_KEY);
-                onCourseClicked(c);
-            }
-        }
+        presenter.initialize();
     }
 
     @Override
@@ -217,41 +183,7 @@ public class MainActivity extends ActionBarActivity
         super.onNewIntent(intent);
 
         Log.d(TAG, "new intent" + intent.getAction());
-
-        final Bundle bundle = intent.getExtras();
-        if (bundle == null)
-            return;
-        final Course c;
-        String name = null, type = null, info = null;
-        String[] typeAndName = null;
-        String action = intent.getAction();
-        if (action.equals(Intent.ACTION_SEARCH)) {
-            // Activity called when search was requested
-            typeAndName = intent.getStringExtra(SearchManager.QUERY).split(" ");
-            try {
-                type = typeAndName[1];
-                name = typeAndName[0];
-            } catch (ArrayIndexOutOfBoundsException e) {
-            }
-        } else if (action.equals(Intent.ACTION_VIEW)) {
-            info = bundle.getString(SearchManager.EXTRA_DATA_KEY);
-            typeAndName = intent.getData().toString().split("/");
-            type = typeAndName[0];
-            name = typeAndName[1];
-        } else if (action.equals(SearchableFragment.actionViewDetails)) {
-            // Activity started from app widget
-            c = bundle.getParcelable(SearchableFragment.EXTRA_COURSE_KEY);
-            onCourseClicked(c);
-            return;
-        } else
-            return;
-
-        DBAdapter dbAdapter = new DBAdapter(this);
-        dbAdapter.open();
-        c = dbAdapter.getCourse(name, type);
-        dbAdapter.close();
-        //Searching has the same result as clicking on that course from anywhere;
-        onCourseClicked(c);
+        presenter.onNewIntent(intent);
     }
 
     @Override
@@ -315,28 +247,11 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCourseClicked(Course c) {
-        FragmentManager fm = getSupportFragmentManager();
-        SearchableFragment searchableFragment;
+        return presenter.onCourseClicked(c);
+    }
 
-        searchableFragment = (SearchableFragment) fm.findFragmentById(R.id.searchable_fragment);
-
-        if(searchableFragment != null){
-            //Two-pane layout
-            if(searchableFragment.getView() == null){
-                searchableFragment = new SearchableFragment(c, fm);
-                fm.beginTransaction().replace(R.id.searchable_container, searchableFragment).commit();
-            }else
-                searchableFragment.updateContent(c, fm);
-        }else{
-            //One pane layout
-            searchableFragment = new SearchableFragment(c, fm);
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
-            ft.replace(R.id.fragment_container, searchableFragment, "replacement_searchable");
-            ft.addToBackStack("replacement_searchable");
-            ft.commit();
-        }
-
-        return true;
+    @Override
+    public Context getContext() {
+        return this;
     }
 }

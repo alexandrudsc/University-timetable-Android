@@ -10,6 +10,8 @@ import android.widget.*;
 import com.developer.alexandru.orarusv.*;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekActivity;
 import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.main.MainActivity;
+import com.developer.alexandru.orarusv.main.TimetableFragment;
 
 import java.util.ArrayList;
 
