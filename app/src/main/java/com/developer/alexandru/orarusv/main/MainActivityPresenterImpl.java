@@ -1,7 +1,9 @@
 package com.developer.alexandru.orarusv.main;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +13,7 @@ import com.developer.alexandru.orarusv.CourseFragment;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.data.DBAdapter;
+import com.developer.alexandru.orarusv.data.TimetableDownloaderService;
 
 /**
  * Created by alexandru on 10/25/16.
@@ -123,5 +126,21 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
                 onCourseClicked(c);
             }
         }
+    }
+
+    @Override
+    public void checkForNewTimeStructure() {
+        if (view == null)
+            return;
+        SharedPreferences prefs = view.getContext().getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+        boolean appFirstRun = prefs.getBoolean(MainActivity.PREF_APP_FIRST_RUN, true);
+        if (!appFirstRun)
+            return;
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putBoolean(MainActivity.PREF_APP_FIRST_RUN, false);
+        edit.commit();
+
+        Intent downloadIntent = new Intent(view.getContext(), TimetableDownloaderService.class);
+        view.getContext().startService(downloadIntent);
     }
 }

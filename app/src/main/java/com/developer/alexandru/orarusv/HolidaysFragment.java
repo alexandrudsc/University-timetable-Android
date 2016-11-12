@@ -34,7 +34,7 @@ public class HolidaysFragment extends ListFragment {
         for (int i = 0; i < noHolidays; i++) {
             Event e = Event.create(prefs.getString(MainActivity.HOLIDAY + "_" + i, "0-0"));
             if (e.name == null)
-                e.name = MainActivity.HOLIDAY + " number " + (i + 1);
+                e.name = MainActivity.HOLIDAY;
             list.add(e);
         }
         setListAdapter(new HolidaysListAdapter(getActivity(), R.id.name, R.layout.event_layout, list));
@@ -60,7 +60,7 @@ public class HolidaysFragment extends ListFragment {
             String name = "Vacanța de Crăciun";
             TextView tvDuration = (TextView)view.findViewById(R.id.duration);
             TextView tvName = (TextView)view.findViewById(R.id.name);
-            prefs.edit().putString(MainActivity.HOLIDAY + "_" + position, prefs.getString(MainActivity.HOLIDAY+ "_" +position, "0-0-") +
+            prefs.edit().putString(MainActivity.HOLIDAY + "_" + position, prefs.getString(MainActivity.HOLIDAY+ "_" + position, "0-0-") +
                                                                             "-" + name).commit();
             tvName.setText(name);
             return true;

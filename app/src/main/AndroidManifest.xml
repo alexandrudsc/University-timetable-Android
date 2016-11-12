@@ -87,7 +87,7 @@
 
         <activity
             android:name=".HelpActivity"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+            android:theme="@style/Theme.Alexandru">
 
         </activity>
     </application>

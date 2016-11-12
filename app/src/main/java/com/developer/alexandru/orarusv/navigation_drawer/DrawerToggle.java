@@ -20,6 +20,7 @@ import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.main.MainActivityPresenterImpl;
 import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekFragment;
+import com.developer.alexandru.orarusv.ExamsFragment;
 
 /**
  * Created by Alexandru on 9/14/2014.
@@ -79,7 +80,7 @@ public class DrawerToggle extends ActionBarDrawerToggle {
                 replaceFragment(aboutFragment);
                 break;
             case NavDrawerAdapter.EXAMS:
-                examsFragment = new HolidaysFragment();
+                examsFragment = ExamsFragment.newInstance(MainActivity.EXAMS_FILE_NAME);
                 currentPage = NavDrawerAdapter.EXAMS;
                 replaceFragment(examsFragment);
                 break;

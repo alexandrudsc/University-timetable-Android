@@ -32,7 +32,7 @@ import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickList
  * Implements an interface for easy interaction with the timetable fragment.
  */
 public class MainActivity extends ActionBarActivity
-        implements TimetableFragment.OnCourseSelected, MainActivityView {
+        implements MainActivityView, TimetableFragment.OnCourseSelected {
 
     //debug
     private static final boolean D = true;
@@ -47,7 +47,10 @@ public class MainActivity extends ActionBarActivity
     //File with data relating time (start, end, holidays)
     public static final String TIME_ORGANISER_FILE_NAME = "time_organiser";
 
-    public static final String FIRST_RUN = "first_run";
+    //File with data relating exams
+    public static final String EXAMS_FILE_NAME = "exams";
+
+    public static final String PREF_APP_FIRST_RUN = "first_run";
 
     //The current week of semester preference name
     public static final String WEEK_OF_SEMESTER = "week_of_semester";
@@ -62,10 +65,10 @@ public class MainActivity extends ActionBarActivity
     public static final String LAST_CREATE_TIME = "creation_time";
 
     //Partial name of a holiday item in prefences file
-    public static final String HOLIDAY = "holiday";
+    public static final String HOLIDAY = "Vacanța";
 
     //Number of holidays preference name
-    public static final String  NUMBER_OF_HOLIDAYS = "no_of_holiday";
+    public static final String NUMBER_OF_HOLIDAYS = "no_of_holiday";
 
     //Last selected position in the view pager (ast day selected)
     public static final String VP_LAST_POSITION = "vp_last_position";
@@ -76,15 +79,17 @@ public class MainActivity extends ActionBarActivity
     public static final long WEEK_IN_MILLIS = 7 * 24 * 3600 * 1000;
     public static final int WEEKS_IN_SEMESTER = 14;
 
-    private  DrawerToggle drawerToggle;
-    private  DrawerLayout drawerLayout;
+    private DrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
     private NavDrawerAdapter drawerAdapter;
 
     private android.support.v7.app.ActionBar actionBar;
 
     private MainActivityPresenterImpl presenter;
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,23 +99,24 @@ public class MainActivity extends ActionBarActivity
         Utils.setCurrentWeek(this);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_navigation_drawer);
         setSupportActionBar(toolbar);
 
-        drawerLayout = (DrawerLayout)this.findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) this.findViewById(R.id.drawer_layout);
 
         drawerToggle = new DrawerToggle(this, drawerLayout,
                 toolbar,
                 R.string.title_nav_opened,
                 R.string.title_nav_closed);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             Log.d("MAIN ACTIVITY", "create activity_main with saved instance state");
             return; //Must not overlap old fragment
         }
 
         presenter.initialize();
+        presenter.checkForNewTimeStructure();
     }
 
     @Override
@@ -123,9 +129,9 @@ public class MainActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main, menu);
-        SearchManager searchManager = (SearchManager)this.getSystemService(SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) this.getSystemService(SEARCH_SERVICE);
 
-        SearchView  searchView = (SearchView) MenuItemCompat.getActionView((menu.findItem(R.id.search_from_menu)));
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView((menu.findItem(R.id.search_from_menu)));
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
@@ -147,7 +153,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle("");
-        ((TextView)findViewById(R.id.toolbar_title)).setText(title);
+        ((TextView) findViewById(R.id.toolbar_title)).setText(title);
     }
 
     @Override
@@ -166,14 +172,12 @@ public class MainActivity extends ActionBarActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Result returned by the downloader activity to this
 
-        if(requestCode == REQUEST_CODE_DOWNLOAD){
-            if(resultCode == RESULT_OK) {
-               Log.d("Main", "downloaded. " + "Refresh data.");
-         }
-            else
-                if(resultCode == RESULT_CANCELED) {
-                    Log.d("Main", "NOT downloaded");
-                }
+        if (requestCode == REQUEST_CODE_DOWNLOAD) {
+            if (resultCode == RESULT_OK) {
+                Log.d("Main", "downloaded. " + "Refresh data.");
+            } else if (resultCode == RESULT_CANCELED) {
+                Log.d("Main", "NOT downloaded");
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -212,8 +216,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void initializeNavDrawer() {
-        if(drawerLayout == null)
-            drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        if (drawerLayout == null)
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerListener(drawerToggle);
 
         final ListView drawerList = (ListView) findViewById(R.id.left_drawer);
@@ -224,19 +228,19 @@ public class MainActivity extends ActionBarActivity
         drawerList.setOnItemClickListener(new NavigationItemClickListener(drawerLayout, drawerToggle));
 
         if (actionBar == null)
-            actionBar =  getSupportActionBar();
+            actionBar = getSupportActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
     }
 
-    public int retrieveLastPosition(){
+    public int retrieveLastPosition() {
         SharedPreferences sharedPreferences = this.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE);
         return sharedPreferences.getInt(VP_LAST_POSITION, -1);
     }
 
     @Override
-    public MainActivity getActivity(){
+    public MainActivity getActivity() {
         return this;
     }
 
@@ -254,4 +258,5 @@ public class MainActivity extends ActionBarActivity
     public Context getContext() {
         return this;
     }
+
 }

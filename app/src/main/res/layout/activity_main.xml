@@ -33,12 +33,12 @@
 
         <ImageView
             android:id = "@+id/nav_header"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/widget_margin_left"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            />
+            android:background="@drawable/nav_header" />
         <!-- android:src="@drawable/nav_header" -->
         <ListView
             android:id="@+id/left_drawer"

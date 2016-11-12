@@ -39,6 +39,9 @@ public class DayListViewAdapter extends BaseAdapter {
         this.onCourseSelected = onCourseSelected;
         this.context = onCourseSelected.getActivity();
         this.values = values;
+        if (this.values == null) {
+            this.values = new ArrayList<>();
+        }
 
         this.currentWeek = context.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME,
                             Context.MODE_PRIVATE).
@@ -137,6 +140,10 @@ public class DayListViewAdapter extends BaseAdapter {
 
     public void setValues(ArrayList<Course> values){
         this.values.clear();
+        if (values == null) {
+            this.notifyDataSetChanged();
+            return;
+        }
         this.values.addAll(values);
         this.notifyDataSetChanged();
     }

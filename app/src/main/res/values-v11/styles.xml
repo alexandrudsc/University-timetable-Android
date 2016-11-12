@@ -9,6 +9,8 @@
         <item name="progressBarStyle">@style/ProgressBar.Alexandru</item>
         <item name="displayOptions">useLogo|showHome</item>
         <item name="android:displayOptions">useLogo|showHome</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="FullscreenTheme" parent="android:Theme.Holo">

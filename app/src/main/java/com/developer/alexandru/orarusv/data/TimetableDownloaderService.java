@@ -65,10 +65,7 @@ public class TimetableDownloaderService extends IntentService {
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
 
-        String address = intent.getStringExtra(CsvAPI.EXTRA_URL);
-        String adr;
-
-        adr = address;
+        String urlCourses = intent.getStringExtra(CsvAPI.EXTRA_URL);
 
         try {
 
@@ -92,8 +89,11 @@ public class TimetableDownloaderService extends IntentService {
             is.close();
             conn.disconnect();
 
-
-            URL url = new URL(adr);
+            if (urlCourses == null) {
+                sendNotificationDownloaded();
+                throw new MalformedURLException("No courses URL.");
+            }
+            URL url = new URL(urlCourses);
             conn = (HttpURLConnection) url.openConnection();
             is = new InputStreamReader(conn.getInputStream());
             br = new BufferedReader(is);
@@ -109,10 +109,11 @@ public class TimetableDownloaderService extends IntentService {
                 sendNotificationDownloaded();
             }
 
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             e.printStackTrace();
-            //
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
