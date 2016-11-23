@@ -92,6 +92,7 @@ public class TimetableFragment extends Fragment {
         // Create here the view pager adapter so I can call getActivity() on a DayFragment anytime during it's lifecycle
         viewPager = (ViewPager) fragmentView.findViewById(R.id.view_pager);
         viewPager.setAdapter(new TimetableViewPagerAdapter((MainActivity)getActivity(), getChildFragmentManager()));
+        viewPager.setOffscreenPageLimit(TimetableViewPagerAdapter.NUM_DAYS);
         pagerSlidingTabStrip = (PagerSlidingTabStrip) fragmentView.findViewById(R.id.sliding_tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);
         viewPager.setCurrentItem(calendar.get(Calendar.DAY_OF_WEEK) - 1);

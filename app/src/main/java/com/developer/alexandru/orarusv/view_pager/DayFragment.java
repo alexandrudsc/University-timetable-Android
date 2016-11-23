@@ -39,7 +39,6 @@ public class DayFragment extends ListFragment {
 
 
     public static DayFragment createFragment(String title, int week, int day){
-        //DayFragment.onCourseSelected = onCourseSelected;
 
         DayFragment dayFragment = new DayFragment();
         Bundle args = new Bundle();
@@ -50,11 +49,6 @@ public class DayFragment extends ListFragment {
         dayFragment.setArguments(args);
 
         return dayFragment;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -124,13 +118,13 @@ public class DayFragment extends ListFragment {
                 day = savedInstanceState.getInt("day");
                 if (D) Log.d(TAG, "onCreateView " + "day " + day + " from previous");
                 list = savedInstanceState.getParcelableArrayList("courses");
+
                 if (adapter == null)
                     adapter = ((DayListViewAdapter)getListAdapter());
                 if (adapter == null) {
                     adapter = new DayListViewAdapter((MainActivity) getActivity(), list);
                     setListAdapter(adapter);
                 } else {
-                    if (D) Log.d(TAG, "size " + list.size() );
 
                     adapter.setValues(list);
                     adapter.notifyDataSetChanged();
@@ -174,15 +168,16 @@ public class DayFragment extends ListFragment {
     }
 
     /**
-     * Saves all the courses in a bundle to be restored at recreation.
+     * Saves all the courses in a bundle to be restored at recreation (if there are courses displayed).
      * Used in some special cases: activity reconfiguration (screen rotation) or only a few fragments of the view pager are removed from memory.
     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        final DayListViewAdapter listAdapter = (DayListViewAdapter) getListAdapter();
         outState.setClassLoader(Course.class.getClassLoader());
         outState.putInt("day", day);
         outState.putInt("week", week);
-        outState.putParcelableArrayList ("courses", ((DayListViewAdapter) getListAdapter()).getValues());
+        outState.putParcelableArrayList ("courses", listAdapter.getValues());
         super.onSaveInstanceState(outState);
         if (D) Log.d(TAG, "SAVE");
     }
