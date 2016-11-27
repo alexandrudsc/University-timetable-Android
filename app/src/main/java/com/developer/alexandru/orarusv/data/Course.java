@@ -30,7 +30,6 @@ public class Course implements Parcelable, Serializable {
     public int endTime;
 
     public String prof;
-    public String fullProf;
     public String profID;
 
     public String info;
@@ -81,7 +80,7 @@ public class Course implements Parcelable, Serializable {
     @Override
     public String toString() {
         return fullName + "\n" + name + "\n" + type + "\nstart: " + startTime + "\nstop: " + endTime + "\n" + fullLocation + "\n" + location
-                + "\n" + fullProf + "\n" + prof + "\n" + parallelFaculties + "\n" + info;
+                 + "\n" + prof + "\n" + parallelFaculties + "\n" + info;
     }
 
     @Override

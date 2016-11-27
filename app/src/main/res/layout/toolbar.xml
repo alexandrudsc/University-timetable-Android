@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar android:id="@+id/bottomToolbar"
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomToolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/colorPrimaryDark">
 
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!--<ImageButton-->
-            <!--android:layout_width="48dp"-->
-            <!--android:layout_height="48dp"-->
-            <!--android:id="@+id/pinButton"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_gravity="left"-->
-            <!--android:drawable="@drawable/ic_navigation_drawer"-->
-            <!--android:clickable="true"/>-->
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:textSize="@dimen/large_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     </android.support.v7.widget.Toolbar>

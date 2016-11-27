@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -116,7 +117,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         presenter.initialize();
-        presenter.checkForNewTimeStructure();
+        presenter.checkForNewTimeStructure(); // temporary fix 11/27/2016
     }
 
     @Override
@@ -153,7 +154,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle("");
-        ((TextView) findViewById(R.id.toolbar_title)).setText(title);
+        ((TextView) findViewById(R.id.toolbar_title)).setText(getResources().getString(R.string.widget_week) + Utils.getCurrentWeek(this));
     }
 
     @Override
@@ -193,8 +194,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onBackPressed() {
         // If the user presses back and the nav drawer is open, just close it
-        if (drawerLayout != null && drawerLayout.isDrawerOpen(Gravity.START)) {
-            drawerLayout.closeDrawer(Gravity.START);
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
             return;
         }
         super.onBackPressed();
