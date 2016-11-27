@@ -38,9 +38,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
 
 
     public ListRemoteViewsFactory(Context context, Intent intent){
-        //mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         mContext = context;
-        //tommorow = intent.getBooleanExtra("tommorrow", false);
     }
 
     @Override
@@ -58,7 +56,7 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         int weekOfSemester = mContext.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE).
                 getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
 
-        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
+        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1));
         dbAdapter.close();
 
     }

@@ -138,13 +138,13 @@ public class Synchronizer extends IntentService {
         Log.d(TAG, name);
         switch (Integer.valueOf(data[1])){
             case 1:
-                dbAdapter.insertGroup(SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                dbAdapter.insertGroup(SqliteDatabaseContract.UNDERGRADUATES_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
                 break;
             case 2:
-                dbAdapter.insertGroup(SQLStmtHelper.MASTERS_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                dbAdapter.insertGroup(SqliteDatabaseContract.MASTERS_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
                 break;
             case 3:
-                dbAdapter.insertGroup(SQLStmtHelper.PHD_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
+                dbAdapter.insertGroup(SqliteDatabaseContract.PHD_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
                 break;
         }
 

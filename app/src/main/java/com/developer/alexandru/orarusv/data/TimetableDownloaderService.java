@@ -61,14 +61,11 @@ public class TimetableDownloaderService extends IntentService {
         Log.d(TAG, "started");
         showNotification();
 
-
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
 
         String urlCourses = intent.getStringExtra(CsvAPI.EXTRA_URL);
-
         try {
-
             // Get the structure of the current semester and save it
             URL timeStructureURL = new URL(CsvAPI.TIME_URL);
             HttpURLConnection conn = (HttpURLConnection) timeStructureURL.openConnection();

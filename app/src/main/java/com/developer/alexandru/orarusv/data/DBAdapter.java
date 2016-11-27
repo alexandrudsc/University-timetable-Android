@@ -5,10 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -29,16 +26,16 @@ public class DBAdapter {
     public static int DB_VER = 1;
 
 
-    private DBOpenHelper dbHelper;
+    private DatabaseOpenHelper dbHelper;
     private SQLiteDatabase database;
 
     public DBAdapter(Context context) {
-        dbHelper = new DBOpenHelper(context);
+        dbHelper = new DatabaseOpenHelper(context);
     }
 
     // Create a temporary .db file; used when downloading data
     public DBAdapter(Context context, boolean isTemporary) {
-        dbHelper = new DBOpenHelper(context, isTemporary);
+        dbHelper = new DatabaseOpenHelper(context, isTemporary);
     }
 
     public void open() throws SQLiteException{
@@ -61,16 +58,16 @@ public class DBAdapter {
      * this will not block the access to the current courses, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
      */
     protected void createTMPCoursesTable(){
-        if (!dbHelper.tableExists(database, SQLStmtHelper.COURSES_TMP_TABLE)) {
-            if (!dbHelper.tableExists(database, SQLStmtHelper.COURSES_TABLE))
+        if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TMP_TABLE)) {
+            if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TABLE))
                 database.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
-            database.execSQL("CREATE TABLE " + SQLStmtHelper.COURSES_TMP_TABLE + " AS SELECT * FROM " + SQLStmtHelper.COURSES_TABLE);
+            database.execSQL("CREATE TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " AS SELECT * FROM " + SqliteDatabaseContract.COURSES_TABLE);
         }
-        database.delete(SQLStmtHelper.COURSES_TMP_TABLE, null, null);           // DELETE the rows in the tmp table
+        database.delete(SqliteDatabaseContract.COURSES_TMP_TABLE, null, null);           // DELETE the rows in the tmp table
     }
 
     protected void deleteTMPCourses(){
-        database.execSQL("DROP TABLE IF EXISTS " + SQLStmtHelper.COURSES_TMP_TABLE);
+        database.execSQL("DROP TABLE IF EXISTS " + SqliteDatabaseContract.COURSES_TMP_TABLE);
     }
 
     /**
@@ -80,7 +77,7 @@ public class DBAdapter {
      */
     protected boolean replaceOldCourses(){
         database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-        database.execSQL("ALTER TABLE " + SQLStmtHelper.COURSES_TMP_TABLE + " RENAME TO " + SQLStmtHelper.COURSES_TABLE);
+        database.execSQL("ALTER TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " RENAME TO " + SqliteDatabaseContract.COURSES_TABLE);
         return true;
     }
 
@@ -89,10 +86,10 @@ public class DBAdapter {
      * this will not block the access to the current faculties, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
      */
     protected void createTMPFaculties(){
-        if (!dbHelper.tableExists(database, SQLStmtHelper.FACULTIES_TABLE))
+        if (!dbHelper.tableExists(database, SqliteDatabaseContract.FACULTIES_TABLE))
             database.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
-        database.execSQL("CREATE TABLE " + SQLStmtHelper.FACULTIES_TMP_TABLE + " AS SELECT * FROM " + SQLStmtHelper.FACULTIES_TABLE);
-        database.delete(SQLStmtHelper.FACULTIES_TMP_TABLE, null, null);
+        database.execSQL("CREATE TABLE " + SqliteDatabaseContract.FACULTIES_TMP_TABLE + " AS SELECT * FROM " + SqliteDatabaseContract.FACULTIES_TABLE);
+        database.delete(SqliteDatabaseContract.FACULTIES_TMP_TABLE, null, null);
     }
 
     /**
@@ -122,7 +119,7 @@ public class DBAdapter {
 
         ContentValues values = createValuesForInserting(course, day);
 
-        return database.insert(SQLStmtHelper.COURSES_TABLE, null, values);
+        return database.insert(SqliteDatabaseContract.COURSES_TABLE, null, values);
     }
 
     /**
@@ -134,7 +131,7 @@ public class DBAdapter {
     public long insertTmpCourse(Course course, String day){
         ContentValues values = createValuesForInserting(course, day);
 
-        return database.insert(SQLStmtHelper.COURSES_TMP_TABLE, null, values);
+        return database.insert(SqliteDatabaseContract.COURSES_TMP_TABLE, null, values);
     }
 
     /**
@@ -151,7 +148,7 @@ public class DBAdapter {
 
         String whereClause = "name = ? AND type = ?";
         String[] whereArgs = {course1.name, course1.type};
-        return database.update(SQLStmtHelper.COURSES_TABLE, values, whereClause, whereArgs);
+        return database.update(SqliteDatabaseContract.COURSES_TABLE, values, whereClause, whereArgs);
     }
 
     // Used only in DbAdapter.java as a helper method.
@@ -159,18 +156,18 @@ public class DBAdapter {
     private ContentValues createValuesForInserting(Course course, String day){
 
         ContentValues values = new ContentValues();
-        values.put(SQLStmtHelper.NAME, course.name);
-        values.put(SQLStmtHelper.FULL_NAME, course.fullName);
-        values.put(SQLStmtHelper.TYPE, course.type);
-        values.put(SQLStmtHelper.LOCATION, course.location);
-        values.put(SQLStmtHelper.FULL_LOCATION, course.fullLocation);
-        values.put(SQLStmtHelper.START_TIME, course.startTime);
-        values.put(SQLStmtHelper.END_TIME, course.endTime);
-        values.put(SQLStmtHelper.DAY, day);
-        values.put(SQLStmtHelper.PROF, course.prof);
-        values.put(SQLStmtHelper.PROF_ID, course.profID);
-        values.put(SQLStmtHelper.PARITY, course.parity);
-        values.put(SQLStmtHelper.INFO, course.info);
+        values.put(SqliteDatabaseContract.NAME, course.name);
+        values.put(SqliteDatabaseContract.FULL_NAME, course.fullName);
+        values.put(SqliteDatabaseContract.TYPE, course.type);
+        values.put(SqliteDatabaseContract.LOCATION, course.location);
+        values.put(SqliteDatabaseContract.FULL_LOCATION, course.fullLocation);
+        values.put(SqliteDatabaseContract.START_TIME, course.startTime);
+        values.put(SqliteDatabaseContract.END_TIME, course.endTime);
+        values.put(SqliteDatabaseContract.DAY, day);
+        values.put(SqliteDatabaseContract.PROF, course.prof);
+        values.put(SqliteDatabaseContract.PROF_ID, course.profID);
+        values.put(SqliteDatabaseContract.PARITY, course.parity);
+        values.put(SqliteDatabaseContract.INFO, course.info);
         return values;
     }
 
@@ -183,10 +180,10 @@ public class DBAdapter {
      */
     public long insertFaculty(int _id, String name, String link){
         ContentValues values = new ContentValues();
-        values.put(SQLStmtHelper.FACULTY_ID, _id);
-        values.put(SQLStmtHelper.NAME, name);
-        values.put(SQLStmtHelper.FACULTY_LINK, link);
-        return database.insert(SQLStmtHelper.FACULTIES_TABLE, null, values);
+        values.put(SqliteDatabaseContract.FACULTY_ID, _id);
+        values.put(SqliteDatabaseContract.NAME, name);
+        values.put(SqliteDatabaseContract.FACULTY_LINK, link);
+        return database.insert(SqliteDatabaseContract.FACULTIES_TABLE, null, values);
     }
 
     /**
@@ -199,9 +196,9 @@ public class DBAdapter {
      */
     public long insertGroup(String table, String name, int groupID, int facultyID){
         ContentValues values = new ContentValues();
-        values.put(SQLStmtHelper.GROUP_ID, groupID);
-        values.put(SQLStmtHelper.FACULTY_FROM_ID, facultyID);
-        values.put(SQLStmtHelper.NAME, name);
+        values.put(SqliteDatabaseContract.GROUP_ID, groupID);
+        values.put(SqliteDatabaseContract.FACULTY_FROM_ID, facultyID);
+        values.put(SqliteDatabaseContract.NAME, name);
         return database.insert(table, null, values);
     }
 
@@ -212,7 +209,7 @@ public class DBAdapter {
      */
     public Cursor getFaculties(){
 
-        return database.query(SQLStmtHelper.FACULTIES_TABLE,
+        return database.query(SqliteDatabaseContract.FACULTIES_TABLE,
                             null,
                             null,
                             null,
@@ -229,17 +226,17 @@ public class DBAdapter {
      */
     public Cursor getGroupsFromFaculty(int facultyID, int type){
         String table;
-        String mSelection = SQLStmtHelper.FACULTY_FROM_ID + " = ?";
+        String mSelection = SqliteDatabaseContract.FACULTY_FROM_ID + " = ?";
         String[] mSelectionArgs = {String.valueOf(facultyID)};
         switch (type){
             case SQLStmtHelper.UNDERGRADUATES:
-                table = SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE;
+                table = SqliteDatabaseContract.UNDERGRADUATES_GROUPS_TABLE;
                 break;
             case SQLStmtHelper.MASTERS:
-                table = SQLStmtHelper.MASTERS_GROUPS_TABLE;
+                table = SqliteDatabaseContract.MASTERS_GROUPS_TABLE;
                 break;
             case SQLStmtHelper.PHD:
-                table = SQLStmtHelper.PHD_GROUPS_TABLE;
+                table = SqliteDatabaseContract.PHD_GROUPS_TABLE;
                 break;
             default:
                 table = null;
@@ -262,23 +259,23 @@ public class DBAdapter {
      * @return an ArrayList object containing only the courses that respect the type of week (odd or even) in the right order
      */
     public ArrayList<Course> getCourses(int week, int day) throws SQLiteException{
-        String[] mProjection = {SQLStmtHelper.NAME,
-                SQLStmtHelper.FULL_NAME,
-                SQLStmtHelper.TYPE,
-                SQLStmtHelper.LOCATION,
-                SQLStmtHelper.FULL_LOCATION,
-                SQLStmtHelper.START_TIME,
-                SQLStmtHelper.END_TIME,
-                SQLStmtHelper.PROF,
-                SQLStmtHelper.PROF_ID,
-                SQLStmtHelper.PARITY,
-                SQLStmtHelper.INFO
+        String[] mProjection = {SqliteDatabaseContract.NAME,
+                SqliteDatabaseContract.FULL_NAME,
+                SqliteDatabaseContract.TYPE,
+                SqliteDatabaseContract.LOCATION,
+                SqliteDatabaseContract.FULL_LOCATION,
+                SqliteDatabaseContract.START_TIME,
+                SqliteDatabaseContract.END_TIME,
+                SqliteDatabaseContract.PROF,
+                SqliteDatabaseContract.PROF_ID,
+                SqliteDatabaseContract.PARITY,
+                SqliteDatabaseContract.INFO
         };
 
-        String selection = SQLStmtHelper.DAY + " == ? AND (" + SQLStmtHelper.PARITY + " == ? OR " + SQLStmtHelper.PARITY + " == ? OR " +
-                                                SQLStmtHelper.PARITY + " == ?)";
+        String selection = SqliteDatabaseContract.DAY + " == ? AND (" + SqliteDatabaseContract.PARITY + " == ? OR " + SqliteDatabaseContract.PARITY + " == ? OR " +
+                                                SqliteDatabaseContract.PARITY + " == ?)";
         String[] selectionArgs = new String[4];
-        String orderBy = SQLStmtHelper.START_TIME;
+        String orderBy = SqliteDatabaseContract.START_TIME;
         selectionArgs[0] = String.valueOf(day);
         selectionArgs[2] = "-";
         if (week % 2 == 0)
@@ -287,7 +284,7 @@ public class DBAdapter {
             selectionArgs[1] = CsvAPI.ODD_WEEK;
         selectionArgs[3] = "10 sapt.+1h";
         Cursor cursor = null;
-        cursor = database.query(SQLStmtHelper.COURSES_TABLE,
+        cursor = database.query(SqliteDatabaseContract.COURSES_TABLE,
                 mProjection,
                 selection,
                 selectionArgs,
@@ -331,7 +328,7 @@ public class DBAdapter {
         if (D) Log.d(TAG, "query for search");
         if (D) Log.d(TAG, selection + " " + selectionArgs[0] + " " + order);
         String[] selArgs = new String[]{selectionArgs[0]+"%"};
-        return database.query(SQLStmtHelper.COURSES_TABLE,
+        return database.query(SqliteDatabaseContract.COURSES_TABLE,
                             projection,
                             selection,
                             selArgs,
@@ -348,19 +345,19 @@ public class DBAdapter {
      */
     public String[] getInfoAboutCourse(String name, String type){
         //Used by SearchableActivity when searching was made specifically
-        String[] projection={ SQLStmtHelper.NAME,
-                SQLStmtHelper.FULL_NAME,
-                SQLStmtHelper.TYPE,
-                SQLStmtHelper.LOCATION,
-                SQLStmtHelper.FULL_LOCATION,
-                SQLStmtHelper.START_TIME,
-                SQLStmtHelper.PROF,
-                SQLStmtHelper.PARITY,
-                SQLStmtHelper.INFO
+        String[] projection={ SqliteDatabaseContract.NAME,
+                SqliteDatabaseContract.FULL_NAME,
+                SqliteDatabaseContract.TYPE,
+                SqliteDatabaseContract.LOCATION,
+                SqliteDatabaseContract.FULL_LOCATION,
+                SqliteDatabaseContract.START_TIME,
+                SqliteDatabaseContract.PROF,
+                SqliteDatabaseContract.PARITY,
+                SqliteDatabaseContract.INFO
         };
         String selection = "LOWER(name) == ? AND LOWER(type) == ?";
         String[] selectionArgs = {name.toLowerCase(), type.toLowerCase()};
-        Cursor result = database.query(SQLStmtHelper.COURSES_TABLE,
+        Cursor result = database.query(SqliteDatabaseContract.COURSES_TABLE,
                                         projection,
                                         selection,
                                         selectionArgs,
@@ -383,22 +380,22 @@ public class DBAdapter {
         if(name == null || type == null)
             return null;
 
-        String[] mProjection={ SQLStmtHelper.NAME,
-                SQLStmtHelper.FULL_NAME,
-                SQLStmtHelper.TYPE,
-                SQLStmtHelper.LOCATION,
-                SQLStmtHelper.FULL_LOCATION,
-                SQLStmtHelper.START_TIME,
-                SQLStmtHelper.END_TIME,
-                SQLStmtHelper.PROF,
-                SQLStmtHelper.PROF_ID,
-                SQLStmtHelper.PARITY,
-                SQLStmtHelper.INFO
+        String[] mProjection={ SqliteDatabaseContract.NAME,
+                SqliteDatabaseContract.FULL_NAME,
+                SqliteDatabaseContract.TYPE,
+                SqliteDatabaseContract.LOCATION,
+                SqliteDatabaseContract.FULL_LOCATION,
+                SqliteDatabaseContract.START_TIME,
+                SqliteDatabaseContract.END_TIME,
+                SqliteDatabaseContract.PROF,
+                SqliteDatabaseContract.PROF_ID,
+                SqliteDatabaseContract.PARITY,
+                SqliteDatabaseContract.INFO
         };
 
         String selection = "LOWER(name) == ? AND LOWER(type) == ?";
         String[] selectionArgs = {name.toLowerCase(), type.toLowerCase()};
-        Cursor result = database.query(SQLStmtHelper.COURSES_TABLE,
+        Cursor result = database.query(SqliteDatabaseContract.COURSES_TABLE,
                 mProjection,
                 selection,
                 selectionArgs,
@@ -414,63 +411,5 @@ public class DBAdapter {
 
     public boolean isOpen(){
         return database.isOpen();
-    }
-
-    private class DBOpenHelper extends SQLiteOpenHelper{
-
-        public DBOpenHelper(Context context){
-                super(context, DB_NAME, null, DB_VER);
-        }
-
-        public DBOpenHelper(Context context, boolean isTemporary){
-            super(context, DB_TMP_NAME, null, DB_VER);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            if (!tableExists(sqLiteDatabase, SQLStmtHelper.COURSES_TABLE))
-                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
-            if (!tableExists(sqLiteDatabase, SQLStmtHelper.FACULTIES_TABLE))
-                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
-            if (!tableExists(sqLiteDatabase, SQLStmtHelper.UNDERGRADUATES_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_UNDERGRADUATES_TABLE);
-            if (!tableExists(sqLiteDatabase, SQLStmtHelper.MASTERS_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_MASTERS_TABLE);
-            if (!tableExists(sqLiteDatabase, SQLStmtHelper.PHD_GROUPS_TABLE))
-                sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_PHD_TABLE);
-        }
-
-        @Override
-        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            onUpgrade(db, newVersion, oldVersion);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            DB_VER = newVersion;
-            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_FACULTIES_TABLE);
-            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_UNDERGRADUATES_GROUPS_TABLE);
-            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_MASTERS_GROUPS_TABLE);
-            sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_PHD_GROUPS_TABLE);
-
-            onCreate(sqLiteDatabase);
-        }
-        // Used to avoid unnecessary creation of tables
-        private boolean tableExists(SQLiteDatabase sqLiteDatabase, String table){
-            String[] mProj ={"name"};
-
-            String mSelect = "type='table' AND name=?";
-            String mSelectArgs[] ={table};
-            Cursor c = sqLiteDatabase.query("sqlite_master",
-                                            mProj,
-                                            mSelect,
-                                            mSelectArgs,
-                                            null,
-                                            null,
-                                            null);
-            Log.d("DB_ADAPTER", c.getCount() + "");
-            return c.getCount() > 0;
-        }
     }
 }
