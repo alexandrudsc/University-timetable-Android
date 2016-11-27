@@ -12,5 +12,8 @@ public interface DownloadActivityView {
     WebView getWebView();
     Context getContext();
     void connectAgain();
+    void showProgressDialog();
     void hideProgressDialog();
+    void setDownloadBtnVisible(boolean visible);
+    void setDownloadBtnText(String text);
 }

@@ -8,7 +8,7 @@ package com.developer.alexandru.orarusv.download;
 public interface DownloadActivityPresenter {
     void initialize();
     void downloadButtonClicked();
-    void webViewFinishedLoading();
+    void webViewPageLoaded(String url);
     void tryConnectionAgain();
     void webViewReceiverErr(int errorCode);
     void downloadFinished();

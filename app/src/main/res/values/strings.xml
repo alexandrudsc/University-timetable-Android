@@ -3,7 +3,8 @@
 
     <string name="app_name">Orar</string>
     <string name="settings">Setări</string>
-    <string name="download_timetable">Descarcă orar grupă</string>
+    <string name="download_timetable_group">Descarcă orar grupă</string>
+    <string name="download_timetable_prof">Descarcă orar prof</string>
     <string name="action_search">Caută</string>
     <string name="action_note">Adaugă notiță</string>
     <string name="action_sync">Sincronizează</string>

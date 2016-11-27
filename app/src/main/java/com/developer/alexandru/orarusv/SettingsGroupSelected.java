@@ -9,6 +9,7 @@ import android.widget.AdapterView;
  * Created by alexandru on 9/17/16.
  * Event listener for Spinner Group on SettingsActivity
  */
+@Deprecated
 public class SettingsGroupSelected implements AdapterView.OnItemSelectedListener {
 
     private String studiesLevel;

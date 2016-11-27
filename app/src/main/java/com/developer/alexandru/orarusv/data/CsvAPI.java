@@ -16,7 +16,8 @@ public final class CsvAPI {
     public static final String EXTRA_URL = "timetable_url";
     public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
     public static final String PROFS_URL = "http://www.usv.ro/orar/vizualizare/data/cadre.php";
-    public static final String PROF_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=prof&ID=";
+    public static final String PARTIAL_GROUP_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=grupa&ID="; // Partial URl for non_modular timetables
+    public static final String PARTIAL_PROF_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=prof&ID="; // Partial URl for profs timetables
 
 
     /**
@@ -46,4 +47,10 @@ public final class CsvAPI {
      */
     public static final String EVEN_WEEK = "p";
     public static final String ODD_WEEK = "i";
+
+    /**
+     * Timetable mode:
+     */
+    public static final int TIMETABLE_GROUP = 0;
+    public static final int TIMETABLE_PROF = 1;
 }

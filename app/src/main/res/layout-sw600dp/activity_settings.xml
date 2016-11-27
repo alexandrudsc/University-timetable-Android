@@ -88,7 +88,7 @@
         android:gravity="center_horizontal">
         <Button
                 android:id="@+id/download_btn"
-                android:text="@string/download_timetable"/>
+                android:text="@string/download_timetable_group"/>
     </TableRow>
 
     <TableRow android:visibility="gone">

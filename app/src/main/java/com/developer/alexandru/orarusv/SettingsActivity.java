@@ -38,11 +38,8 @@ import java.util.ArrayList;
  * Download page.Gets strings to form url then starts AsyncTask.
  * Preferences associated with this activity contain data about the user (settings activity)
  */
-
+@Deprecated
 public class SettingsActivity extends ActionBarActivity {
-
-    // Partial URl for non_modular timetables
-    public static final String PARTIAL_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=grupa&ID=";
 
     // Dialog displayed while downloading
     //AlertDialog dialog;
@@ -462,7 +459,7 @@ public class SettingsActivity extends ActionBarActivity {
                         break;
                     }
                     if (facultyID != 0) {                           // Check if non-modular timetable is requested
-                        url = PARTIAL_TIMETABLE_URL + groupID;
+                        url = CsvAPI.PARTIAL_GROUP_TIMETABLE_URL + groupID;
 //                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
 //                        downloaderTask.execute(url);
                         Intent intent = new Intent(SettingsActivity.this, TimetableDownloaderService.class);

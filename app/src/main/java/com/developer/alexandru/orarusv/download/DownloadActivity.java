@@ -118,7 +118,8 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
         }
     }
 
-    private void showProgressDialog() {
+    @Override
+    public void showProgressDialog() {
         progressDialog = new Dialog(this);
         progressDialog.setTitle(R.string.downloading);
         progressDialog.setContentView(R.layout.loading);
@@ -135,11 +136,26 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
     }
 
     @Override
+    public void setDownloadBtnVisible(boolean visible) {
+        View downloadBtn = findViewById(R.id.timetable_download_btn);
+        if (downloadBtn != null) {
+            downloadBtn.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void setDownloadBtnText(String text) {
+        Button downloadBtn = (Button) findViewById(R.id.timetable_download_btn);
+        if (downloadBtn != null) {
+            downloadBtn.setText(text);
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId())
         {
             case R.id.timetable_download_btn:
-                showProgressDialog();
                 presenter.downloadButtonClicked();
                 break;
             case R.id.buttonTryAgain:
@@ -162,7 +178,7 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            presenter.webViewFinishedLoading();
+            presenter.webViewPageLoaded(url);
         }
 
         @TargetApi(Build.VERSION_CODES.M)

@@ -164,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="@string/download_timetable"
+            android:text="@string/download_timetable_group"
             android:textColor="@android:color/black"/>
 
         <View

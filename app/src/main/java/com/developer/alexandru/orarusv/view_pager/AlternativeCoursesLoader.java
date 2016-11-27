@@ -33,7 +33,7 @@ public class AlternativeCoursesLoader extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            URL url = new URL(CsvAPI.PROF_URL + this.profId);
+            URL url = new URL(CsvAPI.PARTIAL_PROF_TIMETABLE_URL + this.profId);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             InputStreamReader is = new InputStreamReader(conn.getInputStream());
             BufferedReader br = new BufferedReader(is);

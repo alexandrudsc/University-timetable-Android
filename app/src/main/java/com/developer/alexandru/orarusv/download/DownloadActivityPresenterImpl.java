@@ -7,13 +7,14 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.developer.alexandru.orarusv.SettingsActivity;
+import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.data.TimetableDownloaderService;
 
 /**
  * Created by alexandru on 9/26/16.
+ * Impl for presenter of DownloadActivity
  */
 public class DownloadActivityPresenterImpl implements DownloadActivityPresenter {
 
@@ -42,46 +43,51 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
         WebView webView = view.getWebView();
         if (webView == null)
             return;
-        if (!Utils.hasInternetAccess(view.getContext())) {
+        final Context context = view.getContext();
+        if (!Utils.hasInternetAccess(context)) {
             view.connectAgain();
             return;
         }
-        view.getWebView().loadUrl("javascript:(" +
-                "function getData() {" +
-                "   var e = document.getElementById('grupaS');" +
-                "   Android.groupChanged(parseInt( e.options[e.selectedIndex].value) )" +
-                "}()" +
-                ")");
 
-        UrlQuerySanitizer sanitizer = new UrlQuerySanitizer(webView.getUrl());
-        final String id = sanitizer.getValue("ID");
-        Integer groupID;
-        if (id == null) {
-            groupID = javascriptInterface.getGroupId();
-        }
-        else {
-            groupID = Integer.parseInt(id);
-        }
-        if (groupID == -1) {
-            return;
-        }
-        String url = SettingsActivity.PARTIAL_TIMETABLE_URL + groupID;
-        if (DEBUG) Log.d(TAG, groupID + "");
+        String url = javascriptInterface.getUrl();
+        if (DEBUG) Log.d(TAG, url + "");
 
-        final Context context = view.getContext();
         Intent intent = new Intent(context, TimetableDownloaderService.class);
         intent.putExtra(CsvAPI.EXTRA_URL, url);
+        view.showProgressDialog();
         context.startService(intent);
     }
 
     @Override
-    public void webViewFinishedLoading() {
-        view.getWebView().loadUrl("javascript:(" +
-                "function getData() {" +
-                "   var e = document.getElementById('grupaS');" +
-                "   Android.groupChanged(parseInt( e.options[e.selectedIndex].value) )" +
-                "}()" +
+    public void webViewPageLoaded(String url) {
+        if (DEBUG) Log.d(TAG, url);
+
+        StringBuilder javascriptToInject = new StringBuilder("javascript:(" +
+                "function getData() {");
+
+        if (url.contains("grupa")) {
+            view.setDownloadBtnVisible(true);
+            view.setDownloadBtnText(view.getContext().getResources().getString(R.string.download_timetable_group));
+            javascriptToInject.append(
+                    "    var ID = location.search.split('ID=')[1].split('&')[0]; " +
+                    "    Android.urlChanged(parseInt(ID), 0); ");
+        }
+        else if (url.contains("prof")) {
+            view.setDownloadBtnVisible(true);
+            view.setDownloadBtnText(view.getContext().getResources().getString(R.string.download_timetable_prof));
+            javascriptToInject.append(
+                    "    var ID = location.search.split('ID=')[1].split('&')[0]; " +
+                    "    Android.urlChanged(parseInt(ID), 1); ");
+        }
+        else {
+            view.setDownloadBtnVisible(false);
+            javascriptToInject.append(
+                    "    Android.urlChanged(-1, -1) ");
+        }
+
+        javascriptToInject.append("}()" +
                 ")");
+        view.getWebView().loadUrl(javascriptToInject.toString());
     }
 
     @Override
@@ -106,14 +112,32 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
         private int groupId = -1;
 
+        private String url = null;
+
         @android.webkit.JavascriptInterface
         public void groupChanged(int groupID) {
             Log.d(TAG, groupID + "");
             this.groupId = groupID;
         }
 
+        @android.webkit.JavascriptInterface
+        public void urlChanged(int timetableId, int timetableMode) {
+            if (timetableMode == CsvAPI.TIMETABLE_GROUP) {
+                this.url = CsvAPI.PARTIAL_GROUP_TIMETABLE_URL + timetableId;
+            }
+            else if (timetableMode == CsvAPI.TIMETABLE_PROF) {
+                this.url = CsvAPI.PARTIAL_PROF_TIMETABLE_URL+ timetableId;
+            } else {
+                this.url = null;
+            }
+        }
+
         public int getGroupId(){
             return groupId;
+        }
+
+        private String getUrl() {
+            return url;
         }
     }
 }
