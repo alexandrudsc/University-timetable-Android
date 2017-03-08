@@ -84,21 +84,21 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
 
             // Create the temporary table to keep the new courses until all network operations are done.
             // This is used in case of connectivity issues
-            dbAdapter.createTMPCoursesTable();
+//            dbAdapter.createTMPCoursesTable();
             CoursesParser parser = new CoursesParser(br);
             parser.parse();
             conn.disconnect();
             if (parser.wasSuccessful()) {
-                dbAdapter.replaceOldCourses();
+//                dbAdapter.replaceOldCourses();
 //                TimetableViewPagerAdapter.listsOfCourses = null;
             } else {
                 success = false;
-                dbAdapter.deleteTMPCourses();
+//                dbAdapter.deleteTMPCourses();
             }
         }catch (IOException e){
             e.printStackTrace();
             success = false;
-            dbAdapter.deleteTMPCourses();
+//            dbAdapter.deleteTMPCourses();
         }
 
         dbAdapter.close();
@@ -180,7 +180,7 @@ public class TimetableDownloaderTask extends AsyncTask <String, Void, Void> {
                 return false;
 
             Log.d(TAG, c.toString());
-            dbAdapter.insertTmpCourse(c, data[CsvAPI.DAY]);
+//            dbAdapter.insertTmpCourse(c);
             return true;
         }
     }

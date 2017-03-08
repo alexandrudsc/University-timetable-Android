@@ -20,12 +20,6 @@ public class DBAdapter {
     public static final boolean D = true;
     public static final String TAG = "DBAdapter";
 
-    public static final String DB_NAME ="usv_timetable.db";
-    public static final String DB_TMP_NAME ="usv_timetable.tmp";
-    private static String DB_DIR;
-    public static int DB_VER = 1;
-
-
     private DatabaseOpenHelper dbHelper;
     private SQLiteDatabase database;
 
@@ -57,40 +51,29 @@ public class DBAdapter {
      * Create a temporary table to insert downloading courses: if there are any courses downloaded
      * this will not block the access to the current courses, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
      */
-    protected void createTMPCoursesTable(){
-        if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TMP_TABLE)) {
-            if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TABLE))
-                database.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
-            database.execSQL("CREATE TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " AS SELECT * FROM " + SqliteDatabaseContract.COURSES_TABLE);
-        }
-        database.delete(SqliteDatabaseContract.COURSES_TMP_TABLE, null, null);           // DELETE the rows in the tmp table
-    }
+//    protected void createTMPCoursesTable(){
+//        if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TMP_TABLE)) {
+//            if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TABLE))
+//                database.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
+//            database.execSQL("CREATE TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " AS SELECT * FROM " + SqliteDatabaseContract.COURSES_TABLE);
+//        }
+//        database.delete(SqliteDatabaseContract.COURSES_TMP_TABLE, null, null);           // DELETE the rows in the tmp table
+//    }
 
-    protected void deleteTMPCourses(){
-        database.execSQL("DROP TABLE IF EXISTS " + SqliteDatabaseContract.COURSES_TMP_TABLE);
-    }
+//    protected void deleteTMPCourses(){
+//        database.execSQL("DROP TABLE IF EXISTS " + SqliteDatabaseContract.COURSES_TMP_TABLE);
+//    }
 
     /**
      * Before calling this function there should be 2 databases, an old one and the newly created one
      * Replace the old one, as there is no need for it
      * @return true if operation was successful, false otherwise
      */
-    protected boolean replaceOldCourses(){
-        database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-        database.execSQL("ALTER TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " RENAME TO " + SqliteDatabaseContract.COURSES_TABLE);
-        return true;
-    }
-
-    /**
-     * Create a temporary table to insert downloading faculties: if there are any faculties  downloaded
-     * this will not block the access to the current faculties, and it used as safety if network access fails during com.developer.alexandru.orarusv.download
-     */
-    protected void createTMPFaculties(){
-        if (!dbHelper.tableExists(database, SqliteDatabaseContract.FACULTIES_TABLE))
-            database.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
-        database.execSQL("CREATE TABLE " + SqliteDatabaseContract.FACULTIES_TMP_TABLE + " AS SELECT * FROM " + SqliteDatabaseContract.FACULTIES_TABLE);
-        database.delete(SqliteDatabaseContract.FACULTIES_TMP_TABLE, null, null);
-    }
+//    protected boolean replaceOldCourses(){
+//        database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
+//        database.execSQL("ALTER TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " RENAME TO " + SqliteDatabaseContract.COURSES_TABLE);
+//        return true;
+//    }
 
     /**
      * Delete the courses table from the database
@@ -100,60 +83,61 @@ public class DBAdapter {
     }
 
     /**
-     * Delete the faculties table and the table describing the structures of groups
+     * Delete the courses from the database depending on the id of this timetable
      */
-    public void deleteFaculties(){
-        database.execSQL(SQLStmtHelper.DELETE_FACULTIES_TABLE);
-        database.execSQL(SQLStmtHelper.DELETE_UNDERGRADUATES_GROUPS_TABLE);
-        database.execSQL(SQLStmtHelper.DELETE_MASTERS_GROUPS_TABLE);
-        database.execSQL(SQLStmtHelper.DELETE_PHD_GROUPS_TABLE);
+    private void deleteCourses(Timetable timetable){
+        database.delete(SqliteDatabaseContract.COURSES_TABLE, SqliteDatabaseContract.COURSE_TIMETABLE_ID +  " = " + timetable.getId() + ";", null);
     }
+
+    /**
+     * Delete the timetable and associatted courses from the database depending on the id of thie timetable
+     */
+    public void deleteTimetableAndCourses(Timetable timetable){
+        deleteCourses(timetable);
+        database.delete(SqliteDatabaseContract.TIMETABLES_TABLE, SqliteDatabaseContract.ENTITY_ID + " = " + timetable.getId() + ";", null);
+    }
+
 
     /**
      * Insert the course in the database
      * @param course course to be inserted
-     * @param day the day of this course
      * @return the ID of the row if insertion was successful, -1 otherwise
      */
-    public long insertCourse(Course course, String day){
-
-        ContentValues values = createValuesForInserting(course, day);
+    public long insertCourse(Course course, int timetableId) {
+        ContentValues values = createValuesForInsertingCourse(course);
+        values.put(SqliteDatabaseContract.COURSE_TIMETABLE_ID, timetableId);
 
         return database.insert(SqliteDatabaseContract.COURSES_TABLE, null, values);
     }
 
     /**
-     * Same as insertCourse() except data is inserted into a temporary table. Used when downloading new courses.
-     * @param course course to be inserted
-     * @param day the day of this course
+     * Insert the timetable in the database. If there is an id with that timetable,
+     * just replace the name;
+     * @param timetable timetable to be inserted
      * @return the ID of the row if insertion was successful, -1 otherwise
      */
-    public long insertTmpCourse(Course course, String day){
-        ContentValues values = createValuesForInserting(course, day);
+    public long insertTimetable(Timetable timetable){
+        ContentValues values = new ContentValues();
 
-        return database.insert(SqliteDatabaseContract.COURSES_TMP_TABLE, null, values);
+        values.put(SqliteDatabaseContract.ENTITY_ID, timetable.getId());
+        values.put(SqliteDatabaseContract.ENTITY_NAME, timetable.getName());
+        return database.insert(SqliteDatabaseContract.TIMETABLES_TABLE, null, values);
     }
 
     /**
-     * Replace the course1 with the course 2 (course 2 will be placed in day of week passed by the "day" param)
-     * Used when user customizes his timetable.
-     * @param course1 the course currently in the database
-     * @param course2 the new course
-     * @param day the day of the new course
-     * @return the number of rows affected
+     * Same as insertCourse() except data is inserted into a temporary table. Used when downloading new courses.
+     * @param course course to be inserted
+     * @return the ID of the row if insertion was successful, -1 otherwise
      */
-    public int replaceCourse(Course course1, Course course2, String day){
-
-        ContentValues values = createValuesForInserting(course2, day);
-
-        String whereClause = "name = ? AND type = ?";
-        String[] whereArgs = {course1.name, course1.type};
-        return database.update(SqliteDatabaseContract.COURSES_TABLE, values, whereClause, whereArgs);
-    }
+//    public long insertTmpCourse(Course course){
+//        ContentValues values = createValuesForInsertingCourse(course);
+//
+//        return database.insert(SqliteDatabaseContract.COURSES_TMP_TABLE, null, values);
+//    }
 
     // Used only in DbAdapter.java as a helper method.
     // Create a ContentValues object representing a course in the database.
-    private ContentValues createValuesForInserting(Course course, String day){
+    private ContentValues createValuesForInsertingCourse(Course course){
 
         ContentValues values = new ContentValues();
         values.put(SqliteDatabaseContract.NAME, course.name);
@@ -163,7 +147,7 @@ public class DBAdapter {
         values.put(SqliteDatabaseContract.FULL_LOCATION, course.fullLocation);
         values.put(SqliteDatabaseContract.START_TIME, course.startTime);
         values.put(SqliteDatabaseContract.END_TIME, course.endTime);
-        values.put(SqliteDatabaseContract.DAY, day);
+        values.put(SqliteDatabaseContract.DAY, course.day);
         values.put(SqliteDatabaseContract.PROF, course.prof);
         values.put(SqliteDatabaseContract.PROF_ID, course.profID);
         values.put(SqliteDatabaseContract.PARITY, course.parity);
@@ -172,93 +156,12 @@ public class DBAdapter {
     }
 
     /**
-     * Insert a faculty in the database
-     * @param _id the ID of the faculty
-     * @param name the name of the faculty
-     * @param link the link to courses (if necessary)
-     * @return the ID of the row if insertion was successful, -1 otherwise
-     */
-    public long insertFaculty(int _id, String name, String link){
-        ContentValues values = new ContentValues();
-        values.put(SqliteDatabaseContract.FACULTY_ID, _id);
-        values.put(SqliteDatabaseContract.NAME, name);
-        values.put(SqliteDatabaseContract.FACULTY_LINK, link);
-        return database.insert(SqliteDatabaseContract.FACULTIES_TABLE, null, values);
-    }
-
-    /**
-     * Insert a group (students from a certain faculty; a faculty can have multiple groups) in the database
-     * @param table table where to insert (UNDERGRADUATES, MASTERS, PHD)
-     * @param name the the name of the group
-     * @param groupID the ID of the group
-     * @param facultyID the ID of the faculty containing this group
-     * @return the ID of the row if insertion was successful, -1 otherwise
-     */
-    public long insertGroup(String table, String name, int groupID, int facultyID){
-        ContentValues values = new ContentValues();
-        values.put(SqliteDatabaseContract.GROUP_ID, groupID);
-        values.put(SqliteDatabaseContract.FACULTY_FROM_ID, facultyID);
-        values.put(SqliteDatabaseContract.NAME, name);
-        return database.insert(table, null, values);
-    }
-
-
-    /**
-     * Query for all the faculties
-     * @return a Cursor containing the data
-     */
-    public Cursor getFaculties(){
-
-        return database.query(SqliteDatabaseContract.FACULTIES_TABLE,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null);
-    }
-
-    /**`
-     * Query for all the groups within a faculty.
-     * @param facultyID the ID of the faculty
-     * @param type the type of groups (UNDERGRADUATES, MASTERS, PHD)
-     * @return a Cursor object containing the data
-     */
-    public Cursor getGroupsFromFaculty(int facultyID, int type){
-        String table;
-        String mSelection = SqliteDatabaseContract.FACULTY_FROM_ID + " = ?";
-        String[] mSelectionArgs = {String.valueOf(facultyID)};
-        switch (type){
-            case SQLStmtHelper.UNDERGRADUATES:
-                table = SqliteDatabaseContract.UNDERGRADUATES_GROUPS_TABLE;
-                break;
-            case SQLStmtHelper.MASTERS:
-                table = SqliteDatabaseContract.MASTERS_GROUPS_TABLE;
-                break;
-            case SQLStmtHelper.PHD:
-                table = SqliteDatabaseContract.PHD_GROUPS_TABLE;
-                break;
-            default:
-                table = null;
-        }
-        if (table == null)
-            return null;
-        return database.query(table,
-                              null,
-                              mSelection,
-                              mSelectionArgs,
-                              null,
-                              null,
-                              null);
-    }
-
-    /**
      * Query for all the courses from a day from a week of the semester.
      * @param week the week of the semester
      * @param day the day of the week
      * @return an ArrayList object containing only the courses that respect the type of week (odd or even) in the right order
      */
-    public ArrayList<Course> getCourses(int week, int day) throws SQLiteException{
+    public ArrayList<Course> getCourses(int week, int day, int timetableId) throws SQLiteException{
         String[] mProjection = {SqliteDatabaseContract.NAME,
                 SqliteDatabaseContract.FULL_NAME,
                 SqliteDatabaseContract.TYPE,
@@ -272,10 +175,13 @@ public class DBAdapter {
                 SqliteDatabaseContract.INFO
         };
 
-        String selection = SqliteDatabaseContract.DAY + " == ? AND (" + SqliteDatabaseContract.PARITY + " == ? OR " + SqliteDatabaseContract.PARITY + " == ? OR " +
-                                                SqliteDatabaseContract.PARITY + " == ?)";
-        String[] selectionArgs = new String[4];
-        String orderBy = SqliteDatabaseContract.START_TIME;
+        String selection = SqliteDatabaseContract.DAY + " == ? AND (" +
+                            SqliteDatabaseContract.PARITY + " == ? OR " +
+                            SqliteDatabaseContract.PARITY + " == ? OR " +
+                            SqliteDatabaseContract.PARITY + " == ?) AND " +
+                            SqliteDatabaseContract.COURSE_TIMETABLE_ID + " == ? ";
+        String[] selectionArgs = new String[5];
+        String orderBy = " CAST (" + SqliteDatabaseContract.START_TIME + " AS INTEGER) ";
         selectionArgs[0] = String.valueOf(day);
         selectionArgs[2] = "-";
         if (week % 2 == 0)
@@ -283,6 +189,7 @@ public class DBAdapter {
         else
             selectionArgs[1] = CsvAPI.ODD_WEEK;
         selectionArgs[3] = "10 sapt.+1h";
+        selectionArgs[4] = String.valueOf(timetableId);
         Cursor cursor = null;
         cursor = database.query(SqliteDatabaseContract.COURSES_TABLE,
                 mProjection,
@@ -298,7 +205,6 @@ public class DBAdapter {
         while (cursor.moveToNext()) {
             Course course = getCourseFromCursor(cursor);
             courses.add(course);
-
         }
         cursor.close();
         return courses;
@@ -406,7 +312,25 @@ public class DBAdapter {
             return null;
         result.moveToFirst();
         return  getCourseFromCursor(result);
+    }
 
+    /**
+     * Updates a course time and day in the database
+     * @param newValue the new course object
+     * @return the new Course object
+     */
+    public Course updateCourseTime(Course newValue) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SqliteDatabaseContract.DAY, newValue.day);
+        contentValues.put(SqliteDatabaseContract.START_TIME, newValue.startTime);
+        contentValues.put(SqliteDatabaseContract.END_TIME, newValue.endTime);
+        database.update(SqliteDatabaseContract.COURSES_TABLE,
+                                contentValues,
+                                SqliteDatabaseContract.NAME + " = '" + newValue.name + "' "+
+                                " AND " +
+                                SqliteDatabaseContract.TYPE + " = '" + newValue.type + "' ",
+                        null);
+        return newValue;
     }
 
     public boolean isOpen(){

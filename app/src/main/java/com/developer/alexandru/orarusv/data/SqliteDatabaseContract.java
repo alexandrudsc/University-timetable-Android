@@ -7,18 +7,19 @@ package com.developer.alexandru.orarusv.data;
 
 public final class SqliteDatabaseContract {
 
+    public static final String DB_NAME ="usv_timetable.db";
+    public static final String DB_TMP_NAME ="usv_timetable.tmp";
+    public static int DB_VERSION = 2;
+
     // tables
+    public final static String TIMETABLES_TABLE= "TIMETABLES";
     public final static String COURSES_TABLE = "COURSES";
-    public final static String FACULTIES_TABLE = "FACULTIES";
-    public final static String MASTERS_GROUPS_TABLE = "MASTERS_GROUPS";
-    public final static String UNDERGRADUATES_GROUPS_TABLE = "UNDERGRADUATES_GROUPS";
-    public final static String PHD_GROUPS_TABLE = "PHD_GROUPS";
 
     // temporary tables
     public final static String COURSES_TMP_TABLE = "_COURSES";
-    public final static String FACULTIES_TMP_TABLE = "_FACULTIES";
 
     // COURSES table columns
+    public final static String ID = "_id";
     public final static String NAME = "name";
     public final static String FULL_NAME = "full_name";
     public final static String TYPE = "type";
@@ -31,12 +32,10 @@ public final class SqliteDatabaseContract {
     public final static String DAY = "day";
     public final static String PARITY = "parity";
     public final static String INFO = "info";
+    public static final String COURSE_TIMETABLE_ID = "timetable_id";
 
-    // GROUPS table columns
-    public static final String GROUP_ID = "ID";
-    public static final String FACULTY_FROM_ID = "FACULTY_ID";
-
-    // FACULTIES table columns
-    public static final String FACULTY_ID = "_id";
-    public static final String FACULTY_LINK = "link";
+    // TIMETABLES table columns
+    // ------------------------ _id
+    public final static String ENTITY_ID = "entity_id";
+    public final static String ENTITY_NAME = "entity_name";
 }

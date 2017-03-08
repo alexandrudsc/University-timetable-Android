@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  * Created by Alexandru on 2/9/2015.
@@ -37,9 +38,13 @@ public class TimetableDownloaderService extends IntentService {
 
     public static final String ACTION_DOWNLOAD_FINISHED = "download_finished";
 
-
     private NotificationManager notificationManager;
     private static final int DOWNLOAD_NOTIF_CODE = 1;
+
+    // data from starting intent
+    public static final String EXTRA_URL = "timetable_url";
+    public static final String EXTRA_TIMETABLE_ID = "timetable_id";
+    public static final String EXTRA_TIMETABLE_NAME = "timetable_name";
 
     private DBAdapter dbAdapter;
     /**
@@ -64,7 +69,9 @@ public class TimetableDownloaderService extends IntentService {
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
 
-        String urlCourses = intent.getStringExtra(CsvAPI.EXTRA_URL);
+        String urlCourses = intent.getStringExtra(EXTRA_URL);
+        String timetableName = intent.getStringExtra(EXTRA_TIMETABLE_NAME);
+        int timetableID = intent.getIntExtra(EXTRA_TIMETABLE_ID, -1);
         try {
             // Get the structure of the current semester and save it
             URL timeStructureURL = new URL(CsvAPI.TIME_URL);
@@ -95,17 +102,21 @@ public class TimetableDownloaderService extends IntentService {
             is = new InputStreamReader(conn.getInputStream());
             br = new BufferedReader(is);
 
-            // Create the temporary table to keep the new courses until all network operations are done.
-            // This is used in case of connectivity issues
-            dbAdapter.createTMPCoursesTable();
             CoursesParser parser = new CoursesParser(br);
             parser.parse();
             conn.disconnect();
             if (parser.wasSuccessful()) {
-                dbAdapter.replaceOldCourses();
+                Timetable timetable = Timetable.Creator.create(new String[]{String.valueOf(timetableID), timetableName});
+                dbAdapter.deleteTimetableAndCourses(timetable);
+                dbAdapter.insertTimetable(timetable);
+                Utils.setDefaultTimetable(timetable, getApplicationContext());
+
+                final ArrayList<Course> courses = parser.getCourses();
+                for (Course c : courses) {
+                    dbAdapter.insertCourse(c, timetableID);
+                }
                 sendNotificationDownloaded();
             }
-
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
@@ -198,8 +209,11 @@ public class TimetableDownloaderService extends IntentService {
 
     private class CoursesParser extends CSVParser {
 
+        private ArrayList<Course> courses;
+
         public CoursesParser(BufferedReader br) {
             super(br);
+            courses = new ArrayList<>();
         }
 
         @Override
@@ -209,8 +223,13 @@ public class TimetableDownloaderService extends IntentService {
                 return false;
 
             Log.d(TAG, c.toString());
-            dbAdapter.insertTmpCourse(c, data[CsvAPI.DAY]);
+//            dbAdapter.insertTmpCourse(c);
+            courses.add(c);
             return true;
+        }
+
+        public ArrayList<Course> getCourses() {
+            return this.courses;
         }
     }
 

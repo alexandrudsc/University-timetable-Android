@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -239,53 +238,12 @@ public class SettingsActivity extends ActionBarActivity {
     // get faculties from the database
     public ArrayList<Elem> faculties(DBAdapter dbAdapter){
         ArrayList<Elem> faculties = new ArrayList<>();
-        try {
-            if (!dbAdapter.isOpen())
-                dbAdapter.open();
-            Cursor c = dbAdapter.getFaculties();
-            c.moveToFirst();
-            Elem faculty;
-
-            while (!c.isAfterLast()) {
-                faculty = new Elem();
-                faculty.id = c.getInt(ID);
-                faculty.name = c.getString(FACULTY_NAME);
-                if (isFacultyModular(faculty))
-                    faculty.link = c.getString(LINK);
-                faculties.add(faculty);
-                c.moveToNext();
-            }
-        }catch (SQLiteException e){
-            e.printStackTrace();
-        }
         return faculties;
     }
 
     public boolean isFacultyModular(Elem faculty)
     {
         return faculty.id == 0;
-    }
-
-    // Get the groups for a specific faculty (undergraduates, masters, phd)
-    public ArrayList<Elem> groups(DBAdapter dbAdapter, int facultyID, int type){
-        ArrayList<Elem> groups = new ArrayList<Elem>();
-        try {
-            if (!dbAdapter.isOpen())
-                dbAdapter.open();
-            Cursor c = dbAdapter.getGroupsFromFaculty(facultyID, type);
-            c.moveToFirst();
-            Elem group;
-            while (!c.isAfterLast()) {
-                group = new Elem();
-                group.id = c.getInt(GROUP_ID);
-                group.name = c.getString(GROUP_NAME);
-                groups.add(group);
-                c.moveToNext();
-            }
-        }catch (SQLiteException e){
-
-        }
-        return groups;
     }
 
     public void groups(ArrayAdapter<Elem> arrayAdapter, int facultyID, int type){
@@ -463,7 +421,7 @@ public class SettingsActivity extends ActionBarActivity {
 //                        downloaderTask = new TimetableDownloaderTask(SettingsActivity.this);
 //                        downloaderTask.execute(url);
                         Intent intent = new Intent(SettingsActivity.this, TimetableDownloaderService.class);
-                        intent.putExtra(CsvAPI.EXTRA_URL, url);
+                        intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
                         startService(intent);
                     }
                 break;
@@ -499,23 +457,6 @@ public class SettingsActivity extends ActionBarActivity {
             try {
                 if (!dbAdapter.isOpen())
                     dbAdapter.open();
-                Cursor c = dbAdapter.getGroupsFromFaculty(facultyId, type);
-                c.moveToFirst();
-                Elem elem;
-
-
-                while (!c.isAfterLast()) {
-                    elem = new Elem();
-                    elem.id = c.getInt(params[0]);               //ID or GROUP_ID
-                    elem.name = c.getString(params[1]);       //FACULTY_NAME or GROUP_NAME
-                    if (elem.id == groupID)
-                        positionToChoose = c.getPosition();
-                    elems.add(elem);
-                    c.moveToNext();
-                }
-
-                c.close();
-
                 dbAdapter.close();
             }catch (SQLiteException e){
                 e.printStackTrace();

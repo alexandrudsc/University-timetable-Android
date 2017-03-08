@@ -29,6 +29,8 @@ public class Course implements Parcelable, Serializable {
     public int startTime;
     public int endTime;
 
+    public int day;
+
     public String prof;
     public String profID;
 

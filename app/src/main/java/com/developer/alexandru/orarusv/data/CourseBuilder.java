@@ -25,6 +25,8 @@ public class CourseBuilder {
             c.endTime = endTime;
             c.time = startTime + ":00 - " + endTime + ":00";
 
+            c.day = Integer.valueOf(data[CsvAPI.DAY]);
+
             c.prof = data[CsvAPI.RANK] + " " +
                     data[CsvAPI.HAS_PHD] + " " +
                     data[CsvAPI.PROF_FIRST_NAME] + " " +

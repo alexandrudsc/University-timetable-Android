@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
  * Created by Alexandru on 12/23/2014.
  * Fetches the faculties from the URL and their IDs storing in a local database
  */
+@Deprecated
 public class Synchronizer extends IntentService {
 
     //Debug
@@ -126,7 +127,6 @@ public class Synchronizer extends IntentService {
     }
 
     void addFacultyToDatabase(String[] data){
-        dbAdapter.insertFaculty(Integer.parseInt(data[0]), data[1], data[2]);
     }
 
     void addGroupToDatabase(String[] data){
@@ -136,18 +136,6 @@ public class Synchronizer extends IntentService {
         else
             name = data[3] + " an " + data[4] + "__" + data[5];
         Log.d(TAG, name);
-        switch (Integer.valueOf(data[1])){
-            case 1:
-                dbAdapter.insertGroup(SqliteDatabaseContract.UNDERGRADUATES_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
-                break;
-            case 2:
-                dbAdapter.insertGroup(SqliteDatabaseContract.MASTERS_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
-                break;
-            case 3:
-                dbAdapter.insertGroup(SqliteDatabaseContract.PHD_GROUPS_TABLE, name, Integer.parseInt(data[0]), Integer.parseInt(data[2]));
-                break;
-        }
-
     }
 
     /*void addFacultyToDatabase(DBAdapter dbAdapter, Element element){

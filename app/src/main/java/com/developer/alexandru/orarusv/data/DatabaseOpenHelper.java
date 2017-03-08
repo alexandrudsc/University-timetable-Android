@@ -7,9 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.developer.alexandru.orarusv.data.DBAdapter.DB_NAME;
-import static com.developer.alexandru.orarusv.data.DBAdapter.DB_TMP_NAME;
-import static com.developer.alexandru.orarusv.data.DBAdapter.DB_VER;
+import static com.developer.alexandru.orarusv.data.SqliteDatabaseContract.DB_NAME;
+import static com.developer.alexandru.orarusv.data.SqliteDatabaseContract.DB_TMP_NAME;
+import static com.developer.alexandru.orarusv.data.SqliteDatabaseContract.DB_VERSION;
 
 /**
  * Created by alexandru on 11/26/2016.
@@ -19,25 +19,19 @@ import static com.developer.alexandru.orarusv.data.DBAdapter.DB_VER;
 public final class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     public DatabaseOpenHelper(Context context){
-        super(context, DB_NAME, null, DB_VER);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     public DatabaseOpenHelper(Context context, boolean isTemporary){
-        super(context, DB_TMP_NAME, null, DB_VER);
+        super(context, DB_TMP_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.COURSES_TABLE))
             sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
-        if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.FACULTIES_TABLE))
-            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_FACULTIES_TABLE);
-        if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.UNDERGRADUATES_GROUPS_TABLE))
-            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_UNDERGRADUATES_TABLE);
-        if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.MASTERS_GROUPS_TABLE))
-            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_MASTERS_TABLE);
-        if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.PHD_GROUPS_TABLE))
-            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_PHD_TABLE);
+        if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.TIMETABLES_TABLE))
+            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_TIMETABLES_TABLE);
     }
 
     @Override
@@ -47,13 +41,9 @@ public final class DatabaseOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        DB_VER = newVersion;
+        DB_VERSION = newVersion;
         sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-        sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_FACULTIES_TABLE);
-        sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_UNDERGRADUATES_GROUPS_TABLE);
-        sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_MASTERS_GROUPS_TABLE);
-        sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_PHD_GROUPS_TABLE);
-
+        sqLiteDatabase.execSQL(SQLStmtHelper.DELETE_TIMETABLES_TABLE);
         onCreate(sqLiteDatabase);
     }
     // Used to avoid unnecessary creation of tables
@@ -62,14 +52,16 @@ public final class DatabaseOpenHelper extends SQLiteOpenHelper {
 
         String mSelect = "type='table' AND name=?";
         String mSelectArgs[] ={table};
-        Cursor c = sqLiteDatabase.query("sqlite_master",
-                mProj,
-                mSelect,
-                mSelectArgs,
-                null,
-                null,
-                null);
-        Log.d("DB_ADAPTER", c.getCount() + "");
-        return c.getCount() > 0;
+        final Cursor cursor = sqLiteDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + table + "'", null);
+        return cursor != null && cursor.getCount() > 0;
+//        Cursor c = sqLiteDatabase.query("sqlite_master",
+//                mProj,
+//                mSelect,
+//                mSelectArgs,
+//                null,
+//                null,
+//                null);
+//        Log.d("DB_ADAPTER", c.getCount() + "");
+//        return c.getCount() > 0;
     }
 }

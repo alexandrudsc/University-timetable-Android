@@ -2,7 +2,6 @@ package com.developer.alexandru.orarusv.download;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.UrlQuerySanitizer;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,11 +48,14 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
             return;
         }
 
-        String url = javascriptInterface.getUrl();
-        if (DEBUG) Log.d(TAG, url + "");
+        final String url = javascriptInterface.getUrl();
+        final int timetableId = javascriptInterface.getTimetableId();
+        final String timetableName = javascriptInterface.getTimetableName();
 
         Intent intent = new Intent(context, TimetableDownloaderService.class);
-        intent.putExtra(CsvAPI.EXTRA_URL, url);
+        intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
+        intent.putExtra(TimetableDownloaderService.EXTRA_TIMETABLE_ID, timetableId);
+        intent.putExtra(TimetableDownloaderService.EXTRA_TIMETABLE_NAME, timetableName);
         view.showProgressDialog();
         context.startService(intent);
     }
@@ -70,14 +72,16 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
             view.setDownloadBtnText(view.getContext().getResources().getString(R.string.download_timetable_group));
             javascriptToInject.append(
                     "    var ID = location.search.split('ID=')[1].split('&')[0]; " +
-                    "    Android.urlChanged(parseInt(ID), 0); ");
+                    "    Android.urlChanged(parseInt(ID), 0);" +
+                    "    Android.setTimetableName(document.title); ");
         }
         else if (url.contains("prof")) {
             view.setDownloadBtnVisible(true);
             view.setDownloadBtnText(view.getContext().getResources().getString(R.string.download_timetable_prof));
             javascriptToInject.append(
                     "    var ID = location.search.split('ID=')[1].split('&')[0]; " +
-                    "    Android.urlChanged(parseInt(ID), 1); ");
+                    "    Android.urlChanged(parseInt(ID), 1); " +
+                    "    Android.setTimetableName(document.title); ");
         }
         else {
             view.setDownloadBtnVisible(false);
@@ -87,6 +91,7 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
         javascriptToInject.append("}()" +
                 ")");
+
         view.getWebView().loadUrl(javascriptToInject.toString());
     }
 
@@ -110,18 +115,32 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
     public static class JavascriptInterface {
 
-        private int groupId = -1;
-
+        private int timetableId = -1;
         private String url = null;
+        private String timetableName = null;
+
+        public void setTimetableId(int timetableId) {
+            if (DEBUG) Log.d(TAG, timetableId + "");
+            this.timetableId = timetableId;
+        }
+
+        public int getTimetableId(){
+            return timetableId;
+        }
 
         @android.webkit.JavascriptInterface
-        public void groupChanged(int groupID) {
-            Log.d(TAG, groupID + "");
-            this.groupId = groupID;
+        public void setTimetableName(String timetableName) {
+            if (DEBUG) Log.d(TAG, timetableName);
+            this.timetableName = timetableName;
+        }
+
+        public String getTimetableName() {
+            return timetableName;
         }
 
         @android.webkit.JavascriptInterface
         public void urlChanged(int timetableId, int timetableMode) {
+            setTimetableId(timetableId);
             if (timetableMode == CsvAPI.TIMETABLE_GROUP) {
                 this.url = CsvAPI.PARTIAL_GROUP_TIMETABLE_URL + timetableId;
             }
@@ -132,9 +151,6 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
             }
         }
 
-        public int getGroupId(){
-            return groupId;
-        }
 
         private String getUrl() {
             return url;

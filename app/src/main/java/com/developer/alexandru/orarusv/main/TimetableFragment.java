@@ -53,7 +53,7 @@ public class TimetableFragment extends Fragment {
      * Main functionality is to determine the event that will happen at click on a course
      * Also contains a reference to the activity_main activity
      */
-    public  interface OnCourseSelected{
+    public  interface OnCourseSelected {
         MainActivity getActivity();
         FragmentManager getFragManager();
         boolean onCourseClicked(Course c);

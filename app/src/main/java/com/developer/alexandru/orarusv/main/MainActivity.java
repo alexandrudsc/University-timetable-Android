@@ -53,6 +53,9 @@ public class MainActivity extends ActionBarActivity
 
     public static final String PREF_APP_FIRST_RUN = "first_run";
 
+    public static final String PREF_CURR_TIMETABLE_ID = "timetable_id";
+    public static final String PREF_CURR_TIMETABLE_NAME = "timetable_name";
+
     //The current week of semester preference name
     public static final String WEEK_OF_SEMESTER = "week_of_semester";
 

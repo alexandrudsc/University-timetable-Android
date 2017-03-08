@@ -1,7 +1,5 @@
 package com.developer.alexandru.orarusv.data;
 
-import com.developer.alexandru.orarusv.view_pager.TimetableViewPagerAdapter;
-
 /**
  * Created by alexandru on 10/20/16.
  * Very Raw API of USV server.
@@ -13,7 +11,6 @@ public final class CsvAPI {
     /**
      * Public URLs.
      */
-    public static final String EXTRA_URL = "timetable_url";
     public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
     public static final String PROFS_URL = "http://www.usv.ro/orar/vizualizare/data/cadre.php";
     public static final String PARTIAL_GROUP_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=grupa&ID="; // Partial URl for non_modular timetables

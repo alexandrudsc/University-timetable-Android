@@ -129,7 +129,7 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
     @Override
     public void hideProgressDialog() {
         if (progressDialog != null) {
-            progressDialog.hide();
+            progressDialog.cancel();
         }
         this.setResult(RESULT_OK);
         this.finish();

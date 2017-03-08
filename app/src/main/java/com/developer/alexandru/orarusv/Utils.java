@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.developer.alexandru.orarusv.data.Timetable;
 import com.developer.alexandru.orarusv.main.MainActivity;
 
 /**
@@ -124,10 +125,53 @@ public class Utils {
                 MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
     }
 
+    public static int getCurrentTimetableId(Context context) {
+        if (context == null)
+            return -1;
+        return context.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE).getInt(
+                MainActivity.PREF_CURR_TIMETABLE_ID, -1);
+    }
+
+    public static String getCurrentTimetableName(Context context) {
+        if (context == null)
+            return "";
+        return context.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE).getString(
+                MainActivity.PREF_CURR_TIMETABLE_ID, "");
+    }
+
     public static void startClock(){
         startTime = System.currentTimeMillis();
     }
     public static long stopClock(){
         return System.currentTimeMillis() - startTime;
+    }
+
+    public static void setDefaultTimetable(Timetable timetable, Context appContext) {
+        final SharedPreferences sharedPreferences = appContext.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(MainActivity.PREF_CURR_TIMETABLE_ID, timetable.getId());
+        edit.putString(MainActivity.PREF_CURR_TIMETABLE_NAME, timetable.getName());
+        edit.commit();
+    }
+
+    public static String getDayName(int day) {
+        switch (day) {
+            case 0:
+                return "Duminica";
+            case 1:
+                return "Luni";
+            case 2:
+                return "Marți";
+            case 3:
+                return "Miercuri";
+            case 4:
+                return "Joi";
+            case 5:
+                return "Vineri";
+            case 6:
+                return "Sâmbătă";
+            default:
+                return "";
+        }
     }
 }

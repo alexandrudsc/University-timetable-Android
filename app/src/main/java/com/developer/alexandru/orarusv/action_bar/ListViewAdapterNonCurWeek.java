@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.view_pager.CheckBoxOnChangeListener;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
@@ -169,7 +171,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             for(int i = 0; i < NUM_DAYS; i++){
                 //Add name of day first
                 courses.add(new Course(daysName[i].toUpperCase(),null, NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
-                courses.addAll(dbAdapter.getCourses(week, i));
+                courses.addAll(dbAdapter.getCourses(week, i, Utils.getCurrentTimetableId(this.context)));
             }
 
             return courses;

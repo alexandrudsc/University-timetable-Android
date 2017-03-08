@@ -3,13 +3,17 @@ package com.developer.alexandru.orarusv.data;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.developer.alexandru.orarusv.R;
+import com.developer.alexandru.orarusv.Utils;
 
 import java.util.ArrayList;
 
@@ -60,6 +64,7 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.name = (TextView) convertView.findViewById(R.id.course_name);
             viewHolder.description = (TextView) convertView.findViewById(R.id.course_description);
+            viewHolder.courseLayout = (LinearLayout) convertView.findViewById(R.id.course_layout);
             convertView.setTag(viewHolder);
         }
 
@@ -67,16 +72,30 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Course course = this.items.get(i);
+        final Course course = this.items.get(i);
         viewHolder.name.setText(course.fullName);
         viewHolder.description.setText(getDescription(course));
+        viewHolder.courseLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("COURSE_ADAPTER", course.fullName);
+                if (context == null)
+                    return;
+                DBAdapter dbAdapter = new DBAdapter(context);
+                dbAdapter.open();
+                dbAdapter.updateCourseTime(course);
+                dbAdapter.close();
+                if (dialog != null)
+                    dialog.cancel();
+            }
+        });
         return convertView;
     }
 
     @NonNull
     private String getDescription(Course course) {
         StringBuilder description = new StringBuilder(course.location + ", ");
-        description.append(course.startTime + ":00 - " + course.endTime + ":00");
+        description.append(course.startTime + ":00 - " + course.endTime + ":00" + ", " + Utils.getDayName(course.day));
         description.append("\n");
         if (CsvAPI.ODD_WEEK.equals(course.parity)) {
             description.append("Săptămâni impare");
@@ -97,5 +116,6 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
     private static class ViewHolder {
         TextView name;
         TextView description;
+        LinearLayout courseLayout;
     }
 }

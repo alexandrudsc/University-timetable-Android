@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.DBAdapter;
@@ -56,7 +57,8 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         int weekOfSemester = mContext.getSharedPreferences(MainActivity.TIME_ORGANISER_FILE_NAME, Context.MODE_PRIVATE).
                 getInt(MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER);
 
-        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1));
+        this.setValues(dbAdapter.getCourses(weekOfSemester, Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1,
+                Utils.getCurrentTimetableId(this.mContext)));
         dbAdapter.close();
 
     }
