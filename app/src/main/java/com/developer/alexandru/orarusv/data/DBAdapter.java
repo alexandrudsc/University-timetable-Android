@@ -121,6 +121,7 @@ public class DBAdapter {
 
         values.put(SqliteDatabaseContract.ENTITY_ID, timetable.getId());
         values.put(SqliteDatabaseContract.ENTITY_NAME, timetable.getName());
+        values.put(SqliteDatabaseContract.ENTITY_TYPE, timetable.getType().ordinal());
         return database.insert(SqliteDatabaseContract.TIMETABLES_TABLE, null, values);
     }
 

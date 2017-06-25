@@ -27,6 +27,7 @@ public final class SQLStmtHelper {
 
     public final static String CREATE_TIMETABLES_TABLE = "CREATE TABLE \"TIMETABLES\"(\n" +
             SqliteDatabaseContract.ID + " INT,\n" +
+            SqliteDatabaseContract.ENTITY_TYPE + " INT,\n" +
             SqliteDatabaseContract.ENTITY_ID + " INT, \n" +
             SqliteDatabaseContract.ENTITY_NAME + " TEXT\n" +
             ");";

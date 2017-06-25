@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.CsvAPI;
+import com.developer.alexandru.orarusv.data.Timetable;
 import com.developer.alexandru.orarusv.data.TimetableDownloaderService;
 
 /**
@@ -50,12 +51,14 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
         final String url = javascriptInterface.getUrl();
         final int timetableId = javascriptInterface.getTimetableId();
+        final int timetableType = javascriptInterface.getTimetableType();
         final String timetableName = javascriptInterface.getTimetableName();
 
         Intent intent = new Intent(context, TimetableDownloaderService.class);
         intent.putExtra(TimetableDownloaderService.EXTRA_URL, url);
+        intent.putExtra(TimetableDownloaderService.EXTRA_TIMETABLE_TYPE, timetableType);
         intent.putExtra(TimetableDownloaderService.EXTRA_TIMETABLE_ID, timetableId);
-        intent.putExtra(TimetableDownloaderService.EXTRA_TIMETABLE_NAME, timetableName);
+        intent.putExtra(TimetableDownloaderService. EXTRA_TIMETABLE_NAME, timetableName);
         view.showProgressDialog();
         context.startService(intent);
     }
@@ -116,6 +119,7 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
     public static class JavascriptInterface {
 
         private int timetableId = -1;
+        private Timetable.Type timetableType = Timetable.Type.Student;
         private String url = null;
         private String timetableName = null;
 
@@ -126,6 +130,10 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
 
         public int getTimetableId(){
             return timetableId;
+        }
+
+        public int getTimetableType() {
+            return timetableType.ordinal();
         }
 
         @android.webkit.JavascriptInterface
@@ -143,9 +151,11 @@ public class DownloadActivityPresenterImpl implements DownloadActivityPresenter 
             setTimetableId(timetableId);
             if (timetableMode == CsvAPI.TIMETABLE_GROUP) {
                 this.url = CsvAPI.PARTIAL_GROUP_TIMETABLE_URL + timetableId;
+                timetableType = Timetable.Type.Student;
             }
             else if (timetableMode == CsvAPI.TIMETABLE_PROF) {
                 this.url = CsvAPI.PARTIAL_PROF_TIMETABLE_URL+ timetableId;
+                timetableType = Timetable.Type.Professor;
             } else {
                 this.url = null;
             }

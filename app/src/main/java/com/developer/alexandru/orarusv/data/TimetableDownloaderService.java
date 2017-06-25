@@ -43,6 +43,7 @@ public class TimetableDownloaderService extends IntentService {
 
     // data from starting intent
     public static final String EXTRA_URL = "timetable_url";
+    public static final String EXTRA_TIMETABLE_TYPE = "timetable_type";
     public static final String EXTRA_TIMETABLE_ID = "timetable_id";
     public static final String EXTRA_TIMETABLE_NAME = "timetable_name";
 
@@ -72,6 +73,8 @@ public class TimetableDownloaderService extends IntentService {
         String urlCourses = intent.getStringExtra(EXTRA_URL);
         String timetableName = intent.getStringExtra(EXTRA_TIMETABLE_NAME);
         int timetableID = intent.getIntExtra(EXTRA_TIMETABLE_ID, -1);
+        int timetableType = intent.getIntExtra(EXTRA_TIMETABLE_TYPE, Timetable.Type.Student.ordinal());
+
         try {
             // Get the structure of the current semester and save it
             URL timeStructureURL = new URL(CsvAPI.TIME_URL);
@@ -106,7 +109,10 @@ public class TimetableDownloaderService extends IntentService {
             parser.parse();
             conn.disconnect();
             if (parser.wasSuccessful()) {
-                Timetable timetable = Timetable.Creator.create(new String[]{String.valueOf(timetableID), timetableName});
+                Timetable timetable = Timetable.Creator.create(new String[]{
+                        String.valueOf(timetableID),
+                        String.valueOf(timetableType),
+                        timetableName});
                 dbAdapter.deleteTimetableAndCourses(timetable);
                 dbAdapter.insertTimetable(timetable);
                 Utils.setDefaultTimetable(timetable, getApplicationContext());

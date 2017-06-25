@@ -29,7 +29,7 @@ public final class DatabaseOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.COURSES_TABLE))
-            sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
+            sqLiteDatabase.execSQL(SQLStmtHelper. CREATE_COURSES_TABLE);
         if (!tableExists(sqLiteDatabase, SqliteDatabaseContract.TIMETABLES_TABLE))
             sqLiteDatabase.execSQL(SQLStmtHelper.CREATE_TIMETABLES_TABLE);
     }

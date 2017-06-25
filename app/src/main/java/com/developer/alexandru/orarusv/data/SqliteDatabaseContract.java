@@ -37,5 +37,6 @@ public final class SqliteDatabaseContract {
     // TIMETABLES table columns
     // ------------------------ _id
     public final static String ENTITY_ID = "entity_id";
+    public static final String ENTITY_TYPE = "entity_type";
     public final static String ENTITY_NAME = "entity_name";
 }
