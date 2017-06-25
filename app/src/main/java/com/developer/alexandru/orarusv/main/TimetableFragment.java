@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developer.alexandru.orarusv.ChooseTimetableActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.Course;
@@ -131,6 +132,10 @@ public class TimetableFragment extends Fragment {
             case R.id.download_from_menu:
                 Intent intent = new Intent(getActivity(), DownloadActivity.class);
                 this.startActivityForResult(intent, MainActivity.REQUEST_CODE_DOWNLOAD);
+                return true;
+            case R.id.choose_timetable_from_menu:
+                Intent intentChooseTimetable = new Intent(getActivity(), ChooseTimetableActivity.class);
+                this.startActivityForResult(intentChooseTimetable, MainActivity.REQUEST_CODE_PICK_TIMETABLE);
                 return true;
         }
         return super.onOptionsItemSelected(item);

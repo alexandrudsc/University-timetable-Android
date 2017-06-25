@@ -41,6 +41,7 @@ public class MainActivity extends ActionBarActivity
 
     public static final char REQUEST_CODE_DOWNLOAD = 12;
     public static final char REQUEST_CODE_UNKNOW = 13;  // TODO must be changed
+    public static final char REQUEST_CODE_PICK_TIMETABLE = 14;
 
     //General preferences file name
     public static final String PREFERENCES_FILE_NAME = "preferences";
@@ -55,6 +56,7 @@ public class MainActivity extends ActionBarActivity
 
     public static final String PREF_CURR_TIMETABLE_ID = "timetable_id";
     public static final String PREF_CURR_TIMETABLE_NAME = "timetable_name";
+    public static final String PREF_CURR_TIMETABLE_TYPE = "timetable_type";
 
     //The current week of semester preference name
     public static final String WEEK_OF_SEMESTER = "week_of_semester";

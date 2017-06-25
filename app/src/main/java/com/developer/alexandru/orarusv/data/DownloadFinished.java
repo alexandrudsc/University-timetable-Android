@@ -23,6 +23,11 @@ public class DownloadFinished extends BroadcastReceiver {
     private Spinner groupsUndergraduates, groupsMasters, groupsPHD;
 
     private WeakReference<SettingsActivity> downloaderActivityWeakReference;
+
+    public DownloadFinished() {
+        super();
+    }
+
     public DownloadFinished(SettingsActivity activity, Spinner groupsUndergraduates, Spinner groupsMasters, Spinner groupsPHD) {
         this.groupsUndergraduates = groupsUndergraduates;
         this.groupsMasters = groupsMasters;

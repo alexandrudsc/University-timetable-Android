@@ -110,12 +110,12 @@ public class TimetableDownloaderService extends IntentService {
             conn.disconnect();
             if (parser.wasSuccessful()) {
                 Timetable timetable = Timetable.Creator.create(new String[]{
-                        String.valueOf(timetableID),
                         String.valueOf(timetableType),
+                        String.valueOf(timetableID),
                         timetableName});
                 dbAdapter.deleteTimetableAndCourses(timetable);
                 dbAdapter.insertTimetable(timetable);
-                Utils.setDefaultTimetable(timetable, getApplicationContext());
+                Utils.setCurrentTimetable(timetable, getApplicationContext());
 
                 final ArrayList<Course> courses = parser.getCourses();
                 for (Course c : courses) {

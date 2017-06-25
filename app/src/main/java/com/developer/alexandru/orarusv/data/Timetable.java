@@ -35,11 +35,16 @@ public final class Timetable {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public static final class Creator {
         public static Timetable create(String[] data) throws NumberFormatException, IndexOutOfBoundsException {
             Timetable timetable = new Timetable();
-            timetable.id = Integer.valueOf(data[0]);
-            timetable.type = Type.values()[Integer.valueOf(data[1])];
+            timetable.type = Type.values()[Integer.valueOf(data[0])];
+            timetable.id = Integer.valueOf(data[1]);
             timetable.name = data[2];
             return timetable;
         }

@@ -98,6 +98,12 @@ public class DayFragment extends ListFragment {
                     refreshCourses();
                 }
                 break;
+            case MainActivity.REQUEST_CODE_PICK_TIMETABLE:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (D) Log.d("DayFragment", "timetable picked. data changed");
+                    refreshCourses();
+                }
+                break;
         }
     }
 

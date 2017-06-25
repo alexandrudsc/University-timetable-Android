@@ -2,6 +2,7 @@ package com.developer.alexandru.orarusv.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -230,6 +231,21 @@ public class DBAdapter {
                 time, prof, profID, parity, info);
     }
 
+    private Timetable getTimetableFromCursor(Cursor cursor) {
+        if (cursor == null)
+            return null;
+        Timetable timetable = null;
+        try {
+            timetable = Timetable.Creator.create(new String[] {cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2)});
+        }
+        catch (Exception ex) {
+            Log.d(TAG, ex.toString());
+        }
+        return timetable;
+    }
+
     // Used by content provider for search suggestions
     public Cursor fullQuery(String[] projection, String selection, String[] selectionArgs, String order){
         if (D) Log.d(TAG, "query for search");
@@ -336,5 +352,29 @@ public class DBAdapter {
 
     public boolean isOpen(){
         return database.isOpen();
+    }
+
+    public ArrayList<Timetable> getAllTimetables() {
+        ArrayList<Timetable> allTimetables = new ArrayList<>();
+
+        String[] mProjection = {SqliteDatabaseContract.ENTITY_TYPE,
+                SqliteDatabaseContract.ENTITY_ID,
+                SqliteDatabaseContract.ENTITY_NAME
+        };
+
+        Cursor result = database.query(SqliteDatabaseContract.TIMETABLES_TABLE,
+                mProjection,
+                null,
+                null,
+                null,
+                null,
+                null);
+        if (result == null || result.getCount() == 0)
+            return allTimetables;
+        while (result.moveToNext()) {
+            allTimetables.add(getTimetableFromCursor(result));
+        }
+        result.close();
+        return allTimetables;
     }
 }

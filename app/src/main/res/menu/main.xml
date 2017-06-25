@@ -10,6 +10,11 @@
         developer.alexandru:showAsAction="collapseActionView"/>
 
     <item
+        android:id="@+id/choose_timetable_from_menu"
+        android:title="@string/downloaded_timetables"
+        developer.alexandru:showAsAction="collapseActionView"/>
+
+    <item
         android:id="@+id/search_from_menu"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"

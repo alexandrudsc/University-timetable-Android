@@ -146,12 +146,21 @@ public class Utils {
         return System.currentTimeMillis() - startTime;
     }
 
-    public static void setDefaultTimetable(Timetable timetable, Context appContext) {
+    public static void setCurrentTimetable(Timetable timetable, Context appContext) {
         final SharedPreferences sharedPreferences = appContext.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
         final SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(MainActivity.PREF_CURR_TIMETABLE_ID, timetable.getId());
         edit.putString(MainActivity.PREF_CURR_TIMETABLE_NAME, timetable.getName());
         edit.commit();
+    }
+
+    public static Timetable getCurrentTimetable(Context appContext) {
+        SharedPreferences prefs = appContext.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
+        return Timetable.Creator.create(new String[] {
+                        String.valueOf(prefs.getInt(MainActivity.PREF_CURR_TIMETABLE_TYPE, 0)),
+                        String.valueOf(prefs.getInt(MainActivity.PREF_CURR_TIMETABLE_ID, -1)),
+                        prefs.getString(MainActivity.PREF_CURR_TIMETABLE_NAME, "")
+        });
     }
 
     public static String getDayName(int day) {
