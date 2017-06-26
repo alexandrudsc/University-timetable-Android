@@ -56,6 +56,7 @@ public class ChooseTimetableActivity extends Activity implements AdapterView.OnI
             return;
         Log.d("ChoooseTimetable", timetable.toString());
         if (this.currentTimetableId != timetable.getId()) {
+            // TODO reset all progress because timetable changed?
             Utils.setCurrentTimetable(timetable, this);
             this.setResult(RESULT_OK);
         }
