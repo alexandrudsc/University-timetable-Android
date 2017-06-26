@@ -142,18 +142,18 @@ public class DBAdapter {
     private ContentValues createValuesForInsertingCourse(Course course){
 
         ContentValues values = new ContentValues();
-        values.put(SqliteDatabaseContract.NAME, course.name);
-        values.put(SqliteDatabaseContract.FULL_NAME, course.fullName);
-        values.put(SqliteDatabaseContract.TYPE, course.type);
-        values.put(SqliteDatabaseContract.LOCATION, course.location);
-        values.put(SqliteDatabaseContract.FULL_LOCATION, course.fullLocation);
-        values.put(SqliteDatabaseContract.START_TIME, course.startTime);
-        values.put(SqliteDatabaseContract.END_TIME, course.endTime);
-        values.put(SqliteDatabaseContract.DAY, course.day);
-        values.put(SqliteDatabaseContract.PROF, course.prof);
-        values.put(SqliteDatabaseContract.PROF_ID, course.profID);
-        values.put(SqliteDatabaseContract.PARITY, course.parity);
-        values.put(SqliteDatabaseContract.INFO, course.info);
+        values.put(SqliteDatabaseContract.NAME, course.getName());
+        values.put(SqliteDatabaseContract.FULL_NAME, course.getFullName());
+        values.put(SqliteDatabaseContract.TYPE, course.getType());
+        values.put(SqliteDatabaseContract.LOCATION, course.getLocation());
+        values.put(SqliteDatabaseContract.FULL_LOCATION, course.getFullLocation());
+        values.put(SqliteDatabaseContract.START_TIME, course.getStartTime());
+        values.put(SqliteDatabaseContract.END_TIME, course.getEndTime());
+        values.put(SqliteDatabaseContract.DAY, course.getDay());
+        values.put(SqliteDatabaseContract.PROF, course.getProf());
+        values.put(SqliteDatabaseContract.PROF_ID, course.getProfID());
+        values.put(SqliteDatabaseContract.PARITY, course.getParity());
+        values.put(SqliteDatabaseContract.INFO, course.getInfo());
         return values;
     }
 
@@ -338,14 +338,14 @@ public class DBAdapter {
      */
     public Course updateCourseTime(Course newValue) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(SqliteDatabaseContract.DAY, newValue.day);
-        contentValues.put(SqliteDatabaseContract.START_TIME, newValue.startTime);
-        contentValues.put(SqliteDatabaseContract.END_TIME, newValue.endTime);
+        contentValues.put(SqliteDatabaseContract.DAY, newValue.getDay());
+        contentValues.put(SqliteDatabaseContract.START_TIME, newValue.getStartTime());
+        contentValues.put(SqliteDatabaseContract.END_TIME, newValue.getEndTime());
         database.update(SqliteDatabaseContract.COURSES_TABLE,
                                 contentValues,
-                                SqliteDatabaseContract.NAME + " = '" + newValue.name + "' "+
+                                SqliteDatabaseContract.NAME + " = '" + newValue.getName() + "' "+
                                 " AND " +
-                                SqliteDatabaseContract.TYPE + " = '" + newValue.type + "' ",
+                                SqliteDatabaseContract.TYPE + " = '" + newValue.getType() + "' ",
                         null);
         return newValue;
     }

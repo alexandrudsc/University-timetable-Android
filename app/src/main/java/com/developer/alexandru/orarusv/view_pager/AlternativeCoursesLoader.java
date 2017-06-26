@@ -27,7 +27,7 @@ public class AlternativeCoursesLoader extends AsyncTask<Void, Void, Void> {
     public AlternativeCoursesLoader(AlternativeCoursesListAdapter adapter, Course courseToReplace) {
         this.adapter = adapter;
         this.courseToReplace = courseToReplace;
-        this.profId = courseToReplace.profID;
+        this.profId = courseToReplace.getProfID();
     }
 
     @Override

@@ -24,8 +24,8 @@ public class AlternativeCoursesParser extends CSVParser {
         if (!CourseBuilder.isDataValid(data))
             return false;
 
-        if (courseToReplace.fullName != null && courseToReplace.fullName.equals(data[CsvAPI.COURSE_FULL_NAME]) &&
-                courseToReplace.type.equals(data[CsvAPI.TYPE])) {
+        if (courseToReplace.getFullName() != null && courseToReplace.getFullName().equals(data[CsvAPI.COURSE_FULL_NAME]) &&
+                courseToReplace.getType().equals(data[CsvAPI.TYPE])) {
             Course c = CourseBuilder.build(data);
             adapter.add(c);
             return true;

@@ -83,7 +83,7 @@ public class DetailsFragment extends Fragment {
                     fm = getActivity().getSupportFragmentManager();
                 final FragmentTransaction ft = fm.beginTransaction();
                 ft.setCustomAnimations(R.anim.anim_fragments, 0);
-                ResultsFragment fr = new ResultsFragment(fm, course.name, course.type, course.parity);
+                ResultsFragment fr = new ResultsFragment(fm, course.getName(), course.getType(), course.getParity());
                 ft.replace(R.id.course_fragment_container, fr);
                 ft.addToBackStack(REPLACE_DETAILS_WITH_RESULT);
                 ft.commit();
@@ -94,9 +94,9 @@ public class DetailsFragment extends Fragment {
             courseTime = (TextView) fragmentView.findViewById(R.id.course_time);
             courseLocation = (TextView) fragmentView.findViewById(R.id.course_location);
 
-            courseProf.setText(course.prof);
-            courseTime.setText(course.time);
-            courseLocation.setText("Corp " + course.fullLocation);
+            courseProf.setText(course.getProf());
+            courseTime.setText(course.getTime());
+            courseLocation.setText("Corp " + course.getFullLocation());
         }
         catch (NullPointerException e ){
         }

@@ -14,27 +14,27 @@ public class CourseBuilder {
             final int endTime = Integer.valueOf(data[CsvAPI.STOP]) / 60 + startTime;
 
             Course c = new Course();
-            c.name = data[CsvAPI.COURSE_NAME];
-            c.fullName = data[CsvAPI.COURSE_FULL_NAME];
-            c.type = data[CsvAPI.TYPE];
+            c.setName(data[CsvAPI.COURSE_NAME]);
+            c.setFullName(data[CsvAPI.COURSE_FULL_NAME]);
+            c.setType(data[CsvAPI.TYPE]);
 
-            c.location = data[CsvAPI.ROOM_SHORT_NAME];
-            c.fullLocation = data[CsvAPI.BUILDING] + " " +data[CsvAPI.ROOM];
+            c.setLocation(data[CsvAPI.ROOM_SHORT_NAME]);
+            c.setFullLocation(data[CsvAPI.BUILDING] + " " + data[CsvAPI.ROOM]);
 
-            c.startTime = startTime;
-            c.endTime = endTime;
-            c.time = startTime + ":00 - " + endTime + ":00";
+            c.setStartTime(startTime);
+            c.setEndTime(endTime);
+            c.setTime(startTime + ":00 - " + endTime + ":00");
 
-            c.day = Integer.valueOf(data[CsvAPI.DAY]);
+            c.setDay(Integer.valueOf(data[CsvAPI.DAY]));
 
-            c.prof = data[CsvAPI.RANK] + " " +
+            c.setProf(data[CsvAPI.RANK] + " " +
                     data[CsvAPI.HAS_PHD] + " " +
                     data[CsvAPI.PROF_FIRST_NAME] + " " +
-                    data[CsvAPI.PROF_LAST_NAME];
-            c.profID = data[CsvAPI.PROF_ID];
+                    data[CsvAPI.PROF_LAST_NAME]);
+            c.setProfID(data[CsvAPI.PROF_ID]);
 
-            c.parity = data[CsvAPI.PARITY];
-            c.info = data[CsvAPI.INFO];
+            c.setParity(data[CsvAPI.PARITY]);
+            c.setInfo(data[CsvAPI.INFO]);
             return c;
         }
         catch (Exception ex) {

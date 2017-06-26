@@ -73,12 +73,12 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
         }
 
         final Course course = this.items.get(i);
-        viewHolder.name.setText(course.fullName);
+        viewHolder.name.setText(course.getFullName());
         viewHolder.description.setText(getDescription(course));
         viewHolder.courseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("COURSE_ADAPTER", course.fullName);
+                Log.d("COURSE_ADAPTER", course.getFullName());
                 if (context == null)
                     return;
                 DBAdapter dbAdapter = new DBAdapter(context);
@@ -94,12 +94,12 @@ public class AlternativeCoursesListAdapter extends BaseAdapter {
 
     @NonNull
     private String getDescription(Course course) {
-        StringBuilder description = new StringBuilder(course.location + ", ");
-        description.append(course.startTime + ":00 - " + course.endTime + ":00" + ", " + Utils.getDayName(course.day));
+        StringBuilder description = new StringBuilder(course.getLocation() + ", ");
+        description.append(course.getStartTime() + ":00 - " + course.getEndTime() + ":00" + ", " + Utils.getDayName(course.getDay()));
         description.append("\n");
-        if (CsvAPI.ODD_WEEK.equals(course.parity)) {
+        if (CsvAPI.ODD_WEEK.equals(course.getParity())) {
             description.append("Săptămâni impare");
-        } else if (CsvAPI.EVEN_WEEK.equals(course.parity)) {
+        } else if (CsvAPI.EVEN_WEEK.equals(course.getParity())) {
             description.append("Săptămâni pare");
         }
         return description.toString();
