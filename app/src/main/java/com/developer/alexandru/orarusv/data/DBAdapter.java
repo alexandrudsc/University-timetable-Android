@@ -236,7 +236,7 @@ public class DBAdapter {
             return null;
         Timetable timetable = null;
         try {
-            timetable = Timetable.Creator.create(new String[] {cursor.getString(0),
+            timetable = Timetable.Creator.INSTANCE.create(new String[] {cursor.getString(0),
                     cursor.getString(1),
                     cursor.getString(2)});
         }

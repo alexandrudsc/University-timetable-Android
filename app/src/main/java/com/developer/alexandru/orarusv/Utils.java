@@ -156,7 +156,7 @@ public class Utils {
 
     public static Timetable getCurrentTimetable(Context appContext) {
         SharedPreferences prefs = appContext.getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-        return Timetable.Creator.create(new String[] {
+        return Timetable.Creator.INSTANCE.create(new String[] {
                         String.valueOf(prefs.getInt(MainActivity.PREF_CURR_TIMETABLE_TYPE, 0)),
                         String.valueOf(prefs.getInt(MainActivity.PREF_CURR_TIMETABLE_ID, -1)),
                         prefs.getString(MainActivity.PREF_CURR_TIMETABLE_NAME, "")

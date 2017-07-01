@@ -109,7 +109,7 @@ public class TimetableDownloaderService extends IntentService {
             parser.parse();
             conn.disconnect();
             if (parser.wasSuccessful()) {
-                Timetable timetable = Timetable.Creator.create(new String[]{
+                Timetable timetable = Timetable.Creator.INSTANCE.create(new String[]{
                         String.valueOf(timetableType),
                         String.valueOf(timetableID),
                         timetableName});
