@@ -1,8 +1,11 @@
 package com.developer.alexandru.orarusv.main;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import com.developer.alexandru.orarusv.ChooseTimetableActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
+import com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.view_pager.PagerSlidingTabStrip;
@@ -148,6 +152,17 @@ public class TimetableFragment extends Fragment {
             if (fr != null) {
                 fr.onActivityResult(requestCode, resultCode, data);
             }
+
+        if (requestCode == MainActivity.REQUEST_CODE_PICK_TIMETABLE) {
+            // timetable was changed. Update all the external widgets.
+            final AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
+            final ComponentName appWidget = new ComponentName(getContext(), TimetableWidgetProvider.class.getName());
+            final int[] appWidgetIds = appWidgetManager.getAppWidgetIds(appWidget);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
+        }
+
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
