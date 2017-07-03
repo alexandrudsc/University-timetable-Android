@@ -170,7 +170,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             String[] daysName = context.getResources().getStringArray(R.array.days_of_week_full_name);
             for(int i = 0; i < NUM_DAYS; i++){
                 //Add name of day first
-                courses.add(new Course(daysName[i].toUpperCase(),null, NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
+                courses.add(new Course(daysName[i].toUpperCase(),"", NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
                 courses.addAll(dbAdapter.getCourses(week, i, Utils.getCurrentTimetableId(this.context)));
             }
 
