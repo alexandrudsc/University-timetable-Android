@@ -43,7 +43,13 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         // Event handled by the inner view. See DialogListItem's implementation of getView()
                     }
-                });
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    courseSelectedCallback.getActivity().refreshCourses();
+                }
+        });
         AlertDialog dialog = builder.create();
         adapter.setDialog(dialog);
         dialog.show();

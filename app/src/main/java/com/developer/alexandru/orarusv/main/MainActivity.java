@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.data.Course;
+import com.developer.alexandru.orarusv.data.Timetable;
 import com.developer.alexandru.orarusv.navigation_drawer.DrawerToggle;
 import com.developer.alexandru.orarusv.navigation_drawer.NavDrawerAdapter;
 import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickListener;
@@ -265,4 +267,12 @@ public class MainActivity extends ActionBarActivity
         return this;
     }
 
+    public void refreshCourses() {
+        // force refresh for courses
+        final Fragment fragment = getFragManager().getFragments().get(0);
+        if (fragment instanceof TimetableFragment) {
+            TimetableFragment timetableFragment = (TimetableFragment) fragment;
+            timetableFragment.onActivityResult(REQUEST_CODE_UNKNOW, RESULT_OK, null);
+        }
+    }
 }
