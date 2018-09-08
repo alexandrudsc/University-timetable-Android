@@ -45,11 +45,14 @@ public class OnCourseLongClickListener implements View.OnLongClickListener {
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    courseSelectedCallback.getActivity().refreshCourses();
-                }
-        });
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        if (courseSelectedCallback != null && courseSelectedCallback.getActivity() != null) {
+                            courseSelectedCallback.refreshCourses();
+                        }
+
+                    }
+                });
         AlertDialog dialog = builder.create();
         adapter.setDialog(dialog);
         dialog.show();

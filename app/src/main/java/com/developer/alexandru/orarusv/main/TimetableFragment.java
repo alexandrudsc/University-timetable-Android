@@ -62,6 +62,8 @@ public class TimetableFragment extends Fragment {
         MainActivity getActivity();
         FragmentManager getFragManager();
         boolean onCourseClicked(Course c);
+
+        void refreshCourses();
     }
 
     @Override

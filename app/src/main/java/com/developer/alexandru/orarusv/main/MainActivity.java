@@ -267,6 +267,7 @@ public class MainActivity extends ActionBarActivity
         return this;
     }
 
+    @Override
     public void refreshCourses() {
         // force refresh for courses
         final Fragment fragment = getFragManager().getFragments().get(0);
