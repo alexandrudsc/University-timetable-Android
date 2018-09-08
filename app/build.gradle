@@ -7,6 +7,10 @@ android {
 
     useLibrary 'org.apache.http.legacy'
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.developer.alexandru.aplicatie_studenti"
         minSdkVersion 9
