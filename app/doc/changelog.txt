@@ -1,0 +1,13 @@
+--------------------------------------------------------------------------------
+v0.2.0
+--------------------------------------------------------------------------------
+App:
+
+- updated app icon for xxhdpi and xxxhdpi resolutions
+
+Development:
+
+- support for continuous integration
+- support for kotlin programming language
+
+
