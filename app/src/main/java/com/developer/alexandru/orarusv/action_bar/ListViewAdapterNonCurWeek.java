@@ -104,28 +104,28 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             viewHolder = (DayListViewAdapter.ViewHolder) convertView.getTag();
 
         if(isTitleAt(position)){
-            viewHolder.eventName.setText(values.get(position).name);
+            viewHolder.eventName.setText(values.get(position).getName());
             viewHolder.eventName.setGravity(Gravity.CENTER);
             convertView.setClickable(false);
         }
         else{
             final Course c = values.get(position);
-            viewHolder.eventName.setText(c.name);
-            viewHolder.eventName.setText(c.name.toUpperCase());
-            viewHolder.eventType.setText(c.type + "\n" + c.time + "\n" +
-                    c.location);
+            viewHolder.eventName.setText(c.getName());
+            viewHolder.eventName.setText(c.getName().toUpperCase());
+            viewHolder.eventType.setText(c.getType() + "\n" + c.getTime() + "\n" +
+                    c.getLocation());
 
             viewHolder.eventCheckBox.setTag(backupFileName + ";" +
-                    values.get(position).name+ "_" +
-                    values.get(position).type );
+                    values.get(position).getName() + "_" +
+                    values.get(position).getType());
             viewHolder.eventCheckBox.setOnCheckedChangeListener(new CheckBoxOnChangeListener());
 
             boolean currentCourseProgress;
             if(weekProgress == null)
                 weekProgress = convertView.getContext().getSharedPreferences(backupFileName, Context.MODE_PRIVATE);
 
-            currentCourseProgress = weekProgress.getBoolean(c.name+ "_" +
-                    c.type, false);
+            currentCourseProgress = weekProgress.getBoolean(c.getName() + "_" +
+                    c.getType(), false);
             if(currentCourseProgress)
                 viewHolder.eventCheckBox.setChecked(true);
             else
@@ -135,7 +135,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("CLICKED ON", c.fullName);
+                    Log.d("CLICKED ON", c.getFullName());
 
                     activity.onCourseClicked(c);
                 }
@@ -145,7 +145,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
     }
 
     private boolean isTitleAt(int position){
-        if(values.get(position).type.equals(NAME_FOR_TITLE_ELEMENT))
+        if(values.get(position).getType().equals(NAME_FOR_TITLE_ELEMENT))
             return true;
         return false;
     }
@@ -170,7 +170,7 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
             String[] daysName = context.getResources().getStringArray(R.array.days_of_week_full_name);
             for(int i = 0; i < NUM_DAYS; i++){
                 //Add name of day first
-                courses.add(new Course(daysName[i].toUpperCase(),null, NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
+                courses.add(new Course(daysName[i].toUpperCase(),"", NAME_FOR_TITLE_ELEMENT, "", "" ,"", "", "", "", ""));
                 courses.addAll(dbAdapter.getCourses(week, i, Utils.getCurrentTimetableId(this.context)));
             }
 

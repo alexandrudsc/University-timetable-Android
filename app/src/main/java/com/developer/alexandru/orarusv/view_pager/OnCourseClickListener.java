@@ -21,7 +21,7 @@ public class OnCourseClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Log.d("CLICKED ON", c.fullName);
+        Log.d("CLICKED ON", c.getFullName());
         onCourseSelected.onCourseClicked(c);
         view.setSelected(true);
     }

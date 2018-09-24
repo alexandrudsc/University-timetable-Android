@@ -86,10 +86,10 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
         if(valuesToday.size() > 0) {
             final Course c = valuesToday.get(position);
 
-            remoteViews.setTextViewText(R.id.event_name_widget, c.name + " " +
-                    c.type);
-            remoteViews.setTextViewText(R.id.event_description_widget, c.time + "\n" +
-                    c.location);
+            remoteViews.setTextViewText(R.id.event_name_widget, c.getName() + " " +
+                    c.getType());
+            remoteViews.setTextViewText(R.id.event_description_widget, c.getTime() + "\n" +
+                    c.getLocation());
 
             remoteViews.setOnClickFillInIntent(R.id.widget_list_item, getIntentForFillIn(c));
         }

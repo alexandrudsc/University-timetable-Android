@@ -50,7 +50,7 @@ public class SearchableActivity extends FragmentActivity {//extends ListActivity
             }else
                 if(intent.getAction().equals(CourseFragment.actionViewDetails)){
                     course = intent.getExtras().getParcelable(CourseFragment.EXTRA_COURSE_KEY);
-                    Toast.makeText(this, course.name + "_" + course.type, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, course.getName() + "_" + course.getType(), Toast.LENGTH_LONG).show();
                 }
 
         if(course == null){

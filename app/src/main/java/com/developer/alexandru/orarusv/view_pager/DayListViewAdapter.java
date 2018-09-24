@@ -106,12 +106,12 @@ public class DayListViewAdapter extends BaseAdapter {
         if(checkBoxOnChangeListener == null)
             checkBoxOnChangeListener = new CheckBoxOnChangeListener();
         final Course c = values.get(position);
-        viewHolder.eventCheckBox.setTag(currentWeekFileName + ";" + c.name+ "_" + c.type);
+        viewHolder.eventCheckBox.setTag(currentWeekFileName + ";" + c.getName() + "_" + c.getType());
         viewHolder.eventCheckBox.setOnCheckedChangeListener(checkBoxOnChangeListener);
 
 
-        viewHolder.eventName.setText (c.name.toUpperCase());
-        viewHolder.eventType.setText (c.type + "\n" + c.time + "\n" + c.location);
+        viewHolder.eventName.setText (c.getName().toUpperCase());
+        viewHolder.eventType.setText (c.getType() + "\n" + c.getTime() + "\n" + c.getLocation());
         boolean currentCourseProgress = getCourseProgress(viewHolder.eventCheckBox.getContext(),
                                                             viewHolder.eventCheckBox.getTag());
         viewHolder.eventCheckBox.setChecked(currentCourseProgress);

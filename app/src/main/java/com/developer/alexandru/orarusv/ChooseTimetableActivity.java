@@ -43,7 +43,7 @@ public class ChooseTimetableActivity extends Activity implements AdapterView.OnI
     private void getCurrentTimetableDetails() {
         Timetable currentTimetable = Utils.getCurrentTimetable(this);
         if (currentTimetable == null)
-            currentTimetable = Timetable.Creator.create(new String[]{"", "", ""});
+            currentTimetable = Timetable.Creator.INSTANCE.create(new String[]{"", "", ""});
         this.currentTimetableId = currentTimetable.getId();
         this.currentTimetableType = currentTimetable.getType().ordinal();
         this.currentTimetableName = currentTimetable.getName();

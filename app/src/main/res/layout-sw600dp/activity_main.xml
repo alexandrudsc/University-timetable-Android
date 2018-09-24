@@ -45,11 +45,13 @@
             android:layout_marginRight="@dimen/abc_action_bar_default_height_material"
             android:layout_marginLeft="@dimen/abc_action_bar_default_height_material"
             android:layout_marginTop="@dimen/abc_action_bar_default_height_material">
-        <fragment class="com.developer.alexandru.orarusv.CourseFragment"
-                  android:id="@+id/searchable_fragment"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent"
-                  tools:layout="@layout/fragment_timetable"/>
+
+            <fragment
+                android:id="@+id/searchable_fragment"
+                class="com.developer.alexandru.orarusv.CourseFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_timetable" />
         </FrameLayout>
 
     </LinearLayout>

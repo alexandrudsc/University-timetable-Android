@@ -84,16 +84,16 @@ public class CourseFragment extends  Fragment{
                 wasResultTable = savedInstanceState.getBoolean("was_results_table");
                 course = savedInstanceState.getParcelable("course");
                 if(course != null) {
-                    if (D) Log.d(TAG, course.fullName + " " + course.name);
-                    if (course.fullName == null)
-                        courseTitle.setText(course.name + " " + course.type);
+                    if (D) Log.d(TAG, course.getFullName() + " " + course.getName());
+                    if (course.getFullName() == null)
+                        courseTitle.setText(course.getName() + " " + course.getType());
                     else
-                        courseTitle.setText(course.fullName + " " + course.type);
+                        courseTitle.setText(course.getFullName() + " " + course.getType());
 
                     if (wasResultTable) {
                         //The results table was displayed
                         if (D) Log.d(TAG, "recreating with results table");
-                        ResultsFragment resultsFragment = new ResultsFragment(fm, course.name, course.type, course.parity);
+                        ResultsFragment resultsFragment = new ResultsFragment(fm, course.getName(), course.getType(), course.getParity());
                         FragmentTransaction tr = fm.beginTransaction();
                         tr.replace(R.id.course_fragment_container,
                                 resultsFragment, DetailsFragment.REPLACE_DETAILS_WITH_RESULT);
@@ -127,10 +127,10 @@ public class CourseFragment extends  Fragment{
             fragmentView.findViewById(R.id.course_button).setVisibility(View.INVISIBLE);
         }
         else {
-            if(course.fullName == null)
-                courseTitle.setText(course.name + " " + course.type );
+            if(course.getFullName() == null)
+                courseTitle.setText(course.getName() + " " + course.getType());
             else
-                courseTitle.setText(course.fullName + " " + course.type);
+                courseTitle.setText(course.getFullName() + " " + course.getType());
         }
 
         // Find the toolbar (two-pane layout)
@@ -162,7 +162,7 @@ public class CourseFragment extends  Fragment{
         switch (item.getItemId()){
             case R.id.add_note:
                 Intent editNoteIntent = new Intent(this.getActivity(), NoteActivity.class);
-                editNoteIntent.putExtra(NoteActivity.COURSE_NAME_EXTRA, course.name);
+                editNoteIntent.putExtra(NoteActivity.COURSE_NAME_EXTRA, course.getName());
                 startActivity( editNoteIntent);
         }
         return super.onOptionsItemSelected(item);
@@ -190,10 +190,10 @@ public class CourseFragment extends  Fragment{
         View fragmentView = this.getView();
 
         TextView courseTitle = (TextView) fragmentView.findViewById(R.id.course_title);
-        if(c.fullName == null)
-            courseTitle.setText(c.name + " " + c.type );
+        if(c.getFullName() == null)
+            courseTitle.setText(c.getName() + " " + c.getType());
         else
-            courseTitle.setText(c.fullName+ " " + c.type);
+            courseTitle.setText(c.getFullName() + " " + c.getType());
 
         detailsFragmentArgs = new Bundle();
         detailsFragmentArgs.putParcelable("course", c);
