@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * A fragment representing a list of exams
  */
+@Deprecated
 public class ExamsFragment extends Fragment implements MyExamRecyclerViewAdapter.OnExamFragmentInteractionListener {
 
     private String examsFilename;

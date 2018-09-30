@@ -79,11 +79,6 @@ public class DrawerToggle extends ActionBarDrawerToggle {
                 currentPage = NavDrawerAdapter.ABOUT;
                 replaceFragment(aboutFragment);
                 break;
-            case NavDrawerAdapter.EXAMS:
-                examsFragment = ExamsFragment.newInstance(MainActivity.EXAMS_FILE_NAME);
-                currentPage = NavDrawerAdapter.EXAMS;
-                replaceFragment(examsFragment);
-                break;
             case NavDrawerAdapter.HELP:
                 if(this.activity != null) {
                     Intent var2 = new Intent(this.activity, HelpActivity.class);

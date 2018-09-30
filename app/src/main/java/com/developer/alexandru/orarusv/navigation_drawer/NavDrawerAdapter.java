@@ -15,13 +15,12 @@ import com.developer.alexandru.orarusv.R;
  * The adapter for the navigation drawer (helper for backing up the list with data)
  */
 public class NavDrawerAdapter extends BaseAdapter{
-    private final int NAV_DRAWER_ELEM_COUNT = 19;
+    private final int NAV_DRAWER_ELEM_COUNT = 18;
     private String[] titles;
     private Context context;
 
     //Each title in the nav drawer
     public static final int CURRENT_WEEK = 0;
-    public static final int EXAMS = 1;
     public static final int HOLIDAYS = 2;
     public static final int HELP = 3;
     public static final int ABOUT = 4;

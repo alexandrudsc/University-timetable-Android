@@ -37,7 +37,6 @@
 
     <string-array name="drawer_list_elements">
         <item>Orar</item>
-        <item>Examene</item>
         <item>Vacanțe</item>
         <item>Ajutor</item>
         <item>Despre</item>
