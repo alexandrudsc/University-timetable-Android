@@ -41,5 +41,15 @@
     <string name="add_note">Adaugă notițe</string>
     <string name="downloaded_timetables">Orare descărcate</string>
     <string name="title_activity_choose_timetable">ChooseTimetableActivity</string>
+    <string name="about_link">
+        Adaptat pentru &lt;a href="http://orar.usv.ro/">orar.usv.ro&lt;a>
+    </string>
+    <string name="about_git_rep">
+        Contribuțiile și ideilor tuturor sunt binevenite pe
+        &lt;a href="https://github.com/alexandrudsc/University-timetable-Android">Github&lt;/a>
+        sau pe
+        &lt;a href="https://play.google.com/store/apps/details?id=com.developer.alexandru.orarusv">
+        Google Play&lt;/a>
+    </string>
 
 </resources>
