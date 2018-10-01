@@ -51,5 +51,7 @@
         &lt;a href="https://play.google.com/store/apps/details?id=com.developer.alexandru.orarusv">
         Google Play&lt;/a>
     </string>
+    <string name="menu_download">Descarcă orar</string>
+    <string name="show_changelog">Ultimele schimbări</string>
 
 </resources>

@@ -6,12 +6,17 @@
 
     <item
         android:id="@+id/download_from_menu"
-        android:title="@string/settings"
+        android:title="@string/menu_download"
         developer.alexandru:showAsAction="collapseActionView"/>
 
     <item
         android:id="@+id/choose_timetable_from_menu"
         android:title="@string/downloaded_timetables"
+        developer.alexandru:showAsAction="collapseActionView"/>
+
+    <item
+        android:id="@+id/menu_show_changelog"
+        android:title="@string/show_changelog"
         developer.alexandru:showAsAction="collapseActionView"/>
 
     <item
