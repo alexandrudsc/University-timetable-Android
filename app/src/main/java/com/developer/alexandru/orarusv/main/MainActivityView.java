@@ -12,6 +12,6 @@ import android.view.View;
 public interface MainActivityView {
     FragmentManager getSupportFragmentManager();
     Context getContext();
-    View findViewById(int id);
+    <T extends View> T findViewById(int id);
     Intent getIntent();
 }

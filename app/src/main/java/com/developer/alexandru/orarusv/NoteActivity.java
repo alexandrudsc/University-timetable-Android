@@ -1,7 +1,7 @@
 package com.developer.alexandru.orarusv;
 
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -20,7 +20,7 @@ import java.io.IOException;
  * Created by Alexandru
  * A simple note editor. It will be used by the user to note general things about every discipline.
  */
-public class NoteActivity extends ActionBarActivity {
+public class NoteActivity extends AppCompatActivity {
 
     //Debug
     private static final String TAG = "NoteActivity";

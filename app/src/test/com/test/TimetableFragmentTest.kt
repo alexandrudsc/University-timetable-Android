@@ -44,10 +44,10 @@ class TimetableFragmentTest {
 
         assertThat(mainActivity, `is`(notNullValue()))
 
-        val fragmentManager = mainActivity!!.getSupportFragmentManager()
+        val fragmentManager = mainActivity!!.supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(
-                R.id.fragment_container, fragment, TIMETABLE_FRAGMENT_TAG)
+                R.id.fragment_container, fragment!!, TIMETABLE_FRAGMENT_TAG)
         fragmentTransaction.commit()
 
     }

@@ -10,7 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Preferences associated with this activity contain data about the user (settings activity)
  */
 @Deprecated
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     // Dialog displayed while downloading
     //AlertDialog dialog;

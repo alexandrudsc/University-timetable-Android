@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,7 +34,7 @@ import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickList
  * Activity responsible for choosing the right design (phones and tablets, one or two panes layout).
  * Implements an interface for easy interaction with the timetable fragment.
  */
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements MainActivityView, TimetableFragment.OnCourseSelected {
 
     //debug
@@ -103,7 +103,6 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         presenter = new MainActivityPresenterImpl(this);
         Log.d(TAG, "create activity_main");
-
         Utils.setCurrentWeek(this);
         setContentView(R.layout.activity_main);
 
