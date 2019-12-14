@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.main.MainActivity;

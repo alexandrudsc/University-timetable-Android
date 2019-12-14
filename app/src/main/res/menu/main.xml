@@ -24,6 +24,6 @@
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
         developer.alexandru:showAsAction="ifRoom|collapseActionView"
-        developer.alexandru:actionViewClass="android.support.v7.widget.SearchView"/>
+        developer.alexandru:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
 </menu>

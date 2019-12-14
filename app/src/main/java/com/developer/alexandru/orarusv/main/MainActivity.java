@@ -6,14 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.*;
 import android.widget.ListView;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private NavDrawerAdapter drawerAdapter;
 
-    private android.support.v7.app.ActionBar actionBar;
+    private androidx.appcompat.app.ActionBar actionBar;
 
     private MainActivityPresenterImpl presenter;
 

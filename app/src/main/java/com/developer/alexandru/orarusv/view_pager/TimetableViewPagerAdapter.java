@@ -1,16 +1,22 @@
 package com.developer.alexandru.orarusv.view_pager;
 
-import android.support.v4.app.*;
+import androidx.core.app.*;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.Utils;
+
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
 
 /**
  * Created by Alexandru on 6/13/14.
  * Adapter providing fragments for each day
  * NOT SURE IF I SHOULD USE FragmentStatePagerAdapter or a simple FragmentPagerAdapter
  */
-public class TimetableViewPagerAdapter extends FragmentStatePagerAdapter {
+public class TimetableViewPagerAdapter extends androidx.fragment.app.FragmentStatePagerAdapter {
 
     //Debug
     private final String TAG = "TimetableViewPagerAdapter";
@@ -22,10 +28,12 @@ public class TimetableViewPagerAdapter extends FragmentStatePagerAdapter {
 
     /**
      * Constructor for the view pager adapter
-     * @param onCourseSelected the interface implemented by the activity hosting the fragment with the the view pager
+     * @param onCourseSelected the interface implemented by the activity hosting the fragment with
+     *                         the the view pager
      * @param childFragManager the fragment manager within the fragment hosting the view pager
      */
-    public TimetableViewPagerAdapter(TimetableFragment.OnCourseSelected onCourseSelected, FragmentManager childFragManager){
+    public TimetableViewPagerAdapter(TimetableFragment.OnCourseSelected onCourseSelected,
+        FragmentManager childFragManager){
         super(childFragManager);
         this.onCourseSelected = onCourseSelected;
         if(daysFullName == null)
@@ -45,7 +53,7 @@ public class TimetableViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public androidx.fragment.app.Fragment getItem(int position) {
         if(daysFullName == null)
             daysFullName = onCourseSelected.getActivity().getResources().getStringArray(R.array.days_of_week_full_name);
         final int week = Utils.getCurrentWeek(onCourseSelected.getActivity());

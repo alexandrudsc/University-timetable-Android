@@ -4,7 +4,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
