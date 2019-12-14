@@ -3,16 +3,16 @@ jobs:
   build:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-25-alpha
+      - image: circleci/android:api-28 
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "05:a7:28:bc:8f:93:8e:7a:6a:70:99:71:57:98:b3:1c"      
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-#      - run:
-#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
-#         command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
