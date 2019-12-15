@@ -21,9 +21,9 @@ public class NavDrawerAdapter extends BaseAdapter{
 
     //Each title in the nav drawer
     public static final int CURRENT_WEEK = 0;
-    public static final int HOLIDAYS = 2;
-    public static final int HELP = 3;
-    public static final int ABOUT = 4;
+    public static final int HOLIDAYS = 1;
+    public static final int HELP = 2;
+    public static final int ABOUT = 3;
 
     public NavDrawerAdapter(Context context) {
         titles = context.getResources().getStringArray(R.array.drawer_list_elements);

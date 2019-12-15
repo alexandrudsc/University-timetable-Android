@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.developer.alexandru.aplicatie_studenti"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
@@ -41,9 +42,9 @@ android {
 
     testOptions {
         unitTests {
-            includeAndroidResources = true
-            sourceCompatibility = '1.8'
-            targetCompatibility = '1.8'
+            unitTests.includeAndroidResources = true
+            sourceCompatibility = '1.9'
+            targetCompatibility = '1.9'
         }
     }
     compileOptions {
@@ -54,7 +55,6 @@ android {
 }
 
 dependencies {
-    def fragment_version = "1.1.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.palette:palette:1.0.0'
@@ -62,25 +62,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.hamcrest:hamcrest-library:1.3'
-    testImplementation 'com.android.support:multidex:1.0.3'
-
-    androidTestImplementation 'com.android.support:multidex:1.0.3'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'androidx.test:core:1.2.0'
-    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
-    androidTestImplementation ("org.robolectric:robolectric:4.3.1") {
-        exclude group: 'org.apache.maven', module: 'maven-artifact'
-        exclude group: 'org.apache.maven', module: 'maven-artifact-manager'
-        exclude group: 'org.apache.maven', module: 'maven-model'
-        exclude group: 'org.apache.maven', module: 'maven-plugin-registry'
-        exclude group: 'org.apache.maven', module: 'maven-profile'
-        exclude group: 'org.apache.maven', module: 'maven-project'
-        exclude group: 'org.apache.maven', module: 'maven-settings'
-        exclude group: 'org.apache.maven', module: 'maven-error-diagnostics'
-        exclude group: 'org.apache.maven', module: 'maven-ant-tasks'
-        exclude group: "org.apache.maven.wagon"
-    }
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'org.mockito:mockito-core:2.24.5'
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    testImplementation 'com.android.support:multidex:1.0.3'
 }
 repositories {
     jcenter()

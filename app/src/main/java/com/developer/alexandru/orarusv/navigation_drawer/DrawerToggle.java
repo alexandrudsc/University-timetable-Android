@@ -41,12 +41,12 @@ public class DrawerToggle extends ActionBarDrawerToggle {
     private FragmentManager fragmentManager;
     private Activity activity;
 
-    private Fragment timetableFragment;
-    private Fragment aboutFragment;
-    private Fragment holidaysFragment;
-    private Fragment helpFragment;
-    private Fragment examsFragment;
-    private Fragment nonCurrentWeekFragment;
+    public Fragment timetableFragment;
+    public Fragment aboutFragment;
+    public Fragment holidaysFragment;
+    public Fragment helpFragment;
+    public Fragment examsFragment;
+    public Fragment nonCurrentWeekFragment;
 
     public DrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
@@ -65,6 +65,10 @@ public class DrawerToggle extends ActionBarDrawerToggle {
     @Override
     public void onDrawerClosed(View drawerView) {
         super.onDrawerClosed(drawerView);
+        drawerClosed();
+    }
+
+    public void drawerClosed() {
         if (currentPage == selectedPage)
             return; //Item clicked in navigation drawer is already selected
         setCurrentPage(selectedPage);
@@ -95,12 +99,12 @@ public class DrawerToggle extends ActionBarDrawerToggle {
                 break;
             default:
                 Bundle args = new Bundle();
-                args.putInt(NonCurrentWeekFragment.NAME_OF_WEEK_NUMBER, selectedPage - 4);
+                args.putInt(NonCurrentWeekFragment.NAME_OF_WEEK_NUMBER, selectedPage - NavDrawerAdapter.ABOUT);
                 nonCurrentWeekFragment = new NonCurrentWeekFragment((MainActivity) activity);
                 nonCurrentWeekFragment.setArguments(args);
                 replaceFragment(nonCurrentWeekFragment);
 
-                if (D) Log.d(TAG, "" + (selectedPage - 4));
+                if (D) Log.d(TAG, "" + (selectedPage  - NavDrawerAdapter.ABOUT));
         }
     }
 
@@ -116,7 +120,7 @@ public class DrawerToggle extends ActionBarDrawerToggle {
         return this.currentPage;
     }
 
-    private void replaceFragment(Fragment fr){
+    protected void replaceFragment(Fragment fr){
 
         if(fragmentManager != null )
             this.transaction = fragmentManager.beginTransaction();

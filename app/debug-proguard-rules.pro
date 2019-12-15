@@ -15,4 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontshrink
 -dontobfuscate
+-dontoptimize
