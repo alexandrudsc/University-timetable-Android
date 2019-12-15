@@ -17,11 +17,17 @@ import android.widget.Button;
 
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
+import com.developer.alexandru.orarusv.data.CsvAPI;
 import com.developer.alexandru.orarusv.data.TimetableDownloadFinished;
 
+/**
+ * Activity that opens a web page to the mobile website with injected javascript code that draws
+ * download buttons for each timetable
+ */
 public class DownloadActivity extends Activity implements DownloadActivityView, View.OnClickListener {
 
     public static final String TIMETABLE_DOWNLOADED = "TIMETABLE_DOWNLOADED";
+    private static final String URL = CsvAPI.USV_ENDPOINT + "mobil/vizualizare/orarUp1.php";
 
     private WebView webView;
     private Button downloadBtn;
@@ -66,7 +72,7 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
         presenter.initialize();
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new OrarUSVWebViewClient());
-        webView.loadUrl("http://www.usv.ro/orar/mobilorar/vizualizare/orarUp1.php");
+        webView.loadUrl(URL);
 
         downloadBtn.setOnClickListener(this);
     }

@@ -34,10 +34,11 @@ public class Synchronizer extends IntentService {
 
     public static final String ACTION_SYNC_FINISHED =  "synchronization finished";
 
-    private final String URL_FACULTIES = "http://orar.usv.ro/vizualizare/intro1.php";
-    private final String URL_GROUPS = "http://www.orar.usv.ro/vizualizare/data/subgrupe.php";
-    private final String URL_FACULTIES2 = "http://www.orar.usv.ro/vizualizare/data/facultati.php";
-    private final String PARTIAL_URL_FACULTY = "http://orar.usv.ro/vizualizare/orarUp2.php?facultateID=";
+    private final String URL_FACULTIES = CsvAPI.USV_ENDPOINT + "vizualizare/intro1.php";
+    private final String URL_GROUPS = CsvAPI.USV_ENDPOINT + "vizualizare/data/subgrupe.php";
+    private final String URL_FACULTIES2 = CsvAPI.USV_ENDPOINT + "vizualizare/data/facultati.php";
+    private final String PARTIAL_URL_FACULTY =
+            CsvAPI.USV_ENDPOINT + "vizualizare/orarUp2.php?facultateID=";
 
     private DBAdapter dbAdapter;
 

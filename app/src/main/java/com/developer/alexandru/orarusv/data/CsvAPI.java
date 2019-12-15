@@ -8,13 +8,18 @@ public final class CsvAPI {
 
     public static final int CSV_COUNT = 21;
 
+
+
     /**
      * Public URLs.
      */
-    public static final String TIME_URL = "http://www.usv.ro/orar/vizualizare/data/zoneinterzise.php";
-    public static final String PROFS_URL = "http://www.usv.ro/orar/vizualizare/data/cadre.php";
-    public static final String PARTIAL_GROUP_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=grupa&ID="; // Partial URl for non_modular timetables
-    public static final String PARTIAL_PROF_TIMETABLE_URL = "http://www.usv.ro/orar/vizualizare/data/orarSPG.php?mod=prof&ID="; // Partial URl for profs timetables
+    public static final String USV_ENDPOINT = "https://orar.usv.ro/orar/";
+    public static final String TIME_URL = USV_ENDPOINT + "vizualizare/data/zoneinterzise.php";
+    public static final String PROFS_URL = USV_ENDPOINT + "vizualizare/data/cadre.php";
+    public static final String PARTIAL_GROUP_TIMETABLE_URL =
+            USV_ENDPOINT + "vizualizare/data/orarSPG.php?mod=grupa&ID="; // Partial URl for non_modular timetables
+    public static final String PARTIAL_PROF_TIMETABLE_URL =
+            USV_ENDPOINT + "vizualizare/data/orarSPG.php?mod=prof&ID="; // Partial URl for profs timetables
 
 
     /**

@@ -30,6 +30,7 @@ public class SpinnerElementSelectedEvent implements Spinner.OnItemSelectedListen
     }
 
 
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long itemId) {
         onNavigationItemSelected(position, itemId);
