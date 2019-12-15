@@ -1,9 +1,9 @@
 package com.test.developer.alexandru.orarusv
 
-import com.developer.alexandru.orarusv.data.Course
 import com.developer.alexandru.orarusv.data.CourseBuilder
 import com.developer.alexandru.orarusv.data.CsvAPI
-import org.hamcrest.*
+
+
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
