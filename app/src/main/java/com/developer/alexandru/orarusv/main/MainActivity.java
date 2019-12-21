@@ -241,11 +241,6 @@ public class MainActivity extends AppCompatActivity
         actionBar.setHomeButtonEnabled(true);
     }
 
-    public int retrieveLastPosition() {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(PREFERENCES_FILE_NAME, MODE_PRIVATE);
-        return sharedPreferences.getInt(VP_LAST_POSITION, -1);
-    }
-
     @Override
     public MainActivity getActivity() {
         return this;
@@ -264,6 +259,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    public void enableNavDrawer(boolean enable) {
+        drawerLayout.setDrawerLockMode(enable ? DrawerLayout.LOCK_MODE_UNLOCKED :
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
     @Override

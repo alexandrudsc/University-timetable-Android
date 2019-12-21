@@ -126,14 +126,14 @@ public class DrawerToggle extends ActionBarDrawerToggle {
             this.transaction = fragmentManager.beginTransaction();
         else
             return;
-
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         if(activity.findViewById(R.id.fragment_container) != null)
             //One pane layout
-            transaction.replace(R.id.fragment_container, fr).commit();
+            transaction.replace(R.id.fragment_container, fr).addToBackStack(TAG).commit();
 
         else
             //Two pane layout
-            transaction.replace(R.id.timetable_container, fr).commit();
+            transaction.replace(R.id.timetable_container, fr).addToBackStack(TAG).commit();
     }
 
 

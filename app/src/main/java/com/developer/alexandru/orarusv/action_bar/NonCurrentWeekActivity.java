@@ -9,6 +9,7 @@ import com.developer.alexandru.orarusv.R;
 
 /**
  * Created by Alexandru on 7/2/14.
+ * @deprecated only the static fields are used, this was replaced by the NonCurrentWeekFragment
  */
 public class NonCurrentWeekActivity extends ListActivity {
     public static final String NAME_OF_WEEK_NUMBER = "week_number";

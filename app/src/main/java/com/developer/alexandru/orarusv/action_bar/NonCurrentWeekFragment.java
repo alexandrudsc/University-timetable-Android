@@ -20,8 +20,8 @@ public class NonCurrentWeekFragment extends Fragment {
     public static final String PARTIAL_NAME_BACKUP_FILE = "saptamana_";
     public static final String WEEK_NUMBER ="selected_week";
 
-    int weekNumber;
-    String backupFileName;
+    private int weekNumber;
+    private String backupFileName;
     private MainActivity activity;
 
     public NonCurrentWeekFragment() {
@@ -51,14 +51,9 @@ public class NonCurrentWeekFragment extends Fragment {
         if (savedInstanceState != null)
             weekNumber = savedInstanceState.getInt(WEEK_NUMBER);
         View fragmentView = inflater.inflate(R.layout.non_current_week_activity, container, false);
-        ListView listView = (ListView)fragmentView.findViewById(android.R.id.list);
+        ListView listView = fragmentView.findViewById(android.R.id.list);
         listView.setAdapter(new ListViewAdapterNonCurWeek(activity, backupFileName, weekNumber));
         return fragmentView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -66,6 +61,9 @@ public class NonCurrentWeekFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         Log.d("NonCurrentWeek", "create options");
         menu.findItem(R.id.search_from_menu).setVisible(false);
+        menu.findItem(R.id.download_from_menu).setVisible(false);
+        menu.findItem(R.id.choose_timetable_from_menu).setVisible(false);
+
        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Săptămâna " + weekNumber);
     }
 

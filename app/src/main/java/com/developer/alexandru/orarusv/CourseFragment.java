@@ -42,7 +42,7 @@ public class CourseFragment extends  Fragment{
     private FrameLayout courseFragContainer;
     private FragmentManager fm;
 
-    Bundle detailsFragmentArgs;
+    private Bundle detailsFragmentArgs;
     private boolean wasResultTable;
 
     // Toolbar used at horizontal two-pane layout
@@ -134,7 +134,7 @@ public class CourseFragment extends  Fragment{
         }
 
         // Find the toolbar (two-pane layout)
-        Toolbar toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar_searchable);
+        toolbar = fragmentView.findViewById(R.id.toolbar_searchable);
         return fragmentView;
     }
 
@@ -154,6 +154,8 @@ public class CourseFragment extends  Fragment{
         super.onPrepareOptionsMenu(menu);
         MenuItemCompat.collapseActionView(menu.findItem(R.id.search_from_menu));
         menu.findItem(R.id.search_from_menu).setVisible(false);
+        menu.findItem(R.id.download_from_menu).setVisible(false);
+        menu.findItem(R.id.choose_timetable_from_menu).setVisible(false);
 
     }
 

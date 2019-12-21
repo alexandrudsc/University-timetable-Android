@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
@@ -41,9 +44,8 @@ public class TimetableFragment extends Fragment {
     private static final boolean D = true;
     private static final String TAG = "TimetableFragment";
 
-    public ViewPager viewPager;
-    private TimetableViewPagerAdapter timetableViewPagerAdapter;
-    public PagerSlidingTabStrip pagerSlidingTabStrip;
+    private ViewPager viewPager;
+    private PagerSlidingTabStrip pagerSlidingTabStrip;
 
     private OnCourseSelected onCourseSelected;
     //Used to refresh current item
@@ -106,12 +108,19 @@ public class TimetableFragment extends Fragment {
         return fragmentView;
     }
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         //onCourseSelected.getActivity().getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         initializeActionBar();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.search_from_menu).setVisible(true);
+        menu.findItem(R.id.download_from_menu).setVisible(true);
+        menu.findItem(R.id.choose_timetable_from_menu).setVisible(true);
     }
 
 
@@ -168,13 +177,13 @@ public class TimetableFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void initializeActionBar(){
+    private void initializeActionBar(){
         // OnCourseSelected is an interface implemented by the activity_main activity in order to communicate with
         // the fragments.
         SharedPreferences prefs = onCourseSelected.getActivity().getSharedPreferences(
                             MainActivity.TIME_ORGANISER_FILE_NAME, MainActivity.MODE_PRIVATE);
         prefs.edit().putInt(MainActivity.PREF_LAST_SELECTED_WEEK, (prefs.getInt(
                 MainActivity.WEEK_OF_SEMESTER, MainActivity.WEEKS_IN_SEMESTER) - 1)).commit();
-
+        ((MainActivityView)getActivity()).enableNavDrawer(true);
     }
 }
