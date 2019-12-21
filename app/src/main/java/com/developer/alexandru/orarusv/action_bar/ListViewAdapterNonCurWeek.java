@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.developer.alexandru.orarusv.Utils;
@@ -20,6 +19,7 @@ import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.DBAdapter;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.view_pager.DayListViewAdapter;
+import com.developer.alexandru.orarusv.view_pager.OnCourseClickListener;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,6 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
     private String backupFileName;
     private SharedPreferences weekProgress;
 
-    public static final  int CURRENT = 1, NON_CURRENT = 0;
     private final int NUM_DAYS = 7;
     private final String NAME_FOR_TITLE_ELEMENT = "title";
 
@@ -83,42 +82,31 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        DayListViewAdapter.ViewHolder viewHolder;
+        DayListViewAdapter.CourseViewHolder courseViewHolder;
         if(convertView == null){
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(isTitleAt(position)){
                 convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-                viewHolder = new DayListViewAdapter.ViewHolder();
-                viewHolder.eventName = (TextView) convertView.findViewById(R.id.spinner_elem_tv);
-                convertView.setTag(viewHolder);
+                courseViewHolder = new DayListViewAdapter.CourseViewHolder();
+                courseViewHolder.eventName = convertView.findViewById(R.id.spinner_elem_tv);
+                convertView.setTag(courseViewHolder);
             }else{
                 convertView = inflater.inflate(R.layout.course_item_layout, parent, false);
-                viewHolder = new DayListViewAdapter.ViewHolder();
-                viewHolder.eventName = (TextView)convertView.findViewById(R.id.course_name);
-                viewHolder.eventType = (TextView)convertView.findViewById(R.id.course_description);
-
-                viewHolder.eventCheckBox = (CheckBox)convertView.findViewById(R.id.event_checkbox);
-                convertView.setTag(viewHolder);
+                courseViewHolder = new DayListViewAdapter.CourseViewHolder(convertView);
             }
-        }else
-            viewHolder = (DayListViewAdapter.ViewHolder) convertView.getTag();
+        }
+        else {
+            courseViewHolder = (DayListViewAdapter.CourseViewHolder) convertView.getTag();
+        }
 
         if(isTitleAt(position)){
-            viewHolder.eventName.setText(values.get(position).getName());
-            viewHolder.eventName.setGravity(Gravity.CENTER);
+            courseViewHolder.eventName.setText(values.get(position).getName());
+            courseViewHolder.eventName.setGravity(Gravity.CENTER);
             convertView.setClickable(false);
         }
         else{
             final Course c = values.get(position);
-            viewHolder.eventName.setText(c.getName());
-            viewHolder.eventName.setText(c.getName().toUpperCase());
-            viewHolder.eventType.setText(c.getType() + "\n" + c.getTime() + "\n" +
-                    c.getLocation());
-
-            viewHolder.eventCheckBox.setTag(backupFileName + ";" +
-                    values.get(position).getName() + "_" +
-                    values.get(position).getType());
-            viewHolder.eventCheckBox.setOnCheckedChangeListener(new CheckBoxOnChangeListener());
+            courseViewHolder.populate(convertView, activity, backupFileName, c);
 
             boolean currentCourseProgress;
             if(weekProgress == null)
@@ -126,28 +114,14 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
 
             currentCourseProgress = weekProgress.getBoolean(c.getName() + "_" +
                     c.getType(), false);
-            if(currentCourseProgress)
-                viewHolder.eventCheckBox.setChecked(true);
-            else
-                viewHolder.eventCheckBox.setChecked(false);
-
-            RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.layout_course);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("CLICKED ON", c.getFullName());
-
-                    activity.onCourseClicked(c);
-                }
-            });
+            courseViewHolder.setAttendance(currentCourseProgress);
+            convertView.setLongClickable(false);
          }
         return convertView;
     }
 
     private boolean isTitleAt(int position){
-        if(values.get(position).getType().equals(NAME_FOR_TITLE_ELEMENT))
-            return true;
-        return false;
+        return values.get(position).getType().equals(NAME_FOR_TITLE_ELEMENT);
     }
 
     public ArrayList<Course> getValues(){
