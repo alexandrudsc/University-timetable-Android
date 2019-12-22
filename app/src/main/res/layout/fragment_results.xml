@@ -12,12 +12,12 @@
         <TableLayout
             android:id="@+id/table"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"/>
     </ScrollView>
 
     <ImageButton
             android:id="@+id/close_results_button"
-            android:src="@drawable/abc_edit_text_material"
+            android:src="@drawable/ic_close_24px"
             android:layout_margin="@dimen/widget_margin_left"
             android:layout_alignParentRight="true"
             android:layout_width="@dimen/close_button_width"
