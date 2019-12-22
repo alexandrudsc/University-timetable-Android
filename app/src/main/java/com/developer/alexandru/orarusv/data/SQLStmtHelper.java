@@ -8,7 +8,7 @@ public final class SQLStmtHelper {
 
     // CREATE TABLES statements
     public final static String CREATE_COURSES_TABLE = "CREATE TABLE \"COURSES\"(\n" +
-            SqliteDatabaseContract.ID +             "  INT,\n" +
+            SqliteDatabaseContract.ID +             "  INT PRIMARY KEY,\n" +
             SqliteDatabaseContract.NAME +           "  TEXT,\n" +
             SqliteDatabaseContract.FULL_NAME +      "  TEXT,\n" +
             SqliteDatabaseContract.TYPE +           "  TEXT,\n" +
@@ -23,12 +23,13 @@ public final class SQLStmtHelper {
             SqliteDatabaseContract.INFO +           "  TEXT,\n" +
             SqliteDatabaseContract.COURSE_TIMETABLE_ID + " INT,\n" +
             "FOREIGN KEY(" + SqliteDatabaseContract.COURSE_TIMETABLE_ID + ") REFERENCES " +  SqliteDatabaseContract.TIMETABLES_TABLE + "(" + SqliteDatabaseContract.ENTITY_ID + ")\n" +
+            " ON DELETE CASCADE \n" +
             ");";
 
     public final static String CREATE_TIMETABLES_TABLE = "CREATE TABLE \"TIMETABLES\"(\n" +
-            SqliteDatabaseContract.ID + " INT,\n" +
+            SqliteDatabaseContract.ID + " INT PRIMARY KEY,\n" +
             SqliteDatabaseContract.ENTITY_TYPE + " INT,\n" +
-            SqliteDatabaseContract.ENTITY_ID + " INT, \n" +
+            SqliteDatabaseContract.ENTITY_ID + " INT UNIQUE, \n" +
             SqliteDatabaseContract.ENTITY_NAME + " TEXT\n" +
             ");";
 

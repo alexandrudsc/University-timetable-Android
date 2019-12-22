@@ -2,6 +2,7 @@ package com.developer.alexandru.orarusv.data;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 
 /**
@@ -97,7 +99,7 @@ public class TimetableDownloaderService extends IntentService {
             conn.disconnect();
 
             if (urlCourses == null) {
-                sendNotificationDownloaded();
+                sendNotificationDownloaded(false);
                 throw new MalformedURLException("No courses URL.");
             }
             URL url = new URL(urlCourses);
@@ -121,8 +123,11 @@ public class TimetableDownloaderService extends IntentService {
                 for (Course c : courses) {
                     dbAdapter.insertCourse(c, timetableID);
                 }
-                sendNotificationDownloaded();
+                sendNotificationDownloaded(true);
             }
+        }
+        catch (android.database.sqlite.SQLiteException e){
+            e.printStackTrace();
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
@@ -130,20 +135,31 @@ public class TimetableDownloaderService extends IntentService {
         catch (IOException e) {
             e.printStackTrace();
         }
-
-        cancelNotification();
         dbAdapter.close();
+        cancelNotification();
+        sendNotificationDownloaded(false);
     }
 
-    private void sendNotificationDownloaded() {
+    /**
+     * Broadcast an intent with the result of downloading
+     * @param result true if everything worked ok, false otherwise. This is not currently used, but
+     *               it's kept for the next version of the app (v1.1.0) where an error code will be
+     *               used to display error messages
+     */
+    private void sendNotificationDownloaded(boolean result) {
         final LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.sendBroadcast(new Intent(DownloadActivity.TIMETABLE_DOWNLOADED));
+        Intent intent = new Intent(DownloadActivity.TIMETABLE_DOWNLOADED);
+        intent.putExtra("result", result);
+        localBroadcastManager.sendBroadcast(intent);
     }
 
     private void showNotification(){
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this).setSmallIcon(R.drawable.refresh_anim)
+        final String CHANNEL_ID = "my_channel_01";// The id of the channel.
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.refresh_anim)
                 .setContentTitle("Descărcare")
                 .setContentText("Orar și date adiționale")
+                .setChannelId(CHANNEL_ID)
                 .setProgress(0, 0, true);
         Notification n = builder.build();
 

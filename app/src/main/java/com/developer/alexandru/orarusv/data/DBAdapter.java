@@ -91,11 +91,12 @@ public class DBAdapter {
     }
 
     /**
-     * Delete the timetable and associatted courses from the database depending on the id of thie timetable
+     * Delete the timetable and associated courses from the database depending on the id of
+     * this timetable
+     * @param timetable - timetable to be deleted from the database
      */
-    public void deleteTimetableAndCourses(Timetable timetable){
-        deleteCourses(timetable);
-        database.delete(SqliteDatabaseContract.TIMETABLES_TABLE, SqliteDatabaseContract.ENTITY_ID + " = " + timetable.getId() + ";", null);
+    void deleteTimetableAndCourses(Timetable timetable){
+        deleteTimetable(timetable);
     }
 
 
@@ -376,5 +377,17 @@ public class DBAdapter {
         }
         result.close();
         return allTimetables;
+    }
+
+    /**
+     * Executes a delete query on the timetable table which will delete in cascade all courses from
+     * the COURSES table which have as foreign key the id of that timetable
+     * @param timetable - the timetable to be deleted
+     * @return true if the timetable was deleted, false otherwise
+     */
+    public boolean deleteTimetable(Timetable timetable) {
+        return database.delete(SqliteDatabaseContract.TIMETABLES_TABLE,
+                SqliteDatabaseContract.ENTITY_ID + "=" + timetable.getId(),
+                null) > 0;
     }
 }
