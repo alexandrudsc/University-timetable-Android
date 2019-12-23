@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/intro_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Integrare cu Orar USV"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="48dp"
+            android:textSize="28sp"/>
+
+        <ImageView
+            android:id="@+id/tv"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_below="@id/title"
+            android:layout_marginTop="48dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_web_blue_480dp" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv"
+            android:text="Vizualizarea și descărcarea orarului se
+            face din aplicația web integrată"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:maxEms="18"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="48dp"
+            android:textSize="20sp"/>
+
+</RelativeLayout>

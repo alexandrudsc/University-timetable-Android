@@ -4,6 +4,7 @@ import android.view.View;
 
 /**
  * Created by alexandru on 9/12/16.
+ * @deprecated replaced by TutorialActivity
  */
 public class HelpNavigationListener implements View.OnClickListener {
 

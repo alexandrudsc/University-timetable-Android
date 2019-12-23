@@ -26,6 +26,7 @@ import com.developer.alexandru.orarusv.data.Timetable;
 import com.developer.alexandru.orarusv.navigation_drawer.DrawerToggle;
 import com.developer.alexandru.orarusv.navigation_drawer.NavDrawerAdapter;
 import com.developer.alexandru.orarusv.navigation_drawer.NavigationItemClickListener;
+import com.developer.alexandru.orarusv.splash_screen.TutorialActivity;
 
 
 /**
@@ -103,6 +104,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         presenter = new MainActivityPresenterImpl(this);
         Log.d(TAG, "create activity_main");
+
+        SharedPreferences prefs =
+                getSharedPreferences("com.developer.alexandru.orarusv", MODE_PRIVATE);
+        if (prefs.getBoolean("show_tutorial_first", true)) {
+            Intent tutorial = new Intent(this, TutorialActivity.class);
+            startActivity(tutorial);
+            prefs.edit().putBoolean("show_tutorial_first", false).commit();
+        }
+
         Utils.setCurrentWeek(this);
         setContentView(R.layout.activity_main);
 

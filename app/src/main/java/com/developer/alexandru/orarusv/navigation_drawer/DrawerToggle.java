@@ -21,6 +21,7 @@ import com.developer.alexandru.orarusv.main.MainActivityPresenterImpl;
 import com.developer.alexandru.orarusv.main.TimetableFragment;
 import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekFragment;
 import com.developer.alexandru.orarusv.ExamsFragment;
+import com.developer.alexandru.orarusv.splash_screen.TutorialActivity;
 
 /**
  * Created by Alexandru on 9/14/2014.
@@ -85,7 +86,7 @@ public class DrawerToggle extends ActionBarDrawerToggle {
                 break;
             case NavDrawerAdapter.HELP:
                 if(this.activity != null) {
-                    Intent var2 = new Intent(this.activity, HelpActivity.class);
+                    Intent var2 = new Intent(this.activity, TutorialActivity.class);
                     this.activity.startActivity(var2);
                     this.setSelectedPage(0);
                     this.setCurrentPage(0);

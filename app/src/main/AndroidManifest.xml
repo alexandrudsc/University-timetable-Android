@@ -86,7 +86,10 @@
             android:theme="@style/Theme.Alexandru" />
         <activity
             android:name=".ChooseTimetableActivity"
-            android:label="@string/title_activity_choose_timetable"></activity>
+            android:label="@string/title_activity_choose_timetable"/>
+        <activity
+            android:name=".splash_screen.TutorialActivity"
+            android:label="@string/tittle_tutorial"/>
     </application>
 
 </manifest>

@@ -53,5 +53,6 @@
     </string>
     <string name="menu_download">Descarcă orar</string>
     <string name="show_changelog">Ultimele schimbări</string>
+    <string name="tittle_tutorial">Tutorial</string>
 
 </resources>

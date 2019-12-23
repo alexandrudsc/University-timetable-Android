@@ -3,7 +3,9 @@ package com.developer.alexandru.orarusv;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
+/**
+ * @deprecated replaced by TutorialActivity
+ */
 public class HelpActivity extends AppCompatActivity {
 
     @Override
