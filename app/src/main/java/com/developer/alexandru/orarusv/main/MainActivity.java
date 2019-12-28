@@ -133,7 +133,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         presenter.initialize();
-        presenter.checkForNewTimeStructure(); // temporary fix 11/27/2016
     }
 
     @Override

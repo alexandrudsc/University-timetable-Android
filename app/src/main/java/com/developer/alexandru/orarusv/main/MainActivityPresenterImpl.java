@@ -127,20 +127,4 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
             }
         }
     }
-
-    @Override
-    public void checkForNewTimeStructure() {
-        if (view == null)
-            return;
-        SharedPreferences prefs = view.getContext().getSharedPreferences(MainActivity.PREFERENCES_FILE_NAME, Context.MODE_PRIVATE);
-        boolean appFirstRun = prefs.getBoolean(MainActivity.PREF_APP_FIRST_RUN, true);
-        if (!appFirstRun)
-            return;
-        SharedPreferences.Editor edit = prefs.edit();
-        edit.putBoolean(MainActivity.PREF_APP_FIRST_RUN, false);
-        edit.commit();
-
-        Intent downloadIntent = new Intent(view.getContext(), TimetableDownloaderService.class);
-        view.getContext().startService(downloadIntent);
-    }
 }

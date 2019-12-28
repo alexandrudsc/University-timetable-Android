@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.data.Course;
@@ -110,6 +111,8 @@ public class DayFragment extends ListFragment {
     private void refreshCourses() {
         this.list = null;
         adapter.notifyDataSetChanged();
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Săptămâna " +
+                Utils.getCurrentWeek(getActivity()));
         dayCoursesLoader = new DayCoursesLoader(getActivity(), this);
         taskLoaderReference = new WeakReference<>(dayCoursesLoader);
         dayCoursesLoader.execute(day, week);

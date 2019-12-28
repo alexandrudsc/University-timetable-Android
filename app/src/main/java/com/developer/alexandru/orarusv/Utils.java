@@ -55,6 +55,7 @@ public class Utils {
      * Calculate the current week of semester and save it into preferences file if needed.<br>
      * Avoid the holidays time. <br>
      * IT IS CALLED FROM MULTIPLE CONTEXTS: MAIN ACTIVITY, SERVICE FOR APPLICATION WIDGET.
+     * DownloadActivity which displays the web app
      * @param context context from which is called
      */
     public static void setCurrentWeek(Context context) {

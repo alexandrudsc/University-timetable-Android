@@ -10,7 +10,6 @@ import com.developer.alexandru.orarusv.data.Course;
  */
 public interface MainActivityPresenter {
     void initialize();
-    void checkForNewTimeStructure();
     void onNewIntent(Intent intent);
     boolean onCourseClicked(Course course);
 }

@@ -172,6 +172,7 @@ public class DownloadActivity extends Activity implements DownloadActivityView, 
 
     public void downloadFinished() {
         presenter.downloadFinished();
+        Utils.setCurrentWeek(this);
     }
 
     private class OrarUSVWebViewClient extends WebViewClient {
