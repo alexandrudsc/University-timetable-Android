@@ -25,6 +25,7 @@ import com.developer.alexandru.orarusv.ChooseTimetableActivity;
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.Utils;
 import com.developer.alexandru.orarusv.app_widget.TimetableWidgetProvider;
+import com.developer.alexandru.orarusv.changelog.ChangelogActivity;
 import com.developer.alexandru.orarusv.data.Course;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.view_pager.PagerSlidingTabStrip;
@@ -151,6 +152,10 @@ public class TimetableFragment extends Fragment {
             case R.id.choose_timetable_from_menu:
                 Intent intentChooseTimetable = new Intent(getActivity(), ChooseTimetableActivity.class);
                 this.startActivityForResult(intentChooseTimetable, MainActivity.REQUEST_CODE_PICK_TIMETABLE);
+                return true;
+            case R.id.menu_show_changelog:
+                Intent intentShowChangelog = new Intent(getActivity(), ChangelogActivity.class);
+                this.startActivity(intentShowChangelog);
                 return true;
         }
         return super.onOptionsItemSelected(item);

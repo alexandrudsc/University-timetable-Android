@@ -18,13 +18,17 @@
     </TextView>
     <!---->
     <!---->
-    <TextView
-        android:id="@+id/about_git"
+    <ScrollView
+        android:id="@+id/scroll_gitlog"
         android:layout_width="match_parent"
+        android:scrollbars="vertical"
         android:layout_height="0dip"
-        android:layout_gravity="center"
-        android:layout_weight="0.7"
-        android:textSize="@dimen/large_text"
-        android:linksClickable="true"/>
-
+        android:layout_weight="0.7">
+        <TextView
+            android:id="@+id/about_git"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/large_text"
+            android:linksClickable="true"/>
+    </ScrollView>
 </LinearLayout>

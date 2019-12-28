@@ -90,6 +90,9 @@
         <activity
             android:name=".splash_screen.TutorialActivity"
             android:label="@string/tittle_tutorial"/>
+        <activity
+            android:name=".changelog.ChangelogActivity"
+            android:label="@string/changelog_title"/>
     </application>
 
 </manifest>

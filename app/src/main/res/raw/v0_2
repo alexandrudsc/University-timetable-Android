@@ -1,0 +1,5 @@
+v0_2 (2019-dec-29)
+[26] refactored class view holder and course layout; by alexandru.dascalu94@gmail.com
+[20] fix navigation order because of invalid enum values; by alexandru.dascalu94@gmail.com
+[25] use newer usv endpoint; by alexandru.dascalu94@gmail.com
+ 19 files changed, 140 insertions(+), 253 deletions(-)
