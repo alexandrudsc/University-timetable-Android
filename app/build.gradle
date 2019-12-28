@@ -27,7 +27,7 @@ android {
         debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro', 'proguard-rules-debug.pro'
+                    'proguard-rules.pro', 'debug-proguard-rules.pro'
         }
     }
     sourceSets { main {
