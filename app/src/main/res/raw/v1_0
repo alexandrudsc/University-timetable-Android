@@ -1,0 +1,12 @@
+v1_0 (2019-Dec-31)
+[41] changelog + script for generating changelog; by alexandru.dascalu94@gmail.com
+[29] replace progress bar with androidnx progrss bar and relative layout with frame layout; by alexandru.dascalu94@gmail.com
+[35] removed temporary fix and set title from DayFragment after download; by alexandru.dascalu94@gmail.com
+[31] splash screen with tutorial; by alexandru.dascalu94@gmail.com
+[30] added foreign key for courses table and added long click for delete; by alexandru.dascalu94@gmail.com
+[28] added new ic_close drawable and use it in results fragment; by alexandru.dascalu94@gmail.com
+[27] add non-current week fragment to stack + unnecessary disable menu options; by alexandru.dascalu94@gmail.com
+[26] refactored class view holder and course layout; by alexandru.dascalu94@gmail.com
+[20] fix navigation order because of invalid enum values; by alexandru.dascalu94@gmail.com
+[25] use newer usv endpoint; by alexandru.dascalu94@gmail.com
+ 61 files changed, 982 insertions(+), 337 deletions(-)

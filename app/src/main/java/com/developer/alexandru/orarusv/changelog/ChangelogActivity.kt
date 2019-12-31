@@ -15,7 +15,7 @@ import android.view.View
 
 
 class ChangelogActivity : Activity() {
-    private val version = "0_2"
+    private val version = "1_0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
