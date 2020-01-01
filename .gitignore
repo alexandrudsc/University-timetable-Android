@@ -5,3 +5,6 @@ app/app.iml
 /.idea/workspace.xml
 .DS_Store
 /build
+*.apk
+*.apks
+*.aab
