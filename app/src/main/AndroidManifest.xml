@@ -12,6 +12,7 @@
         android:theme="@style/Theme.Alexandru">
         <activity
             android:name=".main.MainActivity"
+            android:configChanges="uiMode"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,7 +76,7 @@
 
         <activity
             android:name=".NoteActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:label="@string/title_activity_note"
             android:parentActivityName=".main.MainActivity">
             <meta-data
