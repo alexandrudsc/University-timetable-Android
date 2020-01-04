@@ -24,11 +24,12 @@
         android:scrollbars="vertical"
         android:layout_height="0dip"
         android:layout_weight="0.7">
+
         <TextView
             android:id="@+id/about_git"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/large_text"
-            android:linksClickable="true"/>
+            android:linksClickable="true" />
     </ScrollView>
 </LinearLayout>

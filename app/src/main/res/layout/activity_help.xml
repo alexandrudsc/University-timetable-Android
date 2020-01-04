@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <include
         android:id="@+id/toolbar_help"
         layout="@layout/toolbar" />
+
     <RelativeLayout
         android:paddingLeft="@dimen/downloader_activity_margins"
         android:paddingRight="@dimen/downloader_activity_margins"
@@ -14,11 +15,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar_help">
 
-        <ImageView android:id="@+id/help_item1"
+        <ImageView
+            android:id="@+id/help_item1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:src="@drawable/hand_wh" />
+
         <CheckBox
             android:enabled="false"
             android:id="@+id/item1_object"
@@ -27,6 +30,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:layout_toRightOf="@id/help_item1" />
+
         <TextView
             android:textSize="@dimen/medium_text"
             android:layout_width="wrap_content"
@@ -36,6 +40,7 @@
             android:text="Folosește pentru a marca prezența"
             android:singleLine="false"
             android:layout_toRightOf="@id/item1_object" />
+
         <ImageView
             android:id="@+id/help_item2"
             android:layout_width="wrap_content"
@@ -44,6 +49,7 @@
             android:src="@drawable/hand_wh"
             android:layout_below="@id/help_item1"
             android:layout_alignParentLeft="true" />
+
         <TextView
             android:textSize="@dimen/medium_text"
             android:id="@+id/textView2"
@@ -53,6 +59,7 @@
             android:singleLine="false"
             android:layout_alignLeft="@id/item1_object"
             android:layout_alignTop="@id/help_item2" />
+
         <ImageView
             android:id="@+id/help_item3"
             android:layout_width="wrap_content"
@@ -61,6 +68,7 @@
             android:src="@drawable/hand_wh"
             android:layout_below="@id/help_item2"
             android:layout_alignParentLeft="true" />
+
         <TextView
             android:textSize="@dimen/medium_text"
             android:layout_width="wrap_content"

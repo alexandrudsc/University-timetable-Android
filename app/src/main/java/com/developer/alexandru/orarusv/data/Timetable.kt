@@ -18,7 +18,7 @@ class Timetable private constructor() {
         fun create(data: Array<String>): Timetable {
             val timetable = Timetable()
             timetable.type = Type.values()[Integer.valueOf(data[0])]
-            timetable.id = Integer.valueOf(data[1])!!
+            timetable.id = Integer.valueOf(data[1])
             timetable.name = data[2]
             return timetable
         }

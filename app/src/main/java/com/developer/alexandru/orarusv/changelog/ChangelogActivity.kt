@@ -6,12 +6,11 @@ import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
+import android.text.method.ScrollingMovementMethod
 import android.text.style.UnderlineSpan
+import android.view.View
 import android.widget.TextView
 import com.developer.alexandru.orarusv.R
-import java.lang.StringBuilder
-import android.text.method.ScrollingMovementMethod
-import android.view.View
 
 
 class ChangelogActivity : Activity() {

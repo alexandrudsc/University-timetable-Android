@@ -39,9 +39,9 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
                     android:host="orar2.usv.ro"
-                    android:pathPattern="/orar/mobil/" />
+                    android:pathPattern="/orar/mobil/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
 

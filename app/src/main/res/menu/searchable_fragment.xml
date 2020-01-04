@@ -5,5 +5,5 @@
         android:id="@+id/add_note"
         android:title="@string/add_note"
         android:icon="@drawable/abc_edit_text_material"
-        android:showAsAction="always"/>
+        android:showAsAction="always" />
 </menu>

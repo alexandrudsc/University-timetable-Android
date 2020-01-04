@@ -9,51 +9,50 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Alexandru on 7/9/14.
- */
+/** Created by Alexandru on 7/9/14. */
 @Deprecated
 public class SearchableActivityAdapter extends BaseAdapter {
-    private ArrayList<String> values;
-    private Context context;
-    public SearchableActivityAdapter(ArrayList<String> vals, Context context) {
-        this.values = vals;
-        this.context = context;
-    }
+  private ArrayList<String> values;
+  private Context context;
 
-    @Override
-    public int getCount() {
-        return values.size();
-    }
+  public SearchableActivityAdapter(ArrayList<String> vals, Context context) {
+    this.values = vals;
+    this.context = context;
+  }
 
-    @Override
-    public Object getItem(int position) {
-        return values.get(position);
-    }
+  @Override
+  public int getCount() {
+    return values.size();
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+  @Override
+  public Object getItem(int position) {
+    return values.get(position);
+  }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) convertView.findViewById(R.id.spinner_elem_tv);
-            convertView.setTag(viewHolder);
-        }else
-            viewHolder = (ViewHolder) convertView.getTag();
+  @Override
+  public long getItemId(int position) {
+    return position;
+  }
 
-        viewHolder.textView.setText(values.get(position));
+  @Override
+  public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder;
+    if (convertView == null) {
+      LayoutInflater inflater =
+          (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
+      viewHolder = new ViewHolder();
+      viewHolder.textView = convertView.findViewById(R.id.spinner_elem_tv);
+      convertView.setTag(viewHolder);
+    } else viewHolder = (ViewHolder) convertView.getTag();
 
-        return convertView;
-    }
+    viewHolder.textView.setText(values.get(position));
 
-    private class ViewHolder{
-        TextView textView;
-    }
+    return convertView;
+  }
+
+  private class ViewHolder {
+    TextView textView;
+  }
 }

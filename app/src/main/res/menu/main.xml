@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:developer.alexandru="http://schemas.android.com/apk/res-auto" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:developer.alexandru="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/download_from_menu"
         android:title="@string/menu_download"
-        developer.alexandru:showAsAction="collapseActionView"/>
+        developer.alexandru:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/choose_timetable_from_menu"
         android:title="@string/downloaded_timetables"
-        developer.alexandru:showAsAction="collapseActionView"/>
+        developer.alexandru:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/menu_show_changelog"
         android:title="@string/show_changelog"
-        developer.alexandru:showAsAction="collapseActionView"/>
+        developer.alexandru:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/search_from_menu"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/action_search"
         developer.alexandru:showAsAction="ifRoom|collapseActionView"
-        developer.alexandru:actionViewClass="androidx.appcompat.widget.SearchView"/>
+        developer.alexandru:actionViewClass="androidx.appcompat.widget.SearchView" />
 
 </menu>

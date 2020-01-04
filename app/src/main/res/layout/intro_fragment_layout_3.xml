@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/intro_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/title"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Management prezență"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="48dp"
-            android:textSize="28sp"/>
+    <TextView
+        android:id="@+id/title"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Management prezență"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:textSize="28sp" />
 
-        <ImageView
-            android:id="@+id/tv"
-            android:layout_below="@id/title"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
-            android:layout_marginTop="48dp"
-            android:layout_centerHorizontal="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_check_box_white_280dp" />
+    <ImageView
+        android:id="@+id/tv"
+        android:layout_below="@id/title"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="48dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_check_box_white_280dp" />
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_below="@id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stocare locală a prezenței la cursuri, cu posibilitatea
+    <TextView
+        android:id="@+id/description"
+        android:layout_below="@id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stocare locală a prezenței la cursuri, cu posibilitatea
 de a marca recuperarea cursurilor din săpțămâna anterioară"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:maxEms="18"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginTop="48dp"
-            android:textSize="20sp"/>
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:maxEms="18"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="48dp"
+        android:textSize="20sp" />
 
 </RelativeLayout>

@@ -1,8 +1,5 @@
 package com.developer.alexandru.orarusv.splash_screen
 
-import android.graphics.Color
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter

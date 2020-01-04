@@ -96,7 +96,8 @@ class Course : Parcelable, Serializable {
         private val D = true
         private val TAG = "COURSE"
 
-        @JvmField final val CREATOR: Parcelable.Creator<Course> = object : Parcelable.Creator<Course> {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Course> = object : Parcelable.Creator<Course> {
 
             override fun createFromParcel(`in`: Parcel): Course {
                 return Course(`in`)

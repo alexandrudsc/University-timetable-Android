@@ -3,8 +3,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item android:title="@string/action_sync"
-    android:id="@+id/sync_btn"
-    android:icon="@drawable/ic_action_refresh"
-    app:showAsAction="always"/>
+    <item
+        android:title="@string/action_sync"
+        android:id="@+id/sync_btn"
+        android:icon="@drawable/ic_action_refresh"
+        app:showAsAction="always" />
 </menu>

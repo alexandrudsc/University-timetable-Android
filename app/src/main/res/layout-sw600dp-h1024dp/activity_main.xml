@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:background="@color/gray2"
@@ -11,11 +10,12 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar"
             android:layout_height="112dp"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent" />
     </RelativeLayout>
 
 
@@ -24,56 +24,62 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
-                     android:id="@+id/timetable_container"
-                     android:layout_width="match_parent"
-                     android:layout_height="0dip"
-                     android:layout_weight="1">
-            <fragment class="com.developer.alexandru.orarusv.main.TimetableFragment"
-                      android:id="@+id/timetable_fragment"
-                      android:layout_height="match_parent"
-                      android:layout_width="match_parent"
-                      tools:layout="@layout/fragment_timetable"/>
-        </FrameLayout>
-        <FrameLayout
-                android:id="@+id/searchable_container"
+            android:id="@+id/timetable_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1">
+
+            <fragment
+                class="com.developer.alexandru.orarusv.main.TimetableFragment"
+                android:id="@+id/timetable_fragment"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1">
-        <fragment class="com.developer.alexandru.orarusv.CourseFragment"
-                  android:id="@+id/searchable_fragment"
-                  android:layout_height="match_parent"
-                  android:layout_width="match_parent"
-                  tools:layout="@layout/fragment_timetable"/>
+                tools:layout="@layout/fragment_timetable" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/searchable_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1">
+
+            <fragment
+                class="com.developer.alexandru.orarusv.CourseFragment"
+                android:id="@+id/searchable_fragment"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                tools:layout="@layout/fragment_timetable" />
         </FrameLayout>
 
     </LinearLayout>
 
     <RelativeLayout
-            android:layout_width="@dimen/nav_drawer_width"
-            android:layout_height="match_parent"
-            android:background="@color/app_color"
-            android:layout_gravity = "start">
+        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_height="match_parent"
+        android:background="@color/app_color"
+        android:layout_gravity="start">
 
         <ImageView
-                android:id = "@+id/nav_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/widget_margin_left"
-                android:layout_centerHorizontal="true"
-                android:scaleType="centerCrop"
-                android:background="@android:color/transparent"
-                android:src="@drawable/nav_header"/>
+            android:id="@+id/nav_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/widget_margin_left"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
+            android:src="@drawable/nav_header" />
 
         <ListView
-                android:id="@+id/left_drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/nav_header"
-                android:layout_marginRight="@dimen/widget_margin_right"
-                android:layout_marginLeft="@dimen/widget_margin_left"
-                android:choiceMode="singleChoice"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="12dp"/>
+            android:id="@+id/left_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/nav_header"
+            android:layout_marginRight="@dimen/widget_margin_right"
+            android:layout_marginLeft="@dimen/widget_margin_left"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="12dp" />
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

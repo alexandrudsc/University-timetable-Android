@@ -7,106 +7,98 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+
 import com.developer.alexandru.orarusv.R;
 
-/**
- * Created by Alexandru on 6/1/14.
- */
-public class MySpinnerAdapter implements SpinnerAdapter{
+/** Created by Alexandru on 6/1/14. */
+public class MySpinnerAdapter implements SpinnerAdapter {
 
-    private String[] values;
+  private String[] values;
 
-    public MySpinnerAdapter(Context context) {
-        values = context.getResources().getStringArray(R.array.spinner_elements);
-    }
+  public MySpinnerAdapter(Context context) {
+    values = context.getResources().getStringArray(R.array.spinner_elements);
+  }
 
-    @Override
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder ;
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)parent.getRootView().getContext().
-                                                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+  @Override
+  public View getDropDownView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder;
+    if (convertView == null) {
+      LayoutInflater inflater =
+          (LayoutInflater)
+              parent.getRootView().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+      convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
+      viewHolder = new ViewHolder();
+      viewHolder.textView = convertView.findViewById(R.id.spinner_elem_tv);
 
-             convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-             viewHolder = new ViewHolder();
-             viewHolder.textView = (TextView)convertView.findViewById(R.id.spinner_elem_tv);
+      convertView.setTag(viewHolder);
 
-             convertView.setTag(viewHolder);
+    } else viewHolder = (ViewHolder) convertView.getTag();
+    viewHolder.textView.setText(values[position]);
+    return convertView;
+  }
 
-        }else
-            viewHolder = (ViewHolder)convertView.getTag();
-        viewHolder.textView.setText(values[position]);
-        return convertView;
-    }
+  @Override
+  public void registerDataSetObserver(DataSetObserver dataSetObserver) {}
 
-    @Override
-    public void registerDataSetObserver(DataSetObserver dataSetObserver) {
+  @Override
+  public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {}
 
-    }
+  @Override
+  public int getCount() {
+    return values.length;
+  }
 
-    @Override
-    public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
+  @Override
+  public Object getItem(int position) {
+    return values[position];
+  }
 
-    }
+  @Override
+  public long getItemId(int position) {
+    return position;
+  }
 
-    @Override
-    public int getCount() {
-        return values.length;
-    }
+  @Override
+  public boolean hasStableIds() {
+    return false;
+  }
 
-    @Override
-    public Object getItem(int position) {
-        return values[position];
-    }
+  @Override
+  public View getView(int position, View convertView, ViewGroup parent) {
+    ViewHolder viewHolder;
+    if (convertView == null) {
+      LayoutInflater inflater =
+          (LayoutInflater)
+              parent.getRootView().getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+      convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
+      viewHolder = new ViewHolder();
+      viewHolder.textView = convertView.findViewById(R.id.spinner_elem_tv);
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
+      convertView.setTag(viewHolder);
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder ;
-        if(convertView == null){
-            LayoutInflater inflater = (LayoutInflater)parent.getRootView().getContext().
-                    getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    } else viewHolder = (ViewHolder) convertView.getTag();
+    viewHolder.textView.setText(values[position]);
+    return convertView;
+  }
 
+  @Override
+  public int getItemViewType(int i) {
+    return 1;
+  }
 
-            convertView = inflater.inflate(R.layout.spinner_item_layout, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView)convertView.findViewById(R.id.spinner_elem_tv);
+  @Override
+  public int getViewTypeCount() {
+    return 1;
+  }
 
-            convertView.setTag(viewHolder);
+  @Override
+  public boolean isEmpty() {
+    return false;
+  }
 
-        }else
-            viewHolder = (ViewHolder)convertView.getTag();
-        viewHolder.textView.setText(values[position]);
-        return convertView;
-    }
-
-    @Override
-    public int getItemViewType(int i) {
-        return 1;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
-    }
-
-    static class ViewHolder{
-        TextView textView;
-    }
-
+  static class ViewHolder {
+    TextView textView;
+  }
 }

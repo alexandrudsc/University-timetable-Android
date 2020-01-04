@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Values for API v >= 11 -->
+<?xml version="1.0" encoding="utf-8"?><!-- Values for API v >= 11 -->
 <resources>
 
     <style name="ActionBar.Solid.Alexandru" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">

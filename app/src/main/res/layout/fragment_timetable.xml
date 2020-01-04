@@ -12,12 +12,12 @@
         app:pstsDividerColor="@color/colorAccent"
         app:pstsUnderlineColor="@color/colorPrimaryDark"
         android:layout_width="fill_parent"
-        android:layout_height="48dp"/>
+        android:layout_height="48dp" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_below="@id/sliding_tabs"
         android:layout_height="0dip"
         android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent" />
 </RelativeLayout>

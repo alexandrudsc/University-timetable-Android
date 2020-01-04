@@ -13,7 +13,7 @@ abstract class CSVParser(private val br: BufferedReader) {
         var line: String?
         try {
             do {
-            //while (() != null) {
+                //while (() != null) {
                 line = br.readLine()
                 if (line == null)
                     break
@@ -55,8 +55,7 @@ abstract class CSVParser(private val br: BufferedReader) {
 
                     wasSuccessful = true
                 }
-            }
-            while (true);
+            } while (true)
         } catch (e: IOException) {
             e.printStackTrace()
             wasSuccessful = false

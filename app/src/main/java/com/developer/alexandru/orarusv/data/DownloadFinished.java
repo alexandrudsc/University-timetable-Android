@@ -11,42 +11,45 @@ import com.developer.alexandru.orarusv.SettingsActivity;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by Alexandru on 12/26/2014.
- * Broadcast receiver for the event announced by the Synchronizer when the data for faculties and groups was fetched from the web
+ * Created by Alexandru on 12/26/2014. Broadcast receiver for the event announced by the
+ * Synchronizer when the data for faculties and groups was fetched from the web
  */
 public class DownloadFinished extends BroadcastReceiver {
 
-    // DEBUG
-    private final boolean D = true;
-    private final String TAG = "DownloadFinished";
+  // DEBUG
+  private final boolean D = true;
+  private final String TAG = "DownloadFinished";
 
-    private Spinner groupsUndergraduates, groupsMasters, groupsPHD;
+  private Spinner groupsUndergraduates, groupsMasters, groupsPHD;
 
-    private WeakReference<SettingsActivity> downloaderActivityWeakReference;
+  private WeakReference<SettingsActivity> downloaderActivityWeakReference;
 
-    public DownloadFinished() {
-        super();
-    }
+  public DownloadFinished() {
+    super();
+  }
 
-    public DownloadFinished(SettingsActivity activity, Spinner groupsUndergraduates, Spinner groupsMasters, Spinner groupsPHD) {
-        this.groupsUndergraduates = groupsUndergraduates;
-        this.groupsMasters = groupsMasters;
-        this.groupsPHD = groupsPHD;
-        this.downloaderActivityWeakReference = new WeakReference<SettingsActivity>(activity);
-    }
+  public DownloadFinished(
+      SettingsActivity activity,
+      Spinner groupsUndergraduates,
+      Spinner groupsMasters,
+      Spinner groupsPHD) {
+    this.groupsUndergraduates = groupsUndergraduates;
+    this.groupsMasters = groupsMasters;
+    this.groupsPHD = groupsPHD;
+    this.downloaderActivityWeakReference = new WeakReference<SettingsActivity>(activity);
+  }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Synchronizer.ACTION_SYNC_FINISHED)){
-            if (downloaderActivityWeakReference != null){
-                SettingsActivity activity =  downloaderActivityWeakReference.get();
-                if (activity != null) {
-                    activity.resetFacultiesSpinnerData();
-                    Log.d(TAG, "faculties reseted");
-                }
-                //this.abortBroadcast();
-            }
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    if (intent.getAction().equals(Synchronizer.ACTION_SYNC_FINISHED)) {
+      if (downloaderActivityWeakReference != null) {
+        SettingsActivity activity = downloaderActivityWeakReference.get();
+        if (activity != null) {
+          activity.resetFacultiesSpinnerData();
+          Log.d(TAG, "faculties reseted");
         }
+        // this.abortBroadcast();
+      }
     }
-
+  }
 }

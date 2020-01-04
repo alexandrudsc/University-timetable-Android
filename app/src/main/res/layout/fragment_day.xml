@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/gray2"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:background="@color/gray2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ListView
-            android:id="@android:id/list"
-            android:dividerHeight="@dimen/widget_margin_left"
-            android:divider="@android:color/transparent"
-            android:choiceMode="singleChoice"
-            android:layout_margin="@dimen/widget_margin_left"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
+        android:id="@android:id/list"
+        android:dividerHeight="@dimen/widget_margin_left"
+        android:divider="@android:color/transparent"
+        android:choiceMode="singleChoice"
+        android:layout_margin="@dimen/widget_margin_left"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 
     <TextView
-            android:id="@id/android:empty"
-            android:gravity="center"
-            android:text="@string/no_course_text"
-            android:textSize="@dimen/xlarge_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+        android:id="@id/android:empty"
+        android:gravity="center"
+        android:text="@string/no_course_text"
+        android:textSize="@dimen/xlarge_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>

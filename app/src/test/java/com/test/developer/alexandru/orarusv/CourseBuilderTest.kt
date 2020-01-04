@@ -1,12 +1,9 @@
 package com.test.developer.alexandru.orarusv
 
+
 import com.developer.alexandru.orarusv.data.CourseBuilder
 import com.developer.alexandru.orarusv.data.CsvAPI
-
-
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 
@@ -14,7 +11,7 @@ class CourseBuilderTest {
 
     @Test
     fun simpleCourseBuild() {
-        val data = Array<String>(CsvAPI.CSV_COUNT + 1, {""})
+        val data = Array<String>(CsvAPI.CSV_COUNT + 1, { "" })
         data[CsvAPI.PROF_ID] = "1"
         data[CsvAPI.PROF_FIRST_NAME] = "Ovidiu"
         data[CsvAPI.PROF_LAST_NAME] = "Schipor"
@@ -37,7 +34,7 @@ class CourseBuilderTest {
 
     @Test
     fun startAndEndTime() {
-        val data = Array<String>(CsvAPI.CSV_COUNT + 1, {""})
+        val data = Array<String>(CsvAPI.CSV_COUNT + 1, { "" })
         data[CsvAPI.PROF_ID] = "1"
         data[CsvAPI.PROF_FIRST_NAME] = "Ovidiu"
         data[CsvAPI.PROF_LAST_NAME] = "Schipor"
@@ -51,7 +48,6 @@ class CourseBuilderTest {
         val course = CourseBuilder.build(data)
         assertThat(course.time, `is`("8:00 - 10:00"))
     }
-
 
 
 }

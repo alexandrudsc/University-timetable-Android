@@ -9,25 +9,25 @@ import com.developer.alexandru.orarusv.download.DownloadActivity;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by alexandru on 10/9/16.
- * Local broadcast receiver for notifications from TimetableDownloaderService
+ * Created by alexandru on 10/9/16. Local broadcast receiver for notifications from
+ * TimetableDownloaderService
  */
 public class TimetableDownloadFinished extends BroadcastReceiver {
 
-    private WeakReference<DownloadActivity> activityWeakReference;
+  private WeakReference<DownloadActivity> activityWeakReference;
 
-    public TimetableDownloadFinished(DownloadActivity activity) {
-        super();
-        this.activityWeakReference = new WeakReference<>(activity);
-    }
+  public TimetableDownloadFinished(DownloadActivity activity) {
+    super();
+    this.activityWeakReference = new WeakReference<>(activity);
+  }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        if (this.activityWeakReference != null) {
-            final DownloadActivity activity = this.activityWeakReference.get();
-            if (activity != null) {
-                activity.downloadFinished();
-            }
-        }
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    if (this.activityWeakReference != null) {
+      final DownloadActivity activity = this.activityWeakReference.get();
+      if (activity != null) {
+        activity.downloadFinished();
+      }
     }
+  }
 }

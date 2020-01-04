@@ -23,9 +23,9 @@ class TutorialFragment : Fragment() {
         val colorCode = arguments!!.getInt(BACKGROUND_COLOR)
         mBackgroundColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             context!!.resources.getColor(colorCode, null)
-          } else {
+        } else {
             context!!.resources.getColor(colorCode)
-          }
+        }
         if (!arguments!!.containsKey(PAGE))
             throw RuntimeException("Fragment must contain a \"$PAGE\" argument!")
         mPage = arguments!!.getInt(PAGE)

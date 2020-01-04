@@ -4,12 +4,11 @@ import android.content.Intent;
 
 import com.developer.alexandru.orarusv.data.Course;
 
-/**
- * Created by alexandru on 10/25/16.
- * Presenter for MainActivity
- */
+/** Created by alexandru on 10/25/16. Presenter for MainActivity */
 public interface MainActivityPresenter {
-    void initialize();
-    void onNewIntent(Intent intent);
-    boolean onCourseClicked(Course course);
+  void initialize();
+
+  void onNewIntent(Intent intent);
+
+  boolean onCourseClicked(Course course);
 }

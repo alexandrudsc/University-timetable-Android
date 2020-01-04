@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Values for API v < 11 -->
+<?xml version="1.0" encoding="utf-8"?><!-- Values for API v < 11 -->
 <resources>
 
     <style name="Theme.Alexandru" parent="@style/Theme.AppCompat.Light">
-       <!-- <item name="actionBarItemBackground">@drawable/selectable_background_alexandru</item>
-        <item name="popupMenuStyle">@style/PopupMenu.Alexandru</item>
-        <item name="dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
-        <item name="actionBarTabStyle">@style/ActionBarTabStyle.Alexandru</item>
-        <item name="actionDropDownStyle">@style/DropDownNav.Alexandru</item>
-        <item name="actionBarStyle">@style/ActionBar.Solid.Alexandru</item>
-        <item name="actionModeBackground">@drawable/cab_background_top_alexandru</item>
-        <item name="actionModeSplitBackground">@drawable/cab_background_bottom_alexandru</item>
-        <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Alexandru</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="android:title"/>-->
+        <!-- <item name="actionBarItemBackground">@drawable/selectable_background_alexandru</item>
+         <item name="popupMenuStyle">@style/PopupMenu.Alexandru</item>
+         <item name="dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
+         <item name="actionBarTabStyle">@style/ActionBarTabStyle.Alexandru</item>
+         <item name="actionDropDownStyle">@style/DropDownNav.Alexandru</item>
+         <item name="actionBarStyle">@style/ActionBar.Solid.Alexandru</item>
+         <item name="actionModeBackground">@drawable/cab_background_top_alexandru</item>
+         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_alexandru</item>
+         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Alexandru</item>
+         <item name="android:textColorHint">@color/white</item>
+         <item name="android:title"/>-->
         <item name="displayOptions">useLogo|homeAsUp</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

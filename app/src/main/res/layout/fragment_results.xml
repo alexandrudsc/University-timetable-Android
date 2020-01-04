@@ -9,17 +9,18 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <TableLayout
             android:id="@+id/table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </ScrollView>
 
     <ImageButton
-            android:id="@+id/close_results_button"
-            android:src="@drawable/ic_close_24px"
-            android:layout_margin="@dimen/widget_margin_left"
-            android:layout_alignParentRight="true"
-            android:layout_width="@dimen/close_button_width"
-            android:layout_height="@dimen/close_button_height"/>
+        android:id="@+id/close_results_button"
+        android:src="@drawable/ic_close_24px"
+        android:layout_margin="@dimen/widget_margin_left"
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/close_button_width"
+        android:layout_height="@dimen/close_button_height" />
 </RelativeLayout>
