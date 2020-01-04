@@ -25,14 +25,9 @@ public class ListWidgetService extends RemoteViewsService {
   public RemoteViewsFactory onGetViewFactory(Intent intent) {
     Log.d(TAG, "Service created");
     if (listRemoteViewsFactory == null)
-      listRemoteViewsFactory = new ListRemoteViewsFactory(this.getApplicationContext(), intent);
-
-    String widgetProviderName = intent.getStringExtra(TimetableWidgetProvider.CLASS_NAME);
-
-    Boolean coursesForTomorrow = intent.getBooleanExtra("tomorrow", false);
+      listRemoteViewsFactory = new ListRemoteViewsFactory(this.getApplicationContext());
 
     Log.d(TAG, "NO LOADING YET");
-
     return listRemoteViewsFactory;
   }
 

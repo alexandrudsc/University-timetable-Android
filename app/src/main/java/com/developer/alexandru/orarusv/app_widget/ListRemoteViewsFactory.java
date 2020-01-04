@@ -29,12 +29,10 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
   public static final int VIEW_DETAILS_CODE = 100;
 
   private ArrayList<Course> valuesToday;
-  // private int mWidgetId;
-  // private boolean tommorow = false;
   private Context mContext;
   private DBAdapter dbAdapter;
 
-  public ListRemoteViewsFactory(Context context, Intent intent) {
+  public ListRemoteViewsFactory(Context context) {
     mContext = context;
   }
 
@@ -122,10 +120,6 @@ public class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFac
     } else {
       this.valuesToday = newValues;
     }
-  }
-
-  public boolean hasValues() {
-    return valuesToday == null || valuesToday.size() == 0;
   }
 
   private Intent getIntentForFillIn(Course course) {

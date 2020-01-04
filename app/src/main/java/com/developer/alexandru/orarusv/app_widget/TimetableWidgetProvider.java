@@ -106,7 +106,7 @@ public class TimetableWidgetProvider extends AppWidgetProvider {
     if (remoteViews == null)
       remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
     for (int i = 0; i < appWidgetIds.length; i++) {
-      if (D) Log.d(TAG, "update" + appWidgetIds[i]);
+      if (D) Log.d(TAG, "update widget with id" + appWidgetIds[i]);
 
       int mWidgetId = appWidgetIds[i];
 
