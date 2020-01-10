@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.developer.alexandru.orarusv.AboutFragment;
 import com.developer.alexandru.orarusv.HolidaysFragment;
 import com.developer.alexandru.orarusv.R;
-import com.developer.alexandru.orarusv.action_bar.NonCurrentWeekFragment;
 import com.developer.alexandru.orarusv.main.MainActivity;
 import com.developer.alexandru.orarusv.main.MainActivityPresenterImpl;
 import com.developer.alexandru.orarusv.main.TimetableFragment;

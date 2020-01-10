@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.developer.alexandru.orarusv.R;
 import com.developer.alexandru.orarusv.main.MainActivity;
+import com.developer.alexandru.orarusv.navigation_drawer.NonCurrentWeekFragment;
 
 /** Created by Alexandru on 6/1/14. */
 public class SpinnerElementSelectedEvent

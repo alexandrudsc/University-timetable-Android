@@ -1,4 +1,4 @@
-package com.developer.alexandru.orarusv.action_bar;
+package com.developer.alexandru.orarusv.navigation_drawer;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.developer.alexandru.orarusv.R;
+import com.developer.alexandru.orarusv.action_bar.ListViewAdapterNonCurWeek;
 import com.developer.alexandru.orarusv.main.MainActivity;
 
 /** Created by Alexandru on 8/1/14. */
@@ -64,7 +67,15 @@ public class NonCurrentWeekFragment extends Fragment {
     menu.findItem(R.id.download_from_menu).setVisible(false);
     menu.findItem(R.id.choose_timetable_from_menu).setVisible(false);
 
-    ((MainActivity) getActivity()).getSupportActionBar().setTitle("Săptămâna " + weekNumber);
+    ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
+    if (supportActionBar == null)
+    {
+      return;
+    }
+    supportActionBar.setTitle("Săptămâna " + weekNumber);
+    supportActionBar.setDisplayHomeAsUpEnabled(false);
+    supportActionBar.setHomeButtonEnabled(false);
+
   }
 
   @Override

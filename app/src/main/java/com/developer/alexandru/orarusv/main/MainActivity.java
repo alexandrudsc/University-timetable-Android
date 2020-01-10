@@ -268,6 +268,8 @@ public class MainActivity extends AppCompatActivity
   public void enableNavDrawer(boolean enable) {
     drawerLayout.setDrawerLockMode(
         enable ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setHomeButtonEnabled(true);
   }
 
   @Override
