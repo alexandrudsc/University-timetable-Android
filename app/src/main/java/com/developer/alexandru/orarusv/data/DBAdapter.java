@@ -31,7 +31,9 @@ public class DBAdapter {
   }
 
   public void open() throws SQLiteException {
-    database = dbHelper.getWritableDatabase();
+    if (database == null) {
+      database = dbHelper.getWritableDatabase();
+    }
   }
 
   public void close() {
@@ -41,52 +43,6 @@ public class DBAdapter {
   public void create() {
     if (database == null) database = dbHelper.getWritableDatabase();
     dbHelper.onCreate(database);
-  }
-
-  /**
-   * Create a temporary table to insert downloading courses: if there are any courses downloaded
-   * this will not block the access to the current courses, and it used as safety if network access
-   * fails during com.developer.alexandru.orarusv.download
-   */
-  //    protected void createTMPCoursesTable(){
-  //        if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TMP_TABLE)) {
-  //            if (!dbHelper.tableExists(database, SqliteDatabaseContract.COURSES_TABLE))
-  //                database.execSQL(SQLStmtHelper.CREATE_COURSES_TABLE);
-  //            database.execSQL("CREATE TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " AS
-  // SELECT * FROM " + SqliteDatabaseContract.COURSES_TABLE);
-  //        }
-  //        database.delete(SqliteDatabaseContract.COURSES_TMP_TABLE, null, null);           //
-  // DELETE the rows in the tmp table
-  //    }
-
-  //    protected void deleteTMPCourses(){
-  //        database.execSQL("DROP TABLE IF EXISTS " + SqliteDatabaseContract.COURSES_TMP_TABLE);
-  //    }
-
-  /**
-   * Before calling this function there should be 2 databases, an old one and the newly created one
-   * Replace the old one, as there is no need for it
-   *
-   * @return true if operation was successful, false otherwise
-   */
-  //    protected boolean replaceOldCourses(){
-  //        database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-  //        database.execSQL("ALTER TABLE " + SqliteDatabaseContract.COURSES_TMP_TABLE + " RENAME TO
-  // " + SqliteDatabaseContract.COURSES_TABLE);
-  //        return true;
-  //    }
-
-  /** Delete the courses table from the database */
-  public void deleteCourses() {
-    database.execSQL(SQLStmtHelper.DELETE_COURSES_TABLE);
-  }
-
-  /** Delete the courses from the database depending on the id of this timetable */
-  private void deleteCourses(Timetable timetable) {
-    database.delete(
-        SqliteDatabaseContract.COURSES_TABLE,
-        SqliteDatabaseContract.COURSE_TIMETABLE_ID + " = " + timetable.getId() + ";",
-        null);
   }
 
   /**
@@ -103,13 +59,16 @@ public class DBAdapter {
    * Insert the course in the database
    *
    * @param course course to be inserted
-   * @return the ID of the row if insertion was successful, -1 otherwise
    */
-  public long insertCourse(Course course, int timetableId) {
+  void insertCourse(Course course, int timetableId) {
     ContentValues values = createValuesForInsertingCourse(course);
     values.put(SqliteDatabaseContract.COURSE_TIMETABLE_ID, timetableId);
-
-    return database.insert(SqliteDatabaseContract.COURSES_TABLE, null, values);
+    try {
+      database.insert(SqliteDatabaseContract.COURSES_TABLE, null, values);
+    }
+    catch (SQLiteException ex) {
+      Log.e(TAG, "error inserting course [" + values.toString() + "]" + ex.getMessage());
+    }
   }
 
   /**
@@ -117,29 +76,20 @@ public class DBAdapter {
    * name;
    *
    * @param timetable timetable to be inserted
-   * @return the ID of the row if insertion was successful, -1 otherwise
    */
-  public long insertTimetable(Timetable timetable) {
+  void insertTimetable(Timetable timetable) {
     ContentValues values = new ContentValues();
 
     values.put(SqliteDatabaseContract.ENTITY_ID, timetable.getId());
     values.put(SqliteDatabaseContract.ENTITY_NAME, timetable.getName());
     values.put(SqliteDatabaseContract.ENTITY_TYPE, timetable.getType().ordinal());
-    return database.insert(SqliteDatabaseContract.TIMETABLES_TABLE, null, values);
+    try {
+      database.insert(SqliteDatabaseContract.TIMETABLES_TABLE, null, values);
+    }
+    catch (SQLiteException ex) {
+      Log.e(TAG, "error inserting timetable [" + values.toString() + "]" + ex.getMessage());
+    }
   }
-
-  /**
-   * Same as insertCourse() except data is inserted into a temporary table. Used when downloading
-   * new courses.
-   *
-   * @param course course to be inserted
-   * @return the ID of the row if insertion was successful, -1 otherwise
-   */
-  //    public long insertTmpCourse(Course course){
-  //        ContentValues values = createValuesForInsertingCourse(course);
-  //
-  //        return database.insert(SqliteDatabaseContract.COURSES_TMP_TABLE, null, values);
-  //    }
 
   // Used only in DbAdapter.java as a helper method.
   // Create a ContentValues object representing a course in the database.
@@ -203,9 +153,7 @@ public class DBAdapter {
     else selectionArgs[1] = CsvAPI.ODD_WEEK;
     selectionArgs[3] = "10 sapt.+1h";
     selectionArgs[4] = String.valueOf(timetableId);
-    Cursor cursor = null;
-    cursor =
-        database.query(
+    Cursor cursor = database.query(
             SqliteDatabaseContract.COURSES_TABLE,
             mProjection,
             selection,
@@ -256,49 +204,13 @@ public class DBAdapter {
   }
 
   // Used by content provider for search suggestions
-  public Cursor fullQuery(
+  Cursor fullQuery(
       String[] projection, String selection, String[] selectionArgs, String order) {
     if (D) Log.d(TAG, "query for search");
     if (D) Log.d(TAG, selection + " " + selectionArgs[0] + " " + order);
     String[] selArgs = new String[] {selectionArgs[0] + "%"};
     return database.query(
         SqliteDatabaseContract.COURSES_TABLE, projection, selection, selArgs, null, null, order);
-  }
-
-  /**
-   * Query for all the fields of a specific row. NOT USED
-   *
-   * @param name the name of the course
-   * @param type the type of the course (COURSE, LAB or SEMINAR)
-   * @return an array of strings with the fields
-   */
-  public String[] getInfoAboutCourse(String name, String type) {
-    // Used by SearchableActivity when searching was made specifically
-    String[] projection = {
-      SqliteDatabaseContract.NAME,
-      SqliteDatabaseContract.FULL_NAME,
-      SqliteDatabaseContract.TYPE,
-      SqliteDatabaseContract.LOCATION,
-      SqliteDatabaseContract.FULL_LOCATION,
-      SqliteDatabaseContract.START_TIME,
-      SqliteDatabaseContract.PROF,
-      SqliteDatabaseContract.PARITY,
-      SqliteDatabaseContract.INFO
-    };
-    String selection = "LOWER(name) == ? AND LOWER(type) == ?";
-    String[] selectionArgs = {name.toLowerCase(), type.toLowerCase()};
-    Cursor result =
-        database.query(
-            SqliteDatabaseContract.COURSES_TABLE,
-            projection,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null);
-    if (result == null || result.getCount() == 0) return null;
-    result.moveToFirst();
-    return new String[] {result.getString(0), result.getString(1), result.getString(2)};
   }
 
   /**
@@ -346,9 +258,8 @@ public class DBAdapter {
    * Updates a course time and day in the database
    *
    * @param newValue the new course object
-   * @return the new Course object
    */
-  public Course updateCourseTime(Course newValue) {
+  void updateCourseTime(Course newValue) {
     ContentValues contentValues = new ContentValues();
     contentValues.put(SqliteDatabaseContract.DAY, newValue.getDay());
     contentValues.put(SqliteDatabaseContract.START_TIME, newValue.getStartTime());
@@ -366,7 +277,6 @@ public class DBAdapter {
             + newValue.getType()
             + "' ",
         null);
-    return newValue;
   }
 
   public boolean isOpen() {
@@ -398,13 +308,11 @@ public class DBAdapter {
    * the COURSES table which have as foreign key the id of that timetable
    *
    * @param timetable - the timetable to be deleted
-   * @return true if the timetable was deleted, false otherwise
    */
-  public boolean deleteTimetable(Timetable timetable) {
-    return database.delete(
+  public void deleteTimetable(Timetable timetable) {
+    database.delete(
             SqliteDatabaseContract.TIMETABLES_TABLE,
             SqliteDatabaseContract.ENTITY_ID + "=" + timetable.getId(),
-            null)
-        > 0;
+            null);
   }
 }

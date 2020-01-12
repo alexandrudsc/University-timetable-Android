@@ -12,11 +12,11 @@ import static com.developer.alexandru.orarusv.data.SqliteDatabaseContract.DB_VER
 /** Created by alexandru on 11/26/2016. Local sqlite database open/update helper */
 public final class DatabaseOpenHelper extends SQLiteOpenHelper {
 
-  public DatabaseOpenHelper(Context context) {
+  DatabaseOpenHelper(Context context) {
     super(context, DB_NAME, null, DB_VERSION);
   }
 
-  public DatabaseOpenHelper(Context context, boolean isTemporary) {
+  DatabaseOpenHelper(Context context, boolean isTemporary) {
     super(context, DB_TMP_NAME, null, DB_VERSION);
   }
 
@@ -50,23 +50,15 @@ public final class DatabaseOpenHelper extends SQLiteOpenHelper {
     onCreate(sqLiteDatabase);
   }
   // Used to avoid unnecessary creation of tables
-  public boolean tableExists(SQLiteDatabase sqLiteDatabase, String table) {
-    String[] mProj = {"name"};
-
-    String mSelect = "type='table' AND name=?";
-      String[] mSelectArgs = {table};
+  private boolean tableExists(SQLiteDatabase sqLiteDatabase, String table) {
     final Cursor cursor =
         sqLiteDatabase.rawQuery(
             "select DISTINCT tbl_name from sqlite_master where tbl_name = '" + table + "'", null);
-    return cursor != null && cursor.getCount() > 0;
-    //        Cursor c = sqLiteDatabase.query("sqlite_master",
-    //                mProj,
-    //                mSelect,
-    //                mSelectArgs,
-    //                null,
-    //                null,
-    //                null);
-    //        Log.d("DB_ADAPTER", c.getCount() + "");
-    //        return c.getCount() > 0;
+    if (cursor == null) {
+      return false;
+    }
+    boolean exists = cursor.getCount() > 0;
+    cursor.close();
+    return exists;
   }
 }
