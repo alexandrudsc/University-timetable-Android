@@ -21,7 +21,7 @@
 -->
 <resources>
 
-    <style name="Theme.Alexandru" parent="@style/Theme.AppCompat.Light">
+    <style name="Theme.Alexandru" parent="@style/Theme.AppCompat.DayNight.DarkActionBar">
         <!--<item name="android:actionBarItemBackground">@drawable/selectable_background_alexandru</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Alexandru</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Alexandru</item>
