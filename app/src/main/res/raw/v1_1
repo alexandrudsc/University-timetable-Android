@@ -1,0 +1,9 @@
+v1_1 (2020-Mar-01)
+[46][Bugfix] fixed null pointer in list view adapter; by alexandru.dascalu94@gmail.com
+[45] cleanup database adapter and catch exceptions; by alexandru.dascalu94@gmail.com
+[44] Hide navigation drawer icon when displaying non-current week; by alexandru.dascalu94@gmail.com
+[1] app-widget updates the the classes from the default timetable; by alexandru.dascalu94@gmail.com
+[33] autoformat java, kotlin and xml files; by alexandru.dascalu94@gmail.com
+[13] added action view intent filter for mobile timetable web links; by alexandru.dascalu94@gmail.com
+[42] added new keystore to git; by alexandru.dascalu94@gmail.com
+ 139 files changed, 6925 insertions(+), 7045 deletions(-)
