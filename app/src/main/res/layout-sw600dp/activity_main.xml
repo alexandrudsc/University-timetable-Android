@@ -85,5 +85,12 @@
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"
             android:dividerHeight="12dp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/drawer_switch_day"
+            android:layout_below="@id/left_drawer"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:text=""/>
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

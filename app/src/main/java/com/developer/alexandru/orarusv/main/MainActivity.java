@@ -99,19 +99,22 @@ public class MainActivity extends AppCompatActivity
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    SharedPreferences prefs = getSharedPreferences("com.developer.alexandru.orarusv",
+      MODE_PRIVATE);
     super.onCreate(savedInstanceState);
-    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); //For night mode theme
+    AppCompatDelegate.setDefaultNightMode(prefs.getBoolean("night_mode", false) ?
+      AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO); //For night mode theme
     presenter = new MainActivityPresenterImpl(this);
     Log.d(TAG, "create activity_main");
 
-    SharedPreferences prefs = getSharedPreferences("com.developer.alexandru.orarusv", MODE_PRIVATE);
     if (prefs.getBoolean("show_tutorial_first", true)) {
       Intent tutorial = new Intent(this, TutorialActivity.class);
       startActivity(tutorial);
-      prefs.edit().putBoolean("show_tutorial_first", false).commit();
+      prefs.edit().putBoolean("show_tutorial_first", false).apply();
     }
 
     Utils.setCurrentWeek(this);
+
     setContentView(R.layout.activity_main);
 
     Toolbar toolbar = findViewById(R.id.toolbar);
