@@ -55,7 +55,7 @@ public class NonCurrentWeekFragment extends Fragment {
     if (savedInstanceState != null) weekNumber = savedInstanceState.getInt(WEEK_NUMBER);
     View fragmentView = inflater.inflate(R.layout.non_current_week_activity, container, false);
     ListView listView = fragmentView.findViewById(android.R.id.list);
-    listView.setAdapter(new ListViewAdapterNonCurWeek(activity, backupFileName, weekNumber));
+    listView.setAdapter(new ListViewAdapterNonCurWeek((MainActivity)getActivity(), backupFileName, weekNumber));
     return fragmentView;
   }
 

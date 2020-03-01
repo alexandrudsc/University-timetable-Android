@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class ListViewAdapterNonCurWeek extends BaseAdapter {
 
   private ArrayList<Course> values;
-  private String[] daysName;
   private Context context;
   private MainActivity activity;
   private String backupFileName;
@@ -34,8 +33,6 @@ public class ListViewAdapterNonCurWeek extends BaseAdapter {
   public ListViewAdapterNonCurWeek(MainActivity activity, String backupFileName, int week) {
     this.context = activity;
     this.activity = activity;
-
-    daysName = activity.getResources().getStringArray(R.array.days_of_week_full_name);
     this.backupFileName = backupFileName;
     weekProgress = context.getSharedPreferences(this.backupFileName, Context.MODE_PRIVATE);
 
