@@ -21,7 +21,12 @@ public class CourseBuilder {
       c.setEndTime(endTime);
       c.setTime(startTime + ":00 - " + endTime + ":00");
 
-      c.setDay(Integer.valueOf(data[CsvAPI.DAY]));
+      c.setDay(Integer.parseInt(data[CsvAPI.DAY]));
+      // internally sunday is kept as day 0
+      if (c.getDay() == 7)
+      {
+        c.setDay(0);
+      }
 
       c.setProf(
           data[CsvAPI.RANK]
