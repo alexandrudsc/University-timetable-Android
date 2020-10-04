@@ -6,7 +6,7 @@ public final class CsvAPI {
   public static final int CSV_COUNT = 21;
 
   /** Public URLs. */
-  public static final String USV_ENDPOINT = "https://orar.usv.ro/orar/";
+  public static final String USV_ENDPOINT = "https://orar.usv.ro/orar_20_21_1A/";
 
   public static final String TIME_URL = USV_ENDPOINT + "vizualizare/data/zoneinterzise.php";
   public static final String PROFS_URL = USV_ENDPOINT + "vizualizare/data/cadre.php";
