@@ -14,7 +14,7 @@ import com.developer.alexandru.orarusv.R
 
 
 class ChangelogActivity : Activity() {
-    private val version = "1_1"
+    private val version = "1_2"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
