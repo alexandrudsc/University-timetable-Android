@@ -33,6 +33,23 @@ class CourseBuilderTest {
     }
 
     @Test
+    fun sundayConsideredDay0() {
+        val data = Array<String>(CsvAPI.CSV_COUNT + 1, { "" })
+        data[CsvAPI.PROF_ID] = "1"
+        data[CsvAPI.PROF_FIRST_NAME] = "Ovidiu"
+        data[CsvAPI.PROF_LAST_NAME] = "Schipor"
+        data[CsvAPI.COURSE_NAME] = "PCLP"
+        data[CsvAPI.COURSE_FULL_NAME] = "Programare"
+        data[CsvAPI.DAY] = "7"
+        data[CsvAPI.START] = "480"
+        data[CsvAPI.STOP] = "120"
+
+        assertThat(CourseBuilder.isDataValid(data), `is`(true))
+        val course = CourseBuilder.build(data)
+        assertThat(course.day, `is`(0))
+    }
+
+    @Test
     fun startAndEndTime() {
         val data = Array<String>(CsvAPI.CSV_COUNT + 1, { "" })
         data[CsvAPI.PROF_ID] = "1"
